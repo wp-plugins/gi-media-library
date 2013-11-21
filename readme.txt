@@ -75,11 +75,11 @@ Manual installation works just as for other WordPress plugins:
 
 = Support? =
 
-For support questions, bug reports, or feature requests, please use the contact us page at http://www.glareofislam.com/contactus.html. Thank you!
+For support questions, bug reports, or feature requests, please use the contact us page at [WordPress Support Forum](http://wordpress.org/support/plugin/gi-media-library). Please [search](http://wordpress.org/support/) through the forums first, and only [open a new thread](http://wordpress.org/support/plugin/gi-media-library) if you don't find an existing answer. Thank you!
 
 = Requirements? =
 
-In short: WordPress 3.4.2 or higher, while the latest version of WordPress is always recommended.
+In short: WordPress 3.3.2 or higher, while the latest version of WordPress is always recommended.
 
 == Acknowledgements ==
 
