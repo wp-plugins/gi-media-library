@@ -1,0 +1,318 @@
+.row:before{
+	clear: both;
+    content: " ";
+    display: block;
+    font-size: 0;
+    height: 0;
+    visibility: hidden;
+}
+.row{
+   position: relative;
+   float: left;
+   padding-left: 10px;
+   width: 100%;
+   margin-bottom: 10px;
+}
+.row:after{
+	clear: both;
+    content: " ";
+    display: block;
+    font-size: 0;
+    height: 0;
+    visibility: hidden;
+}
+.col{
+   position: relative;
+   float: left;
+   padding: 0px 5px;
+}
+
+/***********************
+	PLAYLIST TEMPLATE
+***********************/
+#groupheading  span {
+	border-bottom: 1px solid #D3D7DF;
+	font-family:'OFL Sorts Mill Goudy TT', Georgia, serif;
+	font-size: 25px;
+}
+#groupheading  span span {
+	background-image: none;
+    border-bottom-style: none;
+	font-family:'OFL Sorts Mill Goudy TT', Georgia, serif;
+	font-size: 25px;
+}
+
+#groupleftlabel{
+	/*font:18px/18px Georgia, "Times New Roman", sans-serif;*/
+	/*font: 18px/25px 'OFL Sorts Mill Goudy TT', Georgia, serif;*/
+	font-family:'OFL Sorts Mill Goudy TT', Georgia, serif;
+	font-size: 30px;
+	display:block;
+	/*margin-left:40px;
+	margin-right:10px;*/
+	padding-left:10px;
+	line-height:25px;
+	/*background:transparent url('style-images/hdng_right.gif') right bottom no-repeat;*/
+	text-align:left !important;
+}
+
+#subgroupleftlabel{
+	/*font:18px/18px Georgia, "Times New Roman", sans-serif;*/
+	/*font: 18px/25px 'OFL Sorts Mill Goudy TT', Georgia, serif;*/
+	font-family:'OFL Sorts Mill Goudy TT', Georgia, serif;
+	font-size: 18px;
+	color:#03506d;
+	display:block;
+	/*margin-left:40px;
+	margin-right:10px;*/
+	padding-left:10px;
+
+	line-height:25px;
+	/*background:transparent url('style-images/hdng_right.gif') right bottom no-repeat;*/
+	text-align:left !important;
+}
+
+
+
+
+#grouprightlabel{
+	display:inline;
+	line-height:25px;
+	/*padding-left:40px;*/
+	border-bottom-style:none;
+	/*font:18px/25px Georgia, "Times New Roman", sans-serif;*/
+	/*font: 18px/25px 'OFL Sorts Mill Goudy TT', Georgia, serif;*/
+	font-family:'OFL Sorts Mill Goudy TT', Georgia, serif;
+	font-size: 30px;
+	background-image:none;
+	text-align:left !important;
+	float: right;
+	padding-right:10px;
+}
+
+
+#subgrouprightlabel{
+	display:inline;
+	line-height:25px;
+	/*padding-left:40px;*/
+	border-bottom-style:none;
+	/*font:18px/25px Georgia, "Times New Roman", sans-serif;*/
+	/*font: 18px/25px 'OFL Sorts Mill Goudy TT', Georgia, serif;*/
+	font-family:'OFL Sorts Mill Goudy TT', Georgia, serif;
+	font-size: 18px;
+	color:#03506d;
+	background-image:none;
+	text-align:left !important;
+	float: right;
+	padding-right:10px;
+}
+
+
+#mediaList2 {
+	/*font-family: Tahoma,Arial,Helvetica,sans-serif;*/
+	font-family:Times New Roman, Arial, Helvetica;
+	font-size: 15px;
+	
+}
+#mediaList2 #titles{
+	width:643px;
+	margin:0 auto;
+	overflow:auto;
+}
+/*#mediaList2 .Head {
+	background:transparent url('style-images/mdlist.png') bottom right no-repeat;
+}*/
+
+#mediaList2 {
+	width:652px;
+}
+/*#mediaList2 .Head div{
+	background:transparent url('style-images/mdlist_left3.gif') top left no-repeat;
+	height: 73px;
+}*/
+
+#mediaList2 .titles{
+	width:643px;
+	margin:0 auto;
+	padding-bottom:11px;
+	background-attachment:fixed;
+	/*background:white url('style-images/mdlist_foot2.gif') bottom center no-repeat scroll;*/
+}
+#mediaList2 table#playList{
+	width:100%;
+	border-left:1px #E8EBF0 solid;
+	border-right:1px #E8EBF0 solid;
+	border-bottom:1px #E8EBF0 solid;
+}
+#mediaList2 table#playList tr td{
+	font-size:100% !important;
+	line-height:16px;
+	border-top:1px #E8EBF0 solid;
+	padding:1px 5px;
+}
+#mediaList2 table#playList tr td strong{
+	/*color:#A9A9AA;*/
+	color:#0f0f0f;
+	
+}
+#mediaList2 table#playList tr td.icons{
+	padding-left:0;
+	text-align:center;
+	background-color:#fff !important;
+}
+#mediaList2 table#playList tr td.icons div{
+	height:16px;
+	padding-left:14px;
+}
+#mediaList2 table#playList thead tr td{
+	font-weight:bold;
+	/*color:#6CA1B6;*/
+	color:#03506d;
+	background-color:#F2F2F2;
+}
+
+table#playList thead{
+	background-color: rgb(215,216,224);
+	font-weight: bold;
+	color:#03506d;
+	text-align: center;
+}
+table#playList thead tr th{
+	padding: 0 5px 0 5px;
+}
+table#playList tr td{
+	font-size:100% !important;
+	line-height:14px;
+	border-top:1px #E8EBF0 solid;
+	padding:1px 5px;
+}
+table#playList tr td strong{
+	color:#A9A9AA;
+}
+table#playList tr td.icons{
+	padding-left:0;
+	text-align:center;
+	background-color:#fff !important;
+}
+table#playList tr td.icons div{
+	height:16px;
+	padding-left:14px;
+}
+table#playList tbody tr th{
+	font-size:90% !important;
+	font-weight:bold;
+	/*color:#67696A;*/
+	color:#03506d;
+	background-color:#F2F2F2;
+}
+
+select.arabicName,select#filterby{
+	/*height:22px;*/
+	border:#DBE7EB 1pt solid;
+	font:bold 16px/16px "Times New Roman", Times, serif, Tahoma, "Microsoft Sans Serif", Arial, serif;
+	color:#606466;
+	width:200px;
+	/*text-indent:10px;*/
+}
+.center {
+	text-align: center;
+}
+.rtl {
+	direction: rtl;
+	text-align: right;
+}
+.ltr {
+	direction: ltr;
+	text-align: left;
+}
+
+/*******************************
+ *			WIDGET STYLE
+ ******************************/
+ 
+h3.display{ 
+	margin: 0pt; padding: 0pt;
+}
+div#giml-widget-accordion {
+	padding-bottom: 20px;
+}
+h3.display a, h3.display a:link, h3.display a:visited, div#giml-widget-accordion h3 { 
+	margin: 0pt; 
+	padding: 0px 0pt 33px; 
+	overflow: hidden; 
+	position: relative; 
+	display: block; 
+	width: 188px; 
+	height: 0pt; 
+	background-position: 0 0; 
+	/*font: bold 12px/38px Arial, "Trebuchet MS", Tahoma,Arial,Helvetica; */
+	/*font: bold 14px/36px 'OFL Sorts Mill Goudy TT', Georgia, serif;*/
+	font: bold 14px/36px Times New Roman, Arial, Helvetica;
+	text-align:center;
+	color:#03506d;
+	/*color:rgb(133,131,131) !important;*/
+	cursor:default;
+}
+div#giml-widget-accordion h3 { 
+	cursor:pointer;
+	text-decoration: none;
+	letter-spacing: 0px;
+}
+h3.display a:hover { 
+	background-position: 0pt 33px; 
+	text-decoration:none !important;
+}
+h3 a, h3 a:link, h3 a:visited, div#giml-widget-accordion h3 { 
+	/*background-image: url('style-images/expand_nav.gif');*/
+	background-color: rgb(215,216,224);
+}
+.stretcher, div.ui-accordion-content { 
+	/*display: none; */
+	font: 12px/14px Times New Roman, Arial, Helvetica; 
+	/*color: #ffffff;*/ 
+	color:#003366;
+}
+.stretcher ul, div.ui-accordion-content1 ul{ 
+	margin: 0pt 0pt 0pt 5px; 
+	padding: 0pt 0pt 0pt 15px;
+	background-color: #fbfcfe; 
+	width: 160px;
+	/*font-family: Tahoma,Arial,Helvetica,sans-serif;*/
+	font-family:Times New Roman, Arial, Helvetica;
+	font-size: 12px;
+	color:#003366;
+	
+	
+}
+.stretcher ul li, div.ui-accordion-content1 ul li{ 
+	border-right: 3px solid #FFFFFF; 
+	padding: 5px 0pt; 
+	list-style-type: none;
+}
+.stretcher ul li a, div.ui-accordion-content1 ul li a{ 
+	text-decoration: none;
+}
+.list-selected { 
+	border-style: solid none solid solid; 
+	border-color: rgb(215,216,224) -moz-use-text-color rgb(215,216,224) rgb(215,216,224); 
+	border-color: rgb(215,216,224);
+	border-width: 3px medium 1px 3px; 
+	padding-left: 5px; 
+	margin-left: -5px;
+	background-color: rgb(255, 255, 255);
+}
+.selected {
+	padding-left: 5px; 
+}
+.unselected {
+	border-right: 3px solid #E8EBF0 !important; 
+}
+.stretcher li.bottom, div.ui-accordion-content1 li.bottom { 
+	border: 0pt none ; 
+	margin: 0pt 0pt 0pt -15px; 
+	padding: 0pt; 
+	/*background: rgb(255, 255, 255) url('style-images/left_bottom.gif') no-repeat scroll center top; */
+	height: 10px; 
+	border-right: 3px solid #E8EBF0;
+	border-bottom: 3px solid #E8EBF0;
+}
