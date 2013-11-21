@@ -12,7 +12,7 @@ GI-Media Library enables you to display your course/media library in tabular for
 
 == Description ==
 
-GI-Media Library is a WordPress plugin developed especially for institutions providing online education. With this plugin, it’s easy to create your course/media library without any effort of custom building pages and layouts. You can organize it into a group and subgroup, create playlist section and then add your links to course materials or media's under that section. You can create your own table with desired no. of columns like topic, duration, files etc. It supports all types of libraries like audio, video, pdf, doc etc. This plugin also comes with built-in HTML5 player from jPlayer and it supports following media formats:
+GI-Media Library is a WordPress plugin developed especially for institutions providing online education. With this plugin, it's easy to create your course/media library without any effort of custom building pages and layouts. You can organize it into a group and subgroup, create playlist section and then add your links to course materials or media's under that section. You can create your own table with desired no. of columns like topic, duration, files etc. It supports all types of libraries like audio, video, pdf, doc etc. This plugin also comes with built-in HTML5 player from jPlayer and it supports following media formats:
 
 *	HTML5: mp3, mp4 (AAC/H.264), ogg (Vorbis/Theora), webm (Vorbis/VP8), wav
 *	Flash: mp3, mp4 (AAC/H.264), rtmp, flv
