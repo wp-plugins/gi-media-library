@@ -56,9 +56,9 @@ If you like the GI-Media Library plugin, please rate and review it here in the W
 
 1. An example playlist table (as it can be seen on the [GI-Media Library plugin demo website](http://wpdemos.glareofislam.com/giml-demo1/))
 2. "Creating Group/Subgroup" screen
-3. "Creating Playlist 1" screen
-4. "Creating Playlist 2" screen
-5. "Creating Playlist 3" screen
+3. "Creating Playlist" screen 1
+4. "Creating Playlist" screen 2
+5. "Creating Playlist" screen 3
 
 == Installation ==
 
