@@ -94,7 +94,7 @@ I'm also happy about [donations](http://www.glareofislam.com/softwares/gimediali
 
 == Changelog ==
 
-= Version 1.0.326
+= Version 1.0.326 =
 - fixes bug in shortcode
 - updated css to create standard layout of table
 
