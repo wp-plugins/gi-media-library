@@ -1,4 +1,4 @@
-<div id="giml_loader" style="height:20px">
+﻿<div id="giml_loader" style="height:20px">
 </div>
 <h1 id="groupheading">
 	<span id="groupleftlabel">[+groupleftlabel+]<span id="grouprightlabel">[+grouprightlabel+]</span></span>
@@ -19,7 +19,7 @@
  <div class="col">
   <span id="spansubgroupsearch" style="[+subgroupshowcombo+]">
    <label for="searchtype">[+playlistcombolabel+]</label>&nbsp;
-	<select class="arabicName [+playlistcombocss+]" id="searchtype" 
+	<select class="[+playlistcombocss+]" id="searchtype" 
                   dir="[+playlistcombodirection+]">
 		[+playlistcomboitemssubgroup+]
    </select>&nbsp;
@@ -44,9 +44,7 @@
 <div id="mediaList2">
 	<div class="Head"><div>&nbsp;</div></div>
 	<div id="titles"><div class="titles">
-	  <table id="playList" summary=""
-	  cellpadding="0"
-	  cellspacing="0" class="[+playlisttablecss+]">
+	  <table id="playList" summary="" cellpadding="0" cellspacing="0" class="[+playlisttablecss+]">
 		<thead>
 		  <tr id="playlistHeader">
 [+tableheader+]

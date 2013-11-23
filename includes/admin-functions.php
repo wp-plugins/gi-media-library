@@ -55,12 +55,12 @@ function get_downloadhtml($link, $label="", $css="", $pluginurl="") {
 				$query = plugins_url('download.php?fileid=' . base64_encode(trim($link)) . '&nonce=' . $nonce, dirname(__FILE__));
 				$downloadlabel = "<span class=\"{$css}\"><a href=\"{$query}\">".trim($label)."&nbsp;<img title=\"Click to download\" src=\"" . 
 						plugins_url( 'images/' . $mediaformats[substr(strrchr($link,'.'),1)], dirname(__FILE__)) . "\">" .
-						"&nbsp(" . get_filesize($link) . ")</a></span>";
+						"&nbsp;(" . get_filesize($link) . ")</a></span>";
 			}else{
 				$query = html_entity_decode($pluginurl) . 'download.php?fileid=' . base64_encode(trim($link)) . '&nonce=' . $nonce;
 				$downloadlabel = "<span class=\"{$css}\"><a href=\"{$query}\">".trim($label)."&nbsp;<img title=\"Click to download\" src=\"" . 
 						html_entity_decode($pluginurl) . 'images/' . $mediaformats[substr(strrchr($link,'.'),1)] . "\">" .
-						"&nbsp(" . get_filesize($link) . ")</a></span>";
+						"&nbsp;(" . get_filesize($link) . ")</a></span>";
 			}
 		}else{
 			$downloadlabel = "";

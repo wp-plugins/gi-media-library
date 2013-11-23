@@ -1,6 +1,8 @@
 <?php
 
 add_shortcode( 'gi-medialibrary', 'gi_medialibrary_shortcode' );
+add_action('wp_ajax_giml_change_search', 'giml_change_search');
+add_action('wp_ajax_nopriv_giml_change_search', 'giml_change_search');
 
 
 //Hooks shortcode TinyMCE button into WordPress
@@ -34,7 +36,8 @@ function gi_medialibrary_shortcode( $attr ) {
 		$settings = shortcode_atts( set_default_options(), $attr );
 	
 		$display = get_media( $settings );
-	return $display;
+		print $display;
+		//return $display;	//returns formatted output with autop and linebreak tags
 	}
 }
 function mce_external_plugins( $plugin_array ) {
@@ -161,6 +164,32 @@ function get_media( $settings ) {
 				$js = "
 				<script>
 					jQuery(function($) {
+						$.changeSelection = function(id) {
+							$('select#searchtype, select#filterby').attr('disabled','disabled');
+							$('div#giml_loader').html('<p align=\"center\"><img src=\"".plugins_url('js/ajax-loader.png', dirname(__FILE__))."\">&nbsp;Loading . . .</p>');
+							var data = {action: 'giml_change_search',
+								_ajax_nonce: '{$nonce}',
+								searchid: $('select#searchtype').val(),
+								filterby: $('select#filterby').val(),
+								subgroupid: id};
+							
+							$.post('" . admin_url('admin-ajax.php') . "', data, function(response){
+								$('div#subgroupdescription').css('display', response['subgroupdescriptionvisible']);
+								$('div#subgroupdescription').html(response['subgroupdescription']);
+								$('div#giml_playlistcomboitemdescription').css('display', response['playlistcomboitemdescriptionvisible']);
+								$('div#giml_playlistcomboitemdescription').html(response['playlistcomboitemdescription']);
+								$('div#giml_playlistcomboitemdownload').css('display', response['playlistcomboitemdownloadvisible']);
+								$('div#giml_playlistcomboitemdownload').html(response['playlistcomboitemdownload']);
+								$('select#filterby option').remove();
+								$('select#filterby').append(response['subgroupfilteroptions']);
+								$('table#playList').removeClass();
+								$('table#playList').addClass(response['playlisttablecss']);
+								$('tr#playlistHeader').html(response['tableheader']);
+								$('tbody#playlistBody').html(response['tablerows']);
+								$('div#giml_loader').html('');
+								$('select#searchtype, select#filterby').removeAttr('disabled');
+							},'json');
+						};
 						$('select#searchtype, select#filterby').change(function(){
 							$.changeSelection({$id});
 						});
@@ -470,6 +499,15 @@ function get_audiolink($link, $title, $audionum="") {
 		$link = '<span class=""><a href="'.$url.'" onclick="window.open(\''.$query.'\',\'GIPlayer\',\'width=440,height=160,location=0,menubar=0,resizable=0,scrollbars=0,status=0,titlebar=0,toolbar=0\');return false;"><img title="Click to listen Audio '.$audionum.'" src="' . plugins_url( 'images/' . $mediaformats["audio"], dirname(__FILE__)) . '"></a></span>&nbsp;';
 	}
 	return $link;
+}
+
+function giml_change_search() {
+	global $nonce_name;
+	
+	if (isset($_POST) && wp_verify_nonce($_POST['_ajax_nonce'], $nonce_name)) {
+		include 'shortcode-ajax.php';	
+	}
+
 }
 
 ?>

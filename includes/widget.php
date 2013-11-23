@@ -1,7 +1,5 @@
 <?php
 add_action('widgets_init', 'GIMediaLibraryWidget::register_me');
-add_action('wp_ajax_change_search', 'change_search');
-add_action('wp_ajax_nopriv_change_search', 'change_search');
 
 class GIMediaLibraryWidget extends WP_Widget {
 	public $myid;
@@ -57,33 +55,6 @@ class GIMediaLibraryWidget extends WP_Widget {
 							$(\"div#giml-widget-accordion h3\").attr('class','');
 							$(\"div#giml-menu\").attr('class','ui-accordion-content1');
 
-							$.changeSelection = function(id) {
-								$('select#searchtype, select#filterby').attr('disabled','disabled');
-								$('div#giml_loader').html('<p align=\"center\"><img src=\"".plugins_url('js/ajax-loader.png', dirname(__FILE__))."\">&nbsp;Loading . . .</p>');
-								var data = {action: 'change_search',
-									_ajax_nonce: '{$nonce}',
-									searchid: $('select#searchtype').val(),
-									filterby: $('select#filterby').val(),
-									subgroupid: id};
-								
-								$.post('" . admin_url('admin-ajax.php') . "', data, function(response){
-									$('div#subgroupdescription').css('display', response['subgroupdescriptionvisible']);
-									$('div#subgroupdescription').html(response['subgroupdescription']);
-									$('div#giml_playlistcomboitemdescription').css('display', response['playlistcomboitemdescriptionvisible']);
-									$('div#giml_playlistcomboitemdescription').html(response['playlistcomboitemdescription']);
-									$('div#giml_playlistcomboitemdownload').css('display', response['playlistcomboitemdownloadvisible']);
-									$('div#giml_playlistcomboitemdownload').html(response['playlistcomboitemdownload']);
-									$('select#filterby option').remove();
-									$('select#filterby').append(response['subgroupfilteroptions']);
-									$('table#playList').removeClass();
-									$('table#playList').addClass(response['playlisttablecss']);
-									$('tr#playlistHeader').html(response['tableheader']);
-									$('tbody#playlistBody').html(response['tablerows']);
-									$('div#giml_loader').html('');
-									$('select#searchtype, select#filterby').removeAttr('disabled');
-								},'json');
-							};
-							
 							$.browseSubgroup = function(id) {
 								$('div#giml-menu').find('ul li.list-selected').attr('class','unselected')
 										.find('span.selected').removeClass('selected');
@@ -96,7 +67,7 @@ class GIMediaLibraryWidget extends WP_Widget {
 								});
 								$('select#searchtype, select#filterby').attr('disabled','disabled');
 								$('div#giml_loader').html('<p align=\"center\"><img src=\"".plugins_url('js/ajax-loader.png', dirname(__FILE__))."\">&nbsp;Loading . . .</p>');
-								var data = {action: 'change_search',
+								var data = {action: 'giml_change_search',
 									_ajax_nonce: '{$nonce}',
 									subgroupid: id};
 									
@@ -229,13 +200,5 @@ class GIMediaLibraryWidget extends WP_Widget {
 	}
 }
 
-function change_search() {
-	global $nonce_name;
-	
-	if (isset($_POST) && wp_verify_nonce($_POST['_ajax_nonce'], $nonce_name)) {
-		include 'shortcode-ajax.php';	
-	}
-
-}
 
 ?>

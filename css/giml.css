@@ -111,11 +111,9 @@
 #mediaList2 {
 	/*font-family: Tahoma,Arial,Helvetica,sans-serif;*/
 	font-family:Times New Roman, Arial, Helvetica;
-	font-size: 15px;
 	
 }
 #mediaList2 #titles{
-	width:643px;
 	margin:0 auto;
 	overflow:auto;
 }
@@ -123,20 +121,16 @@
 	background:transparent url('style-images/mdlist.png') bottom right no-repeat;
 }*/
 
-#mediaList2 {
-	width:652px;
-}
 /*#mediaList2 .Head div{
 	background:transparent url('style-images/mdlist_left3.gif') top left no-repeat;
 	height: 73px;
 }*/
 
 #mediaList2 .titles{
-	width:643px;
 	margin:0 auto;
 	padding-bottom:11px;
-	background-attachment:fixed;
-	/*background:white url('style-images/mdlist_foot2.gif') bottom center no-repeat scroll;*/
+	/*background-attachment:fixed;
+	background:white url('style-images/mdlist_foot2.gif') bottom center no-repeat scroll;*/
 }
 #mediaList2 table#playList{
 	width:100%;
@@ -145,15 +139,10 @@
 	border-bottom:1px #E8EBF0 solid;
 }
 #mediaList2 table#playList tr td{
-	font-size:100% !important;
-	line-height:16px;
+	font-size:90% !important;
+	line-height:14px;
 	border-top:1px #E8EBF0 solid;
 	padding:1px 5px;
-}
-#mediaList2 table#playList tr td strong{
-	/*color:#A9A9AA;*/
-	color:#0f0f0f;
-	
 }
 #mediaList2 table#playList tr td.icons{
 	padding-left:0;
@@ -171,46 +160,30 @@
 	background-color:#F2F2F2;
 }
 
-table#playList thead{
+#mediaList2 table#playList thead{
 	background-color: rgb(215,216,224);
 	font-weight: bold;
 	color:#03506d;
 	text-align: center;
+	line-height: 2;
+	font-size: 100% !important;
 }
-table#playList thead tr th{
+#mediaList2 table#playList thead tr th{
 	padding: 0 5px 0 5px;
 }
-table#playList tr td{
-	font-size:100% !important;
-	line-height:14px;
-	border-top:1px #E8EBF0 solid;
-	padding:1px 5px;
-}
-table#playList tr td strong{
-	color:#A9A9AA;
-}
-table#playList tr td.icons{
-	padding-left:0;
-	text-align:center;
-	background-color:#fff !important;
-}
-table#playList tr td.icons div{
-	height:16px;
-	padding-left:14px;
-}
-table#playList tbody tr th{
-	font-size:90% !important;
+
+#mediaList2 table#playList tbody tr th{
+	font-size:95% !important;
 	font-weight:bold;
 	/*color:#67696A;*/
 	color:#03506d;
 	background-color:#F2F2F2;
+	line-height: 1.5;
 }
 
-select.arabicName,select#filterby{
+select#searchtype,select#filterby{
 	/*height:22px;*/
 	border:#DBE7EB 1pt solid;
-	font:bold 16px/16px "Times New Roman", Times, serif, Tahoma, "Microsoft Sans Serif", Arial, serif;
-	color:#606466;
 	width:200px;
 	/*text-indent:10px;*/
 }
