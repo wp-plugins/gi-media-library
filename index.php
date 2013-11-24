@@ -3,7 +3,7 @@
 Plugin Name: GI-Media Library
 Plugin URI: http://www.glareofislam.com/softwares/gimedialibrary.html
 Description: An easy to use plugin to display your course/media library in tabular form. You can use shortcode to display any specific resource in detail on any page/post. Widget is also available to list the available group/resource of media which will be displayed on any sidebar you drag/drop on.
-Version: 1.0.300
+Version: 1.0.326
 Author: Zishan Javaid
 Author URI: http://www.glareofislam.com
 License: GPL v2
