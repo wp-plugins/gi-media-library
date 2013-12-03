@@ -1,18 +1,18 @@
 <?php
 
-add_shortcode( 'gi-medialibrary', 'gi_medialibrary_shortcode' );
+add_shortcode( 'gi_medialibrary', 'giml_shortcode' );
 add_action('wp_ajax_giml_change_search', 'giml_change_search');
 add_action('wp_ajax_nopriv_giml_change_search', 'giml_change_search');
 
 
 //Hooks shortcode TinyMCE button into WordPress
 if ( current_user_can( 'edit_posts' ) &&  current_user_can( 'edit_pages' ) ) {
-	add_filter( 'mce_external_plugins', 'mce_external_plugins' );
-	add_filter( 'mce_buttons', 'mce_buttons' );
+	add_filter( 'mce_external_plugins', 'giml_mce_external_plugins' );
+	add_filter( 'mce_buttons', 'giml_mce_buttons' );
 	//add_filter( 'wp_title', 'mypage_title', 10, 3 );
 }
 
-function set_default_options() {
+function giml_set_default_options() {
 	return array(
 		'default'			=> 0,
 		'type'				=> 'group',						// Values: group, resource
@@ -20,41 +20,45 @@ function set_default_options() {
 	);
 }
 
-function gi_medialibrary_shortcode( $attr ) {
+function giml_shortcode( $attr ) {
 	if (!is_admin())
 	{
-		//wp_register_style('giml_main_style', get_bloginfo('template_directory') . "/skin.css");
-		//wp_register_style('giml_main_style', plugins_url( 'css/style.css', dirname(__FILE__) ));
-		//wp_enqueue_style('giml_main_style');
+		if (!wp_style_is('gi-style','queue')) {
+			if (!wp_style_is('gi-style','registered')) {
+				wp_register_style( 'gi-style', plugins_url( 'css/gi.css', dirname(__FILE__) ) );
+			}
+			wp_enqueue_style( 'gi-style');
+		}
 		if (!wp_style_is('giml-style','queue')) {
 			if (!wp_style_is('giml-style','registered')) {
 				wp_register_style( 'giml-style', plugins_url( 'css/giml.css', dirname(__FILE__) ) );
 			}
 			wp_enqueue_style( 'giml-style');
 		}
-		
-		$settings = shortcode_atts( set_default_options(), $attr );
+                
+		$settings = shortcode_atts( giml_set_default_options(), $attr );
 	
-		$display = get_media( $settings );
+		$display = giml_get_media( $settings );
 		print $display;
+                return;
 		//return $display;	//returns formatted output with autop and linebreak tags
 	}
 }
-function mce_external_plugins( $plugin_array ) {
+function giml_mce_external_plugins( $plugin_array ) {
 	$plugin_array['gi_medialibrary'] = plugins_url( 'js/editor_plugin.js', dirname(__FILE__) );
 	return $plugin_array;
 }
-function mce_buttons( $buttons ) {
+function giml_mce_buttons( $buttons ) {
 	array_push( $buttons, "|", "gi_medialibrary" );
 	return $buttons;
 }
 
 
-function mypage_title( $old_title, $sep, $sep_location ) {
+function giml_mypage_title( $old_title, $sep, $sep_location ) {
 	return "TEST";
 }
-function get_media( $settings ) {
-	global $mydb;
+function giml_get_media( $settings ) {
+	global $giml_db;
 	global $mediaformats;
 	global $nonce;
 	global $post;
@@ -80,9 +84,9 @@ function get_media( $settings ) {
 	//$fields = explode( ",", $settings['columns'] );
 	
 
-				$subgroup = $mydb->get_subgroup($id);
+				$subgroup = $giml_db->get_subgroup($id);
 				$subgroup = $subgroup[0];
-				$data = $mydb->get_playlistdata($id);
+				$data = $giml_db->get_playlistdata($id);
 				
 				$tpl = file_get_contents( plugin_dir_path(__FILE__) . "../tpl/playlist.tpl");
 				//wp_title("<b>{$subgroup->subgrouplabel}</b>");
@@ -118,7 +122,7 @@ function get_media( $settings ) {
 					$tpl = str_replace( '[+playlistcomboitemssubgroup+]', stripslashes($data), $tpl );
 					
 					if ($listid>0) {
-						$data = $mydb->select("playlistcomboitem", $listid, 1);
+						$data = $giml_db->select("playlistcomboitem", $listid, 1);
 						$data = $data[0];
 					}
 					 
@@ -141,24 +145,24 @@ function get_media( $settings ) {
 						
 					if (intval($subgroup->subgroupshowcombo)==0) {
 						$data = get_playlistsectionssubgroup($id, $filterid, true);
-						$sections = $mydb->get_playlistsectionssubgroup($id, true, $filterid);
+						$sections = $giml_db->get_playlistsectionssubgroup($id, true, $filterid);
 					}else{
 						if ($listid > 0) {
 							$data = get_playlistcombosections($listid, $filterid, true);
-							$sections = $mydb->get_playlistcombosections($listid, true, $filterid);
+							$sections = $giml_db->get_playlistcombosections($listid, true, $filterid);
 						}else{
 							$data = get_playlistcombosectionssubgroup($id, $filterid, true);
-							$sections = $mydb->get_playlistcombosectionssubgroup($id, true, $filterid);
+							$sections = $giml_db->get_playlistcombosectionssubgroup($id, true, $filterid);
 						}
 					}
 					$tpl = str_replace( '[+subgroupfilteroptions+]', '<option value="0">None</option>' . stripslashes($data), $tpl );
 				}else{
 					if (intval($subgroup->subgroupshowcombo)==0)
-						$sections = $mydb->get_playlistsectionssubgroup($id, true);
+						$sections = $giml_db->get_playlistsectionssubgroup($id, true);
 					elseif (!empty($listid))
-						$sections = $mydb->get_playlistcombosections($listid, true);
+						$sections = $giml_db->get_playlistcombosections($listid, true);
 					else
-						$sections = $mydb->get_playlistcombosectionssubgroup($id, true);
+						$sections = $giml_db->get_playlistcombosectionssubgroup($id, true);
 				}
 				
 				$js = "
@@ -166,7 +170,7 @@ function get_media( $settings ) {
 					jQuery(function($) {
 						$.changeSelection = function(id) {
 							$('select#searchtype, select#filterby').attr('disabled','disabled');
-							$('div#giml_loader').html('<p align=\"center\"><img src=\"".plugins_url('js/ajax-loader.png', dirname(__FILE__))."\">&nbsp;Loading . . .</p>');
+							$('div#giml_loader').html('<p align=\"center\"><img src=\"".plugins_url('js/ajax-loader.gif', dirname(__FILE__))."\" width=\"16\">&nbsp;Loading . . .</p>');
 							var data = {action: 'giml_change_search',
 								_ajax_nonce: '{$nonce}',
 								searchid: $('select#searchtype').val(),
@@ -200,8 +204,8 @@ function get_media( $settings ) {
 				
 				$html = "";
 				
-				$result = $mydb->get_playlisttablecolumnsbycolumn ($id);
-				$totalcols = $mydb->get_numrows();
+				$result = $giml_db->get_playlisttablecolumnsbycolumn ($id);
+				$totalcols = $giml_db->get_numrows();
 				if ($totalcols > 0) {
 					$tmpcols = "";
 					foreach ($result as $row) {
@@ -218,9 +222,9 @@ function get_media( $settings ) {
 						if ($section->playlistsectionhide == 0)
 							$html .= "<tr><th class=\"center " . stripslashes($section->playlistsectioncss) . "\" style=\"direction:{$section->playlistsectiondirection}\" colspan=\"{$totalcols}\">" . stripslashes($section->playlistsectionlabel) . "&nbsp;" . get_downloadhtml($section->playlistsectiondownloadlink, stripslashes($section->playlistsectiondownloadlabel), stripslashes($section->playlistsectiondownloadcss)) . "</th></tr>";
 						
-						$data = $mydb->get_playlistcolumnsbysection($section->id);
+						$data = $giml_db->get_playlistcolumnsbysection($section->id);
 						
-						$data = sortplaylist($data, $section->id);
+						$data = giml_sortplaylist($data, $section->id);
 						
 						// ccompare with total table columns to be displayed
 						$i=1;
@@ -265,7 +269,7 @@ function get_media( $settings ) {
 								//if table column name matches playlist column name
 								if($tmpcol === $col->playlisttablecolumnlabel) {
 									//get section columns data
-									$result = $mydb->get_playlistsectioncolumnsbysection($section->id, "'".addslashes($tmpcol)."'");
+									$result = $giml_db->get_playlistsectioncolumnsbysection($section->id, "'".addslashes($tmpcol)."'");
 									//print "<pre>" . print_r($result, true) . "</pre>";
 									// if section columns is less than table columns to be displayed then skip
 									/*if(empty($result)) {print $section->id.",";
@@ -286,8 +290,8 @@ function get_media( $settings ) {
 											$audionum = 1;
 											$tmpvalues[$j] = "";
 											foreach ($audios as $audio) {
-												$tmpvalues[$j] .= get_audiolink($audio, $col->id, $audionum);
-												//$tmpvalues[$j] .= '<a href="' . get_audiolink(trim($audio)) . '"><img title="Click to listen Audio '.$audionum.'" src="' . plugins_url( 'images/' . $mediaformats["audio"], dirname(__FILE__)) . '"></a>&nbsp;';
+												$tmpvalues[$j] .= giml_get_audiolink($audio, $col->id, $audionum);
+												//$tmpvalues[$j] .= '<a href="' . giml_get_audiolink(trim($audio)) . '"><img title="Click to listen Audio '.$audionum.'" src="' . plugins_url( 'images/' . $mediaformats["audio"], dirname(__FILE__)) . '"></a>&nbsp;';
 												$audionum++;
 											}
 											$tmpvalues[$j] = "<td class=\"{$coldir}\">" . $tmpvalues[$j] . "</td>";
@@ -345,8 +349,8 @@ function get_media( $settings ) {
 												$audionum = 1;
 												$tmpvalues[$j] = "";
 												foreach ($audios as $audio) {
-													$tmpvalues[$j] .= get_audiolink($audio, $col->id, $audionum);
-													//$tmpvalues[$j] .= '<a href="' . get_audiolink(trim($audio)) . '"><img title="Click to listen Audio ' . $audionum . '" src="' . plugins_url( 'images/' . $mediaformats["audio"], dirname(__FILE__)) . '"></a>&nbsp;';
+													$tmpvalues[$j] .= giml_get_audiolink($audio, $col->id, $audionum);
+													//$tmpvalues[$j] .= '<a href="' . giml_get_audiolink(trim($audio)) . '"><img title="Click to listen Audio ' . $audionum . '" src="' . plugins_url( 'images/' . $mediaformats["audio"], dirname(__FILE__)) . '"></a>&nbsp;';
 													$audionum++;
 												}
 												$tmpvalues[$j] = "<td class=\"{$coldir}\" rowspan=\"[+rowspan+]\">" . $tmpvalues[$j] . "</td>";
@@ -464,9 +468,9 @@ function get_media( $settings ) {
 	}
 */
 }
-function sortplaylist($playlist, $sectionid) {
-	global $mydb;
-	$sorteddata = $mydb->get_distinctplaylistcolumnsbysection($sectionid);
+function giml_sortplaylist($playlist, $sectionid) {
+	global $giml_db;
+	$sorteddata = $giml_db->get_distinctplaylistcolumnsbysection($sectionid);
 	$tmpsortorder = "";
 	$tmprowid = "";
 	foreach($sorteddata as $key=>$row) {
@@ -488,7 +492,7 @@ function sortplaylist($playlist, $sectionid) {
 	return $tmp;
 }
 
-function get_audiolink($link, $title, $audionum="") {
+function giml_get_audiolink($link, $title, $audionum="") {
 	global $mediaformats;
 	global $nonce;
 	

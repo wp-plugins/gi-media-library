@@ -1,5 +1,5 @@
 <?php
-global $mydb;
+global $giml_db;
 
 if (isset($_POST)) {
 	$listid = 0;
@@ -7,9 +7,9 @@ if (isset($_POST)) {
 	$js = "";
 	$id = intval($_POST['subgroupid']);
 	//$subgroup = json_decode(stripslashes($_POST['subgroup']));
-	$subgroup = $mydb->get_subgroup($id);
+	$subgroup = $giml_db->get_subgroup($id);
 	$subgroup = $subgroup[0];
-	$data = $mydb->get_playlistdata($id);
+	$data = $giml_db->get_playlistdata($id);
 	
 	if (isset($_POST['searchid']))
 		$listid = intval($_POST['searchid']);
@@ -60,7 +60,7 @@ if (isset($_POST)) {
 		//$tpl = str_replace( '[+playlistcomboitemssubgroup+]', stripslashes($data), $tpl );
 		
 		if ($listid>0) {
-			$data = $mydb->select("playlistcomboitem", $listid, 1);
+			$data = $giml_db->select("playlistcomboitem", $listid, 1);
 			$data = $data[0];
 		}
 		 
@@ -80,30 +80,30 @@ if (isset($_POST)) {
 			
 		if (intval($subgroup->subgroupshowcombo)==0) {
 			$data = get_playlistsectionssubgroup($id, $filterid, true);
-			$sections = $mydb->get_playlistsectionssubgroup($id, true, $filterid);
+			$sections = $giml_db->get_playlistsectionssubgroup($id, true, $filterid);
 		}else{
 			if ($listid > 0) {
 				$data = get_playlistcombosections($listid, $filterid, true);
-				$sections = $mydb->get_playlistcombosections($listid, true, $filterid);
+				$sections = $giml_db->get_playlistcombosections($listid, true, $filterid);
 			}else{
 				$data = get_playlistcombosectionssubgroup($id, $filterid, true);
-				$sections = $mydb->get_playlistcombosectionssubgroup($id, true, $filterid);
+				$sections = $giml_db->get_playlistcombosectionssubgroup($id, true, $filterid);
 			}
 		}
 		$js['subgroupfilteroptions'] = '<option value="0">None</option>' . stripslashes($data);
 		//$tpl = str_replace( '[+subgroupfilteroptions+]', '<option value="">None</option>' . stripslashes($data), $tpl );
 	}else{
 		if (intval($subgroup->subgroupshowcombo)==0)
-			$sections = $mydb->get_playlistsectionssubgroup($id, true);
+			$sections = $giml_db->get_playlistsectionssubgroup($id, true);
 		elseif (!empty($listid))
-			$sections = $mydb->get_playlistcombosections($listid, true);
+			$sections = $giml_db->get_playlistcombosections($listid, true);
 		else
-			$sections = $mydb->get_playlistcombosectionssubgroup($id, true);
+			$sections = $giml_db->get_playlistcombosectionssubgroup($id, true);
 	}
 	
 	
-			$result = $mydb->get_playlisttablecolumnsbycolumn ($id);
-			$totalcols = $mydb->get_numrows();
+			$result = $giml_db->get_playlisttablecolumnsbycolumn ($id);
+			$totalcols = $giml_db->get_numrows();
 			$tablecss = "";
 			$tableheader = "";
 			$html = "";
@@ -125,9 +125,9 @@ if (isset($_POST)) {
 					if ($section->playlistsectionhide == 0)
 						$html .= "<tr><th class=\"center " . stripslashes($section->playlistsectioncss) . "\" style=\"direction:{$section->playlistsectiondirection}\" colspan=\"{$totalcols}\">" . stripslashes($section->playlistsectionlabel) . "&nbsp;" . get_downloadhtml($section->playlistsectiondownloadlink, stripslashes($section->playlistsectiondownloadlabel), stripslashes($section->playlistsectiondownloadcss)) . "</th></tr>";
 					
-					$data = $mydb->get_playlistcolumnsbysection($section->id);
+					$data = $giml_db->get_playlistcolumnsbysection($section->id);
 					
-					$data = sortplaylist($data, $section->id);
+					$data = giml_sortplaylist($data, $section->id);
 					
 					// ccompare with total table columns to be displayed
 					$i=1;
@@ -171,7 +171,7 @@ if (isset($_POST)) {
 							//if table column name matches playlist column name
 							if($tmpcol === $col->playlisttablecolumnlabel) {
 								//get section columns data
-								$result = $mydb->get_playlistsectioncolumnsbysection($section->id, "'".addslashes($tmpcol)."'");
+								$result = $giml_db->get_playlistsectioncolumnsbysection($section->id, "'".addslashes($tmpcol)."'");
 								//print "<pre>" . print_r($result, true) . "</pre>";
 								// if section columns is less than table columns to be displayed then skip
 								/*if(empty($result)) {print $section->id.",";
@@ -192,7 +192,7 @@ if (isset($_POST)) {
 										$audionum = 1;
 										$tmpvalues[$j] = "";
 										foreach ($audios as $audio) {
-											$tmpvalues[$j] .= get_audiolink($audio, $col->id, $audionum);
+											$tmpvalues[$j] .= giml_get_audiolink($audio, $col->id, $audionum);
 											//$tmpvalues[$j] .= '<a href="' . get_audiolink(trim($audio)) . '"><img title="Click to listen Audio '.$audionum.'" src="' . plugins_url( 'images/' . $mediaformats["audio"], dirname(__FILE__)) . '"></a>&nbsp;';
 											$audionum++;
 										}
@@ -251,7 +251,7 @@ if (isset($_POST)) {
 											$audionum = 1;
 											$tmpvalues[$j] = "";
 											foreach ($audios as $audio) {
-												$tmpvalues[$j] .= get_audiolink($audio, $col->id, $audionum);
+												$tmpvalues[$j] .= giml_get_audiolink($audio, $col->id, $audionum);
 												//$tmpvalues[$j] .= '<a href="' . get_audiolink(trim($audio)) . '"><img title="Click to listen Audio ' . $audionum . '" src="' . plugins_url( 'images/' . $mediaformats["audio"], dirname(__FILE__)) . '"></a>&nbsp;';
 												$audionum++;
 											}

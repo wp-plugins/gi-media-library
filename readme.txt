@@ -3,8 +3,8 @@ Contributors: zishanj
 Donate link: http://www.glareofislam.com/softwares/gimedialibrary.html
 Tags: html,table,data,media,library,e-learning,online education,course,audio,video,media library,course library
 Requires at least: 3.3.2
-Tested up to: 3.7
-Stable tag: 1.0.326
+Tested up to: 3.7.1
+Stable tag: 2.0.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,12 +12,14 @@ GI-Media Library enables you to display your course/media library in tabular for
 
 == Description ==
 
-GI-Media Library is a WordPress plugin developed especially for institutions providing online education. With this plugin, it's easy to create your course/media library in a tabular form without any effort of custom building pages and layouts. You can organize it into a group and subgroup, create playlist section and then add your links to course materials or media's under that section. You can create your own table with desired no. of columns like topic, duration, files etc. It supports all types of libraries like audio, video, pdf, doc etc. This plugin also comes with built-in HTML5 player from jPlayer and it supports following media formats:
+GI-Media Library is a WordPress plugin developed especially for institutions providing online education. With this plugin, it's easy to create your course/media library in a tabular form without any effort of custom building pages and layouts. You can organize it into a group and subgroup, create playlist section and then add your links to course materials or media's under that section. You can create your own table with desired number of columns like topic, duration, files etc. It supports all type of libraries like audio, video, pdf, doc etc. This plugin also comes with built-in HTML5 player from jPlayer and it supports following media formats:
 
 *	HTML5: mp3, mp4 (AAC/H.264), ogg (Vorbis/Theora), webm (Vorbis/VP8), wav
 *	Flash: mp3, mp4 (AAC/H.264), rtmp, flv
 
 You can fully customize the layout by providing CSS stylesheet class and change the text direction from LTR to RTL, if you want to use Arabic, Persian, Urdu languages.
+
+You can download User's Manual with complete step by step usage instructions from http://www.glareofislam.com/softwares/gimedialibrary.html
 
 Following are the complete list of features:
 
@@ -44,8 +46,6 @@ Following are the complete list of features:
 1. User will be able to download the media from different areas (by section, combo item selection, by subgroup)
 1. HTML5 player has been included that can play any audio file
 
-You can download User's Manual with complete step by step instructions from http://www.glareofislam.com/softwares/gimedialibrary.html
-
 = More information =
 Please visit the plugin website at http://www.glareofislam.com/softwares/gimedialibrary.html for more information.
 
@@ -66,7 +66,7 @@ The easiest way to install GI-Media Library is via your WordPress Dashboard. Go 
 
 Manual installation works just as for other WordPress plugins:
 
-1. Download and extract the ZIP file and move the folder "gi-medialibarary" into the "wp-content/plugins/" directory of your WordPress installation.
+1. Download and extract the ZIP file and move the folder "gi-media-libarary" into the "wp-content/plugins/" directory of your WordPress installation.
 1. Activate the plugin "GI-Media Library" on the "Plugins" page of your WordPress Dashboard.
 1. Create and manage course/media library by going to the "Settings" and then "GI-Media Library" section in the admin menu.
 1. Follow the simple step by step usage instructions in the User's Manual which you can download from http://www.glareofislam.com/softwares/gimedialibrary.html.
@@ -75,7 +75,7 @@ Manual installation works just as for other WordPress plugins:
 
 = Support? =
 
-For support questions, bug reports, or feature requests, please use the contact us page at [WordPress Support Forum](http://wordpress.org/support/plugin/gi-media-library). Please [search](http://wordpress.org/support/) through the forums first, and only [open a new thread](http://wordpress.org/support/plugin/gi-media-library) if you don't find an existing answer. Thank you!
+For support questions, bug reports, or feature requests, please use the forum at [WordPress Support Forum](http://wordpress.org/support/plugin/gi-media-library). Please [search](http://wordpress.org/support/) through the forums first, and only [open a new thread](http://wordpress.org/support/plugin/gi-media-library) if you don't find an existing answer. Thank you!
 
 = Requirements? =
 
@@ -94,9 +94,12 @@ I'm also happy about [donations](http://www.glareofislam.com/softwares/gimediali
 
 == Changelog ==
 
+= Version 2.0.0 =
+- Major update with bug fixes and layout improvements.
+
 = Version 1.0.326 =
-- fixes bug in shortcode
-- updated css to create standard layout of table
+- Fixes bug in shortcode that completely hides the sidebar when only subgroup is displayed.
+- Updated CSS to create standard layout of table
 
 = Version 1.0.300 =
 Initial release

@@ -24,13 +24,19 @@ class GIMediaLibraryWidget extends WP_Widget {
 				}
 				wp_enqueue_style( 'jquery-ui-css' );
 			}
+                        if (!wp_style_is('giml-widget','queue')) {
+                            if (!wp_style_is('giml-widget','registered')) {
+                                    wp_register_style( 'giml-widget', plugins_url( 'css/widget.css', dirname(__FILE__) ) );
+                            }
+                            wp_enqueue_style( 'giml-widget');
+                        }
 		}
 		register_widget(__CLASS__);
 	}
 	
 	function widget($args, $instance) {
 		global $post;
-		global $mydb;
+		global $giml_db;
 		global $nonce;
 		
 		$js = "";
@@ -40,11 +46,11 @@ class GIMediaLibraryWidget extends WP_Widget {
 		if(isset($_GET['giml-id']))
 			$currentsubgroup = $_GET['giml-id'];
 			
-		$pattern = "\[(\[?)(gi\-medialibrary)\b([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*+(?:\[(?!\/\2\])[^\[]*+)*+)\[\/\2\])?)(\]?)";
+		$pattern = "\[(\[?)(gi\_medialibrary)\b([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*+(?:\[(?!\/\2\])[^\[]*+)*+)\[\/\2\])?)(\]?)";
 		//$pattern = get_shortcode_regex();
 		if (   preg_match_all( '/'. $pattern .'/s', $post->post_content, $matches )
         && array_key_exists( 2, $matches )
-        && in_array( 'gi-medialibrary', $matches[2] ) )
+        && in_array( 'gi_medialibrary', $matches[2] ) )
 		{
 			//$tpl = file_get_contents( plugin_dir_path(__FILE__) . "../tpl/widget.tpl");
 			$html = "<script>
@@ -52,7 +58,7 @@ class GIMediaLibraryWidget extends WP_Widget {
 							$( \"div#giml-widget-accordion\" ).accordion({icons: false, collapsible: true, active: false});
 							$( \"div#giml-widget-accordion\" ).find('div.ui-accordion-content').css('height','');
 							$(\"div#giml-widget-accordion\").attr('class','');
-							$(\"div#giml-widget-accordion h3\").attr('class','');
+							$(\"div#giml-widget-accordion h6\").attr('class','');
 							$(\"div#giml-menu\").attr('class','ui-accordion-content1');
 
 							$.browseSubgroup = function(id) {
@@ -66,7 +72,7 @@ class GIMediaLibraryWidget extends WP_Widget {
 									$.changeSelection(id);
 								});
 								$('select#searchtype, select#filterby').attr('disabled','disabled');
-								$('div#giml_loader').html('<p align=\"center\"><img src=\"".plugins_url('js/ajax-loader.png', dirname(__FILE__))."\">&nbsp;Loading . . .</p>');
+								$('div#giml_loader').html('<p align=\"center\"><img src=\"".plugins_url('js/ajax-loader.gif', dirname(__FILE__))."\" width=\"16\">&nbsp;Loading . . .</p>');
 								var data = {action: 'giml_change_search',
 									_ajax_nonce: '{$nonce}',
 									subgroupid: id};
@@ -97,8 +103,8 @@ class GIMediaLibraryWidget extends WP_Widget {
 									$('span#subgroupleftlabel').html(response['subgroupleftlabel'] + '<span id=\"subgrouprightlabel\"></span>');
 									$('span#subgrouprightlabel').html(response['subgrouprightlabel']);
 									$('span#spansubgroupsearch').attr('style',response['subgroupshowcombo']);
-									$('div#divsubgroupdownload').attr('style',response['subgroupdownloadvisible']);
-									$('div#divsubgroupdownload').html(response['subgroupdownload']);
+									$('div#subgroupdownload').attr('style',response['subgroupdownloadvisible']);
+									$('div#subgroupdownload').html(response['subgroupdownload']);
 									$('span#spansubgroupfilter').attr('style',response['subgroupshowfilter']);
 								},'json');
 								return false;
@@ -123,13 +129,13 @@ class GIMediaLibraryWidget extends WP_Widget {
 				}
 				
 				if(!empty($id)) {
-					$subgroup = $mydb->get_subgroup($id);
+					$subgroup = $giml_db->get_subgroup($id);
 					
 					foreach ($subgroup as $data) {
 							
 						if (intval($data->groupid) > 0) {
-							$html .= "<h3><span class=\"{$data->groupcss}\" style=\"direction:{$data->groupdirection};\">{$data->grouplabel}</span></h3><div id=\"giml-menu\"><ul>";
-							$subgroups = $mydb->get_group_subgroups($data->groupid);
+							$html .= "<h6><span class=\"{$data->groupcss}\" style=\"direction:{$data->groupdirection};\">{$data->grouplabel}</span></h6><div id=\"giml-menu\"><ul>";
+							$subgroups = $giml_db->get_group_subgroups($data->groupid);
 							foreach ($subgroups as $data1) {
 								$style1 = ""; $style2 = "";
 								if($currentsubgroup == $data1->id) {
@@ -157,7 +163,7 @@ class GIMediaLibraryWidget extends WP_Widget {
 							//print "$id group avail";
 						}else{
 							if(count($matches[0])==1) {
-								$js .= "<script>
+/*								$js .= "<script>
 											jQuery(function($) {
 												$('div[id^=\"sidebar\"]').hide();
 												$('div#entries,div.entry-full').width('958');
@@ -168,7 +174,7 @@ class GIMediaLibraryWidget extends WP_Widget {
 												$('div.Head,div.Alhuda').css('width',$('div.row').width()+3);
 												$('div#mediaList2 .Head div').css('background','url(\"". plugins_url( 'css/style-images/mdlist_left3-full.gif', dirname(__FILE__) ) . "\") no-repeat scroll left bottom transparent');
 											});
-										</script>";
+										</script>";*/
 							}
 							//print "no group";
 						}

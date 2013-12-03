@@ -75,9 +75,9 @@ function human_filesize($bytes, $decimals = 2) {
 }
 
 function giml_get_groups() {
-	global $mydb;
+	global $giml_db;
 	$group_option = "";
-	$groups = $mydb->get_groups();
+	$groups = $giml_db->get_groups();
 	foreach ($groups as $group)
 	{
 		if(!empty($group->grouplabel))
@@ -88,8 +88,8 @@ function giml_get_groups() {
 
 function giml_group_delete() {
 	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') ) {
-		global $mydb;
-		$mydb->group_delete($_POST['groupid']);
+		global $giml_db;
+		$giml_db->group_delete($_POST['groupid']);
 		$group_option = giml_get_groups();
 			
 		die($group_option);
@@ -98,13 +98,13 @@ function giml_group_delete() {
 
 function giml_group_edit() {
 	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') ) {
-		global $mydb;
-		die(json_encode($mydb->get_group($_POST['groupid'])));
+		global $giml_db;
+		die(json_encode($giml_db->get_group($_POST['groupid'])));
 	}
 }
 
 function giml_group_update() {
-	global $mydb;
+	global $giml_db;
 	global $textareafields;
 	
 	$group_option = "";
@@ -139,7 +139,7 @@ function giml_group_update() {
 					$data[$field] = trim(sanitize_text_field($_POST[$field.$i.'_'.$id]));
 			}
 			if (count($data)>0)
-				$mydb->group_update($data, $id);
+				$giml_db->group_update($data, $id);
 		}
 		$group_option = giml_get_groups();
 	}
@@ -147,7 +147,7 @@ function giml_group_update() {
 }
 
 function giml_group_add() {
-	global $mydb;
+	global $giml_db;
 	global $textareafields;
 	
 	$group_option = "";
@@ -170,7 +170,7 @@ function giml_group_add() {
 			}
 			$data["createddate"] = date('Y-m-d H:i:s');
 			if (count($data)>0)
-				$mydb->group_add($data);
+				$giml_db->group_add($data);
 		}
 		$group_option = giml_get_groups();
 	}
@@ -181,8 +181,8 @@ function giml_group_add() {
 
 function giml_subgroup_delete() {
 	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') ) {
-		global $mydb;
-		$mydb->subgroup_delete($_POST['subgroupid']);
+		global $giml_db;
+		$giml_db->subgroup_delete($_POST['subgroupid']);
 		
 		die(giml_get_subgroups());
 	}
@@ -190,13 +190,13 @@ function giml_subgroup_delete() {
 
 function giml_subgroup_edit() {
 	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') ) {
-		global $mydb;
-		die(json_encode($mydb->get_subgroup($_POST['subgroupid'])));
+		global $giml_db;
+		die(json_encode($giml_db->get_subgroup($_POST['subgroupid'])));
 	}
 }
 
 function giml_subgroup_update() {
-	global $mydb;
+	global $giml_db;
 	global $textareafields;
 	
 	$subgroup_option = "";
@@ -245,7 +245,7 @@ function giml_subgroup_update() {
 				}
 			}
 			if (count($data)>0)
-				$mydb->subgroup_update($data, $id);
+				$giml_db->subgroup_update($data, $id);
 		}
 		$subgroup_option = giml_get_subgroups();
 	}
@@ -253,7 +253,7 @@ function giml_subgroup_update() {
 }
 
 function giml_subgroup_add() {
-	global $mydb;
+	global $giml_db;
 	global $textareafields;
 	
 	$subgroup_option = "";
@@ -278,7 +278,7 @@ function giml_subgroup_add() {
 			}
 			$data["createddate"] = date('Y-m-d H:i:s');
 			if (count($data)>0)
-				$mydb->subgroup_add($data);
+				$giml_db->subgroup_add($data);
 		}
 		$subgroup_option = giml_get_subgroups();
 	}
@@ -286,10 +286,10 @@ function giml_subgroup_add() {
 }
 
 function get_independentsubgroups($sortbysortorder=false) {
-	global $mydb;
+	global $giml_db;
 	$subgroup_option = "";
 	
-	$subgroups = $mydb->get_independentsubgroups($sortbysortorder);
+	$subgroups = $giml_db->get_independentsubgroups($sortbysortorder);
 	
 	foreach ($subgroups as $subgroup) {
 		$subgroup_option .= '<option value="' . $subgroup->subgroupid . '">' . $subgroup->subgrouplabel . '</option>';
@@ -298,10 +298,10 @@ function get_independentsubgroups($sortbysortorder=false) {
 }
 
 function get_groupsubgroups($groupid, $sortbysortorder=false) {
-	global $mydb;
+	global $giml_db;
 	$subgroup_option = "";
 	
-	$subgroups = $mydb->get_groupsubgroups($groupid, $sortbysortorder);
+	$subgroups = $giml_db->get_groupsubgroups($groupid, $sortbysortorder);
 	foreach ($subgroups as $subgroup)
 	{
 		$subgroup_option .= '<option value="' . $subgroup->subgroupid . '">' . $subgroup->subgrouplabel . '</option>';
@@ -310,7 +310,7 @@ function get_groupsubgroups($groupid, $sortbysortorder=false) {
 }
 
 function giml_get_shortcodedata() {
-	global $mydb;
+	global $giml_db;
 	
 	$subgroup_option = "";
 	$group_option = "";
@@ -318,7 +318,7 @@ function giml_get_shortcodedata() {
 	$mydata = "";
 	switch($_POST['datatype']) {
 		case 'tablecolumns':
-			$rows = $mydb->get_playlisttablecolumnssubgroup($_POST['subgroupid'], true);
+			$rows = $giml_db->get_playlisttablecolumnssubgroup($_POST['subgroupid'], true);
 			$tmp = "";
 			foreach ($rows as $row)
 			{
@@ -329,11 +329,11 @@ function giml_get_shortcodedata() {
 			$mydata['tablecolumns'] = $tmp;
 			break;
 		case 'init':
-			$subgroups = $mydb->get_independentsubgroups(true);
+			$subgroups = $giml_db->get_independentsubgroups(true);
 			
 			foreach ($subgroups as $subgroup) {
 				$cols = "";
-				$rows = $mydb->get_playlisttablecolumnssubgroup($subgroup->subgroupid, true);
+				$rows = $giml_db->get_playlisttablecolumnssubgroup($subgroup->subgroupid, true);
 				foreach ($rows as $row)
 				{
 					if(!empty($row->playlisttablecolumnlabel))
@@ -344,7 +344,7 @@ function giml_get_shortcodedata() {
 			}
 			$mydata['subgroups'] = $subgroup_option;
 			
-			$groups = $mydb->get_groups(true);
+			$groups = $giml_db->get_groups(true);
 			foreach ($groups as $group)
 			{
 				if(!empty($group->grouplabel))
@@ -358,7 +358,7 @@ function giml_get_shortcodedata() {
 				$mydata['subgroups'] = get_independentsubgroups();
 				$mydata['subgroupsbysortorder'] = get_independentsubgroups(true);
 				
-				$groups = $mydb->get_groups(true);
+				$groups = $giml_db->get_groups(true);
 				foreach ($groups as $group)
 				{
 					if(!empty($group->grouplabel))
@@ -368,11 +368,11 @@ function giml_get_shortcodedata() {
 			$mydata['groups'] = $group_option;
 			break;
 		case 'groupsubgroups':
-			$subgroups = $mydb->get_groupsubgroups($_POST['groupid']);
+			$subgroups = $giml_db->get_groupsubgroups($_POST['groupid']);
 			foreach ($subgroups as $subgroup)
 			{
 				$cols = "";
-				$rows = $mydb->get_playlisttablecolumnssubgroup($subgroup->subgroupid, true);
+				$rows = $giml_db->get_playlisttablecolumnssubgroup($subgroup->subgroupid, true);
 				foreach ($rows as $row)
 				{
 					if(!empty($row->playlisttablecolumnlabel))
@@ -401,10 +401,10 @@ function giml_get_shortcodedata() {
 }
 
 function giml_get_subgroups() {
-	global $mydb;
+	global $giml_db;
 	$subgroup_option = "";
 	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') ) {
-		$subgroups = $mydb->get_subgroups();
+		$subgroups = $giml_db->get_subgroups();
 		foreach ($subgroups as $subgroup)
 		{
 			if (is_null($subgroup->grouplabel))
@@ -416,7 +416,7 @@ function giml_get_subgroups() {
 	die($subgroup_option);
 }
 function giml_get_playlistcolumns() {
-	global $mydb;
+	global $giml_db;
 	
 	$mydata = "";
 	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
@@ -428,7 +428,7 @@ function giml_get_playlistcolumns() {
 }
 
 function giml_get_playlistcombosections() {
-	global $mydb;
+	global $giml_db;
 	
 	$mydata = "";
 	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
@@ -439,7 +439,7 @@ function giml_get_playlistcombosections() {
 }
 
 function giml_get_playlistcombosectioncolumns() {
-	global $mydb;
+	global $giml_db;
 	
 	$mydata = "";
 	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
@@ -450,7 +450,7 @@ function giml_get_playlistcombosectioncolumns() {
 }
 
 function giml_get_playlistdata() {
-	global $mydb;
+	global $giml_db;
 	
 	$mydata = "";
 	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
@@ -458,17 +458,17 @@ function giml_get_playlistdata() {
 		$subgroupid = $_POST['subgroupid'];
 		$tmp = "";
 		
-		$results = $mydb->get_subgroup($subgroupid);
+		$results = $giml_db->get_subgroup($subgroupid);
 		$mydata['subgroupdownloadlabel'] = (string)$results[0]->subgroupdownloadlabel;
 		$mydata['subgroupdownloadlink'] = (string)$results[0]->subgroupdownloadlink;
 		$mydata['subgroupdownloadcss'] = (string)$results[0]->subgroupdownloadcss;
 		$mydata['subgroupshowfilter'] = (string)$results[0]->subgroupshowfilter;
 		$mydata['subgroupshowcombo'] = (string)$results[0]->subgroupshowcombo;
 		
-		$results = $mydb->get_playlisttablecolumnssubgroup($subgroupid);
+		$results = $giml_db->get_playlisttablecolumnssubgroup($subgroupid);
 		$mydata['playlisttablecss'] = (string)$results[0]->playlisttablecss;
 		$mydata['playlisttablecolumn'] = (string)get_playlisttablecolumnssubgroup($subgroupid, true);
-		$results = $mydb->get_playlistcomboitemssubgroup($subgroupid);
+		$results = $giml_db->get_playlistcomboitemssubgroup($subgroupid);
 		$mydata['playlistcombolabel'] = (string)$results[0]->playlistcombolabel;
 		$mydata['playlistcombocss'] = (string)$results[0]->playlistcombocss;
 		$mydata['playlistcombodirection'] = (string)$results[0]->playlistcombodirection;
@@ -485,7 +485,7 @@ function giml_get_playlistdata() {
 	die(json_encode($mydata));
 }
 function giml_insert() {
-	global $mydb;
+	global $giml_db;
 	global $textareafields;
 	
 	$result = "";
@@ -503,14 +503,14 @@ function giml_insert() {
 						if(empty($_POST["playlistsectionid".$i]))
 							continue;
 							
-						if ($mydb->checksectioncolumnscreated($_POST["playlistsectionid".$i]))
+						if ($giml_db->checksectioncolumnscreated($_POST["playlistsectionid".$i]))
 							continue;
 					}
 					
 					$data = array();
 					
 					if($table === 'playlistcolumn'){
-						$rowid = $mydb->get_playlistnextrowid();
+						$rowid = $giml_db->get_playlistnextrowid();
 						$data['playlistcolumnsectionid'] = $_POST["playlistcolumnsectionid".$i];
 					}else{
 						$data['playlistsectionid'] = $_POST["playlistsectionid".$i];
@@ -539,7 +539,7 @@ function giml_insert() {
 						$data['playlisttablecolumnid'] = $id;
 						$data["createddate"] = date('Y-m-d H:i:s');
 						if (count($data)>0)
-							$mydb->insert($table, $data);
+							$giml_db->insert($table, $data);
 						
 					}
 				}
@@ -570,7 +570,7 @@ function giml_insert() {
 					}
 					$data["createddate"] = date('Y-m-d H:i:s');
 					if (count($data)>0)
-						$mydb->insert($table, $data, $_POST['subgroupid']);
+						$giml_db->insert($table, $data, $_POST['subgroupid']);
 				}
 				giml_get_playlistdata();
 						
@@ -595,7 +595,7 @@ function giml_insert() {
 	die(json_encode($result));
 }
 function giml_update() {
-	global $mydb;
+	global $giml_db;
 	global $textareafields;
 	
 	$result = "";
@@ -607,7 +607,7 @@ function giml_update() {
 					$data[$field] = trim(sanitize_text_field($_POST[$field]));
 				}
 				if (count($data)>0)
-					$mydb->update($table, $data, array('subgroupid'=>$_POST['subgroupid']));
+					$giml_db->update($table, $data, array('subgroupid'=>$_POST['subgroupid']));
 				break;
 			case 'playlistsectioncolumn': case 'playlistcolumn':
 				for ($i=1; $i<=$_POST['rows']; $i++) {
@@ -618,9 +618,9 @@ function giml_update() {
 
 						$data['playlistcolumnsectionid'] = $_POST["playlistcolumnsectionid".$i];
 						$sectionid1 = $_POST["playlistcolumnsectionid".$i];
-						$mydb->delete($table, $_POST['ids']);
+						$giml_db->delete($table, $_POST['ids']);
 						
-						$rowid = $mydb->get_playlistnextrowid();
+						$rowid = $giml_db->get_playlistnextrowid();
 					}else{
 						$oldsectionids = explode(",", $_POST['ids']);
 
@@ -628,11 +628,11 @@ function giml_update() {
 							continue;
 						
 						if ($_POST["playlistsectionid".$i.'_'.$oldsectionids[$i-1]] != $oldsectionids[$i-1]) {
-							if ($mydb->checksectioncolumnscreated($_POST["playlistsectionid".$i.'_'.$oldsectionids[$i-1]]))
+							if ($giml_db->checksectioncolumnscreated($_POST["playlistsectionid".$i.'_'.$oldsectionids[$i-1]]))
 								continue;
 						}
 						$ids = explode(",", $_POST['ids']);
-						$mydb->delete($table, $ids[$i-1]);
+						$giml_db->delete($table, $ids[$i-1]);
 					}
 												
 					foreach ($_POST['fields'] as $field) {
@@ -672,14 +672,14 @@ function giml_update() {
 						
 						if (count($data)>0) {
 							//if($table === 'playlistcolumn') 
-								//$mydb->update($table, $data, array('playlistcolumnsectionid'=>$sectionid, 'playlisttablecolumnid'=>$tablecolumnid));
+								//$giml_db->update($table, $data, array('playlistcolumnsectionid'=>$sectionid, 'playlisttablecolumnid'=>$tablecolumnid));
 							//else
-								//$mydb->update($table, $data, array('playlistsectionid'=>$sectionid, 'playlisttablecolumnid'=>$tablecolumnid));
+								//$giml_db->update($table, $data, array('playlistsectionid'=>$sectionid, 'playlisttablecolumnid'=>$tablecolumnid));
 								
 							
 							$data['playlisttablecolumnid'] = $id;
 							$data["createddate"] = date('Y-m-d H:i:s');
-							$mydb->insert($table, $data);
+							$giml_db->insert($table, $data);
 							
 						}
 						
@@ -721,7 +721,7 @@ function giml_update() {
 							$data[$field] = trim(sanitize_text_field($_POST[$field.$i.'_'.$id]));
 					}
 					if (count($data)>0)
-						$mydb->update($table, $data, array('id'=>$id));
+						$giml_db->update($table, $data, array('id'=>$id));
 				}
 				giml_get_playlistdata();
 						
@@ -743,7 +743,7 @@ function giml_update() {
 	die(json_encode($result));
 }
 function giml_edit() {
-	global $mydb;
+	global $giml_db;
 	
 	$result = "";
 	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
@@ -752,21 +752,21 @@ function giml_edit() {
 		switch($table)
 		{
 			default:
-				$result = $mydb->select($table, $_POST['ids'], 1);
+				$result = $giml_db->select($table, $_POST['ids'], 1);
 			
 		}
 	}
 	die(json_encode($result));
 }
 function giml_delete() {
-	global $mydb;
+	global $giml_db;
 	
 	$result = "";
 	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') ) {
 		$table = $_POST['table'];
 		switch($table) {
 			default:
-				$mydb->delete($table, $_POST['ids']);
+				$giml_db->delete($table, $_POST['ids']);
 				
 				giml_get_playlistdata();
 				/*
@@ -788,9 +788,9 @@ function giml_delete() {
 }
 
 function get_playlisttablecolumnssubgroup($subgroupid, $sortbysortorder=false) {
-	global $mydb;
+	global $giml_db;
 	
-	$results = $mydb->get_playlisttablecolumnssubgroup($subgroupid, $sortbysortorder);
+	$results = $giml_db->get_playlisttablecolumnssubgroup($subgroupid, $sortbysortorder);
 	$tmp = "";
 	foreach ($results as $data)
 	{
@@ -800,9 +800,9 @@ function get_playlisttablecolumnssubgroup($subgroupid, $sortbysortorder=false) {
 	return $tmp;
 }
 function get_playlistcomboitemssubgroup($subgroupid, $selectedid=null, $defaultselected=false, $sortbysortorder=false) {
-	global $mydb;
+	global $giml_db;
 	
-	$results = $mydb->get_playlistcomboitemssubgroup($subgroupid, $sortbysortorder);
+	$results = $giml_db->get_playlistcomboitemssubgroup($subgroupid, $sortbysortorder);
 	$tmp = "";
 	foreach ($results as $data)
 	{
@@ -818,16 +818,16 @@ function get_playlistcomboitemssubgroup($subgroupid, $selectedid=null, $defaults
 	return $tmp;
 }
 function get_playlistcomboitemssubgroupfirstid($subgroupid) {
-	global $mydb;
+	global $giml_db;
 	
-	$id = $mydb->get_playlistcomboitemssubgroupfirstid($subgroupid);
+	$id = $giml_db->get_playlistcomboitemssubgroupfirstid($subgroupid);
 	
 	return $id;
 }
 function get_playlistcombosectionssubgroup($subgroupid, $selectedid=null, $sortbysortorder=false) {
-	global $mydb;
+	global $giml_db;
 	
-	$results = $mydb->get_playlistcombosectionssubgroup($subgroupid, $sortbysortorder);
+	$results = $giml_db->get_playlistcombosectionssubgroup($subgroupid, $sortbysortorder);
 	$tmp = "";
 	foreach ($results as $data)
 	{
@@ -839,9 +839,9 @@ function get_playlistcombosectionssubgroup($subgroupid, $selectedid=null, $sortb
 	return $tmp;
 }
 function get_playlistcombosections($comboitemid, $selectedid=null, $sortbysortorder=false, $subgroupid=null) {
-	global $mydb;
+	global $giml_db;
 	
-	$results = $mydb->get_playlistcombosections($comboitemid, $sortbysortorder, 0, $subgroupid);
+	$results = $giml_db->get_playlistcombosections($comboitemid, $sortbysortorder, 0, $subgroupid);
 	$tmp = "";
 	foreach ($results as $data)
 	{
@@ -853,9 +853,9 @@ function get_playlistcombosections($comboitemid, $selectedid=null, $sortbysortor
 	return $tmp;
 }
 function get_independentplaylistsectionssubgroup($subgroupid, $selectedid=null, $sortbysortorder=false) {
-	global $mydb;
+	global $giml_db;
 	
-	$results = $mydb->get_independentplaylistsectionssubgroup($subgroupid, $sortbysortorder);
+	$results = $giml_db->get_independentplaylistsectionssubgroup($subgroupid, $sortbysortorder);
 	$tmp = "";
 	foreach ($results as $data)
 	{
@@ -867,9 +867,9 @@ function get_independentplaylistsectionssubgroup($subgroupid, $selectedid=null, 
 	return $tmp;
 }
 function get_playlistsectionssubgroup($subgroupid, $selectedid=null, $sortbysortorder=false) {
-	global $mydb;
+	global $giml_db;
 	
-	$results = $mydb->get_playlistsectionssubgroup($subgroupid, $sortbysortorder);
+	$results = $giml_db->get_playlistsectionssubgroup($subgroupid, $sortbysortorder);
 	$tmp = "";
 	foreach ($results as $data)
 	{
@@ -885,11 +885,11 @@ function get_playlistsectionssubgroup($subgroupid, $selectedid=null, $sortbysort
 	return $tmp;
 }
 function get_playlistcolumnssubgroup($subgroupid, $sectionid=null) {
-	global $mydb;
+	global $giml_db;
 	
-	$results = $mydb->get_playlistcolumnssubgroup($subgroupid, $sectionid);
-	$tmp = $mydb->get_playlisttablecolumnssubgroup($subgroupid);
-	$totalcols = $mydb->get_numrows();
+	$results = $giml_db->get_playlistcolumnssubgroup($subgroupid, $sectionid);
+	$tmp = $giml_db->get_playlisttablecolumnssubgroup($subgroupid);
+	$totalcols = $giml_db->get_numrows();
 	$option = "";
 	//$colid = array();
 	$section = "";
@@ -957,11 +957,11 @@ function get_playlistcolumnssubgroup($subgroupid, $sectionid=null) {
 	return $option;
 }
 function get_playlistsectioncolumnssubgroup($subgroupid, $comboitemid) {
-	global $mydb;
+	global $giml_db;
 	
-	$results = $mydb->get_playlistsectioncolumnssubgroup($subgroupid, $comboitemid);
-	$tmp = $mydb->get_playlisttablecolumnssubgroup($subgroupid);
-	$totalcols = $mydb->get_numrows();
+	$results = $giml_db->get_playlistsectioncolumnssubgroup($subgroupid, $comboitemid);
+	$tmp = $giml_db->get_playlisttablecolumnssubgroup($subgroupid);
+	$totalcols = $giml_db->get_numrows();
 	$col = 1;
 	$option = "";
 	$tmp = "";
@@ -998,9 +998,9 @@ function get_playlistsectioncolumnssubgroup($subgroupid, $comboitemid) {
 	return $option;
 }
 function get_playlistplaylistsectionssubgroup($subgroupid) {
-	global $mydb;
+	global $giml_db;
 	
-	$results = $mydb->get_playlistplaylistsectionssubgroup($subgroupid);
+	$results = $giml_db->get_playlistplaylistsectionssubgroup($subgroupid);
 	$tmp = "";
 	foreach ($results as $data)
 	{
@@ -1012,9 +1012,9 @@ function get_playlistplaylistsectionssubgroup($subgroupid) {
 	return $tmp;
 }
 function get_playlistcolumnsectionssubgroup($subgroupid) {
-	global $mydb;
+	global $giml_db;
 	
-	$results = $mydb->get_playlistcolumnsectionssubgroup($subgroupid);
+	$results = $giml_db->get_playlistcolumnsectionssubgroup($subgroupid);
 	$tmp = "";
 	foreach ($results as $data)
 	{

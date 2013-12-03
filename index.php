@@ -3,7 +3,7 @@
 Plugin Name: GI-Media Library
 Plugin URI: http://www.glareofislam.com/softwares/gimedialibrary.html
 Description: An easy to use plugin to display your course/media library in tabular form. You can use shortcode to display any specific resource in detail on any page/post. Widget is also available to list the available group/resource of media which will be displayed on any sidebar you drag/drop on.
-Version: 1.0.300
+Version: 2.0.0
 Author: Zishan Javaid
 Author URI: http://www.glareofislam.com
 License: GPL v2
@@ -41,7 +41,7 @@ THE SOFTWARE.
 class GI_Media_Library {
 	
 	function __construct() {
-		global $mydb;
+		global $giml_db;
 	
 		add_action( 'plugins_loaded', array( &$this, 'constants' ), 1 );
 		
@@ -80,18 +80,14 @@ class GI_Media_Library {
 	}
 	
 	function init() {
-		global $mydb;
+		global $giml_db;
 		
-		$mydb = new gi_medialibrary_db();
+		$giml_db = new gi_medialibrary_db();
 
 		//if inside admin
 		if ( is_admin() )
 		{
-			//checks for the admin rights
-			/*if ( !current_user_can( 'manage_options' ) )  {
-				wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-			}*/
-			require_once( GIML_INCLUDES . 'admin-settings.php' );
+                    require_once( GIML_INCLUDES . 'admin-settings.php' );
 
 		}
 		
@@ -108,8 +104,8 @@ class GI_Media_Library {
 
 	   require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	   
-		/*if($wpdb->get_var("show tables like '{$table_prefix}%'") == null)
-		{*/
+            if (!$installed_ver)
+            {
 		$sql = "CREATE TABLE `{$table_prefix}group` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `grouplabel` tinytext,
@@ -318,23 +314,23 @@ class GI_Media_Library {
 
 		   dbDelta( $sql );
 
-			global $wpdb;
-			$sql = "SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'";
-			$wpdb->query($sql);
+                global $wpdb;
+                $sql = "SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'";
+                $wpdb->query($sql);
 
-			$sql = "INSERT INTO `{$table_prefix}group` (`id`, `createddate`) VALUES (0, NOW())";
-			dbDelta($sql);
+                $sql = "INSERT INTO `{$table_prefix}group` (`id`, `createddate`) VALUES (0, NOW())";
+                dbDelta($sql);
 			
-		   if( intval($installed_ver) != intval(GIML_DB_VERSION) )
-			update_option( "giml_db_version", GIML_DB_VERSION );
-		   else
-			add_option( "giml_db_version", GIML_DB_VERSION );
-		//}
+                /*if( floatval($installed_ver) != floatval(GIML_DB_VERSION) )
+                     update_option( "giml_db_version", GIML_DB_VERSION );
+                else*/
+                     add_option( "giml_db_version", '1.0' );
+            }
 }
 
 	function giml_update_db_check() {
 		
-		if (intval(get_site_option( 'giml_db_version' )) != intval(GIML_DB_VERSION)) {
+		if (floatval(get_site_option( 'giml_db_version' )) != floatval(GIML_DB_VERSION)) {
 			$this->giml_install();
 		}
 	}

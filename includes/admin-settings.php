@@ -1,6 +1,6 @@
 <?php
 
-add_action( 'admin_init', 'admin_init' );
+add_action( 'admin_init', 'gi_medialibrary_admin_init' );
 
 add_action( 'admin_menu', 'gi_medialibrary_admin' );
 
@@ -32,7 +32,7 @@ add_action('wp_ajax_giml_delete', 'giml_delete');
 
 //add_action( 'admin_notices', 'my_admin_notice' );
 
-function admin_init() {
+function gi_medialibrary_admin_init() {
 	global $wp_version;
 	$plugin = plugin_basename( __FILE__ );
 	$plugin_data = get_plugin_data( __FILE__, false );
@@ -54,11 +54,11 @@ function gi_medialibrary_admin() {
 		}
 		wp_enqueue_style( 'jquery-ui-css' );
 	}
-	if (!wp_style_is('giml-style','queue')) {
-		if (!wp_style_is('giml-style','registered')) {
-			wp_register_style( 'giml-style', plugins_url( 'css/giml.css', dirname(__FILE__) ) );
+	if (!wp_style_is('gi-style','queue')) {
+		if (!wp_style_is('gi-style','registered')) {
+			wp_register_style( 'gi-style', plugins_url( 'css/gi.css', dirname(__FILE__) ) );
 		}
-		wp_enqueue_style( 'giml-style');
+		wp_enqueue_style( 'gi-style');
 	}
 	
 	add_options_page( 'GI-Media Library', 'GI-Media Library', 'manage_options', 'gi_medialibrary', 'gi_medialibrary_page');	
