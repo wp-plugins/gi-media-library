@@ -1,0 +1,134 @@
+/***********************
+	PLAYLIST TEMPLATE
+***********************/
+
+div#giml_content #subgroupdownload, div#giml_content  #giml_filter, div#giml_content #giml_playlistcomboitemdescription, div#giml_content  #giml_playlistcomboitemdownload, div#giml_content  #giml_playlist {
+	margin: 10px;
+}
+#groupheading, #subgroupheading {
+	margin: 0;
+}
+#groupheading  span {
+	border-bottom: 1px solid #D3D7DF;
+	font-family:'OFL Sorts Mill Goudy TT', Georgia, serif;
+}
+#groupheading  span span {
+	background-image: none;
+    border-bottom-style: none;
+	font-family:'OFL Sorts Mill Goudy TT', Georgia, serif;
+}
+
+#groupleftlabel{
+	font-family:'OFL Sorts Mill Goudy TT', Georgia, serif;
+	display:block;
+	padding-left:10px;
+	line-height:25px;
+	text-align:left !important;
+}
+
+#subgroupleftlabel{
+	font-family:'OFL Sorts Mill Goudy TT', Georgia, serif;
+	color:#03506d;
+	display:block;
+	padding-left:10px;
+
+	line-height:25px;
+	text-align:left !important;
+}
+
+
+
+
+#grouprightlabel{
+	display:inline;
+	line-height:25px;
+	border-bottom-style:none;
+	font-family:'OFL Sorts Mill Goudy TT', Georgia, serif;
+	background-image:none;
+	text-align:left !important;
+	float: right;
+	padding-right:10px;
+}
+
+
+#subgrouprightlabel{
+	display:inline;
+	line-height:25px;
+	border-bottom-style:none;
+	font-family:'OFL Sorts Mill Goudy TT', Georgia, serif;
+	color:#03506d;
+	background-image:none;
+	text-align:left !important;
+	float: right;
+	padding-right:10px;
+}
+
+
+#giml_playlist {
+	font-family:Times New Roman, Arial, Helvetica;
+}
+
+#giml_playlist table#playList{
+	width:100%;
+	border-left:1px #E8EBF0 solid;
+	border-right:1px #E8EBF0 solid;
+	border-bottom:1px #E8EBF0 solid;
+}
+#giml_playlist table#playList tr td{
+	font-size:90% !important;
+	line-height:14px;
+	border-top:1px #E8EBF0 solid;
+	padding:1px 5px;
+}
+#giml_playlist table#playList tr td.icons{
+	padding-left:0;
+	text-align:center;
+	background-color:#fff !important;
+}
+#giml_playlist table#playList tr td.icons div{
+	height:16px;
+	padding-left:14px;
+}
+#giml_playlist table#playList thead tr td{
+	font-weight:bold;
+	color:#03506d;
+	background-color:#F2F2F2;
+}
+
+#giml_playlist table#playList thead{
+	background-color: rgb(215,216,224);
+	font-weight: bold;
+	color:#03506d;
+	text-align: center;
+	line-height: 2;
+	font-size: 100% !important;
+}
+#giml_playlist table#playList thead tr th{
+	padding: 0 5px 0 5px;
+}
+
+#giml_playlist table#playList tbody tr th{
+	font-size:95% !important;
+	font-weight:bold;
+	color:#03506d;
+	background-color:#F2F2F2;
+	line-height: 1.5;
+}
+
+select#searchtype,select#filterby{
+	/*height:22px;*/
+	border:#DBE7EB 1pt solid;
+	width:200px;
+	/*text-indent:10px;*/
+}
+.center {
+	text-align: center;
+}
+.rtl {
+	direction: rtl;
+	text-align: right;
+}
+.ltr {
+	direction: ltr;
+	text-align: left;
+}
