@@ -105,3 +105,6 @@ I'm also happy about [donations](http://www.glareofislam.com/softwares/gimediali
 Initial release
 
 == Upgrade Notice ==
+
+= Version 2.0.0 =
+- You must replace the old shortcode "gi-medialibrary" with "gi_medialibrary" on every page/post you have created.
