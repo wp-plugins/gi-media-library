@@ -5,13 +5,6 @@ add_action('wp_ajax_giml_change_search', 'giml_change_search');
 add_action('wp_ajax_nopriv_giml_change_search', 'giml_change_search');
 
 
-//Hooks shortcode TinyMCE button into WordPress
-if ( current_user_can( 'edit_posts' ) &&  current_user_can( 'edit_pages' ) ) {
-	add_filter( 'mce_external_plugins', 'giml_mce_external_plugins' );
-	add_filter( 'mce_buttons', 'giml_mce_buttons' );
-	//add_filter( 'wp_title', 'mypage_title', 10, 3 );
-}
-
 function giml_set_default_options() {
 	return array(
 		'default'			=> 0,
@@ -44,15 +37,6 @@ function giml_shortcode( $attr ) {
 		//return $display;	//returns formatted output with autop and linebreak tags
 	}
 }
-function giml_mce_external_plugins( $plugin_array ) {
-	$plugin_array['gi_medialibrary'] = plugins_url( 'js/editor_plugin.js', dirname(__FILE__) );
-	return $plugin_array;
-}
-function giml_mce_buttons( $buttons ) {
-	array_push( $buttons, "|", "gi_medialibrary" );
-	return $buttons;
-}
-
 
 function giml_mypage_title( $old_title, $sep, $sep_location ) {
 	return "TEST";
@@ -170,7 +154,7 @@ function giml_get_media( $settings ) {
 					jQuery(function($) {
 						$.changeSelection = function(id) {
 							$('select#searchtype, select#filterby').attr('disabled','disabled');
-							$('div#giml_loader').html('<p align=\"center\"><img src=\"".plugins_url('js/ajax-loader.gif', dirname(__FILE__))."\" width=\"16\">&nbsp;Loading . . .</p>');
+							$('div#giml_loader').html('<p align=\"center\"><img src=\"".plugins_url('js/ajax-loader.gif', dirname(__FILE__))."\">&nbsp;Loading . . .</p>');
 							var data = {action: 'giml_change_search',
 								_ajax_nonce: '{$nonce}',
 								searchid: $('select#searchtype').val(),

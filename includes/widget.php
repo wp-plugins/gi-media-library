@@ -72,7 +72,7 @@ class GIMediaLibraryWidget extends WP_Widget {
 									$.changeSelection(id);
 								});
 								$('select#searchtype, select#filterby').attr('disabled','disabled');
-								$('div#giml_loader').html('<p align=\"center\"><img src=\"".plugins_url('js/ajax-loader.gif', dirname(__FILE__))."\" width=\"16\">&nbsp;Loading . . .</p>');
+								$('div#giml_loader').html('<p align=\"center\"><img src=\"".plugins_url('js/ajax-loader.gif', dirname(__FILE__))."\">&nbsp;Loading . . .</p>');
 								var data = {action: 'giml_change_search',
 									_ajax_nonce: '{$nonce}',
 									subgroupid: id};

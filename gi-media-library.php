@@ -3,7 +3,7 @@
 Plugin Name: GI-Media Library
 Plugin URI: http://www.glareofislam.com/softwares/gimedialibrary.html
 Description: An easy to use plugin to display your course/media library in tabular form. You can use shortcode to display any specific resource in detail on any page/post. Widget is also available to list the available group/resource of media which will be displayed on any sidebar you drag/drop on.
-Version: 2.0.0
+Version: 2.1.0
 Author: Zishan Javaid
 Author URI: http://www.glareofislam.com
 License: GPL v2
@@ -60,17 +60,18 @@ class GI_Media_Library {
 	}
 	
 	function constants() {
-		define( 'GIML_DB_VERSION', '1.0' );
-		
-		/* Set constant path to the giml plugin directory. */
-		define( 'GIML_DIR', trailingslashit( plugin_dir_path( __FILE__ ) ) );
+            define( 'GIML_DB_VERSION', '1.0' );
 
-		/* Set constant path to the giml plugin URL. */
-		define( 'GIML_URI', trailingslashit( plugin_dir_url( __FILE__ ) ) );
+            /* Set constant path to the giml plugin directory. */
+            define( 'GIML_DIR', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 
-		/* Set the constant path to the giml includes directory. */
-		define( 'GIML_INCLUDES', GIML_DIR. trailingslashit( 'includes' ) );
+            /* Set constant path to the giml plugin URL. */
+            define( 'GIML_URI', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 
+            /* Set the constant path to the giml includes directory. */
+            define( 'GIML_INCLUDES', GIML_DIR. trailingslashit( 'includes' ) );
+
+            define( 'GIML_BASENAME', plugin_basename(__FILE__) );
 	}
 	
 	function includes() {
@@ -321,10 +322,7 @@ class GI_Media_Library {
                 $sql = "INSERT INTO `{$table_prefix}group` (`id`, `createddate`) VALUES (0, NOW())";
                 dbDelta($sql);
 			
-                /*if( floatval($installed_ver) != floatval(GIML_DB_VERSION) )
-                     update_option( "giml_db_version", GIML_DB_VERSION );
-                else*/
-                     add_option( "giml_db_version", '1.0' );
+                update_site_option( "giml_db_version", '1.0' );
             }
 }
 

@@ -5,6 +5,9 @@
 div#giml_content #subgroupdownload, div#giml_content  #giml_filter, div#giml_content #giml_playlistcomboitemdescription, div#giml_content  #giml_playlistcomboitemdownload, div#giml_content  #giml_playlist {
 	margin: 10px;
 }
+#giml_loader p img {
+	width: 16px;
+}
 #groupheading, #subgroupheading {
 	margin: 0;
 }

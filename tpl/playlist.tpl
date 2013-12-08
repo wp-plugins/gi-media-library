@@ -23,7 +23,7 @@
 	   </select>&nbsp;
 	  </span>
 	 </div>
-	 <div class="col" style="float:right">
+	 <div class="col-right">
 	  <span id="spansubgroupfilter" style="[+subgroupshowfilter+]">
 	   <label for="filterby">Filter by:</label>&nbsp;
 	   <select id="filterby">

@@ -238,6 +238,8 @@ function giml_subgroup_update() {
 					$field1 = ($field === "subgroupgroup")?"groupid":$field;
 					if (strpos($field, "sortorder") !== false)
 						$data[$field1] = intval($_POST[$field.$i.'_'.$id]);
+                                        elseif (strpos($field, "link") !== false)
+                                            $data[$field1] = trim(esc_url_raw($_POST[$field.$i.'_'.$id]));
 					elseif (array_search($field, $textareafields)!==false && array_search($field, $textareafields)!==null)
 						$data[$field1] = trim(wp_kses_post($_POST[$field.$i.'_'.$id]));
 					else
@@ -271,6 +273,8 @@ function giml_subgroup_add() {
 				
 				if (strpos($field, "sortorder") !== false)
 					$data[$field1] = intval($_POST[$field.$i]);
+                                elseif (strpos($field, "link") !== false)
+                                        $data[$field1] = trim(esc_url_raw($_POST[$field.$i]));
 				elseif (array_search($field, $textareafields)!==false && array_search($field, $textareafields)!==null)
 					$data[$field1] = trim(wp_kses_post($_POST[$field.$i]));
 				else
