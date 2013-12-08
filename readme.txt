@@ -79,7 +79,7 @@ For support questions, bug reports, or feature requests, please use the forum at
 
 = Requirements? =
 
-In short: WordPress 3.3.2 or higher, while the latest version of WordPress is always recommended.
+In short: WordPress 3.4.2 or higher, while the latest version of WordPress is always recommended.
 
 == Acknowledgements ==
 
