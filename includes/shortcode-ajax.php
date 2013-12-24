@@ -197,12 +197,22 @@ if (isset($_POST)) {
 											$audionum++;
 										}
 										$tmpvalues[$j] = "<td class=\"{$coldir}\">" . $tmpvalues[$j] . "</td>";
+                                                                        }elseif(strtolower($col->playlisttablecolumntype) === "video" && !empty($col->playlistcolumntext)) {
+										$videos = split("::", stripslashes($col->playlistcolumntext));
+										$videonum = 1;
+										$tmpvalues[$j] = "";
+										foreach ($videos as $video) {
+											$tmpvalues[$j] .= giml_get_videolink($video, $col->id, $videonum);
+											//$tmpvalues[$j] .= '<a href="' . get_audiolink(trim($audio)) . '"><img title="Click to listen Audio '.$audionum.'" src="' . plugins_url( 'images/' . $mediaformats["audio"], dirname(__FILE__)) . '"></a>&nbsp;';
+											$videonum++;
+										}
+										$tmpvalues[$j] = "<td class=\"{$coldir}\">" . $tmpvalues[$j] . "</td>";
 									}elseif(strtolower($col->playlisttablecolumntype) === "download" && !empty($col->playlistcolumntext)) {
 										$downloads = split("::", stripslashes($col->playlistcolumntext));
 										$tmpvalues[$j] = "";
 										foreach ($downloads as $download) {
 											$tmpvalues[$j] .= get_downloadhtml(str_replace(" ", "%20", $download)) . "<br/>";
-											//'<a href="http://download.php?id=' . base64_encode(trim($download)) . '&nonce={$nonce}"><img title="Click to download" src="' . plugins_url( 'images/' . $mediaformats["download"], dirname(__FILE__)) . '"></a>';
+											//'<a href="http://download.php?id=' . base64_encode(trim($download)) . '&nonce={GIML_NONCE}"><img title="Click to download" src="' . plugins_url( 'images/' . $mediaformats["download"], dirname(__FILE__)) . '"></a>';
 										}
 										$tmpvalues[$j] = "<td class=\"{$coldir}\">" . $tmpvalues[$j] . "</td>";
 									}elseif(strtolower($col->playlisttablecolumntype) === "link" && !empty($col->playlistcolumntext)) {
@@ -256,12 +266,22 @@ if (isset($_POST)) {
 												$audionum++;
 											}
 											$tmpvalues[$j] = "<td class=\"{$coldir}\" rowspan=\"[+rowspan+]\">" . $tmpvalues[$j] . "</td>";
+                                                                                }elseif(strtolower($col->playlisttablecolumntype) === "video" && !empty($sectioncolumn->playlistsectiontablecolumntext)) {
+											$videos = split("::", stripslashes($sectioncolumn->playlistsectiontablecolumntext));
+											$videonum = 1;
+											$tmpvalues[$j] = "";
+											foreach ($videos as $video) {
+												$tmpvalues[$j] .= giml_get_videolink($video, $col->id, $videonum);
+												//$tmpvalues[$j] .= '<a href="' . get_audiolink(trim($audio)) . '"><img title="Click to listen Audio ' . $audionum . '" src="' . plugins_url( 'images/' . $mediaformats["audio"], dirname(__FILE__)) . '"></a>&nbsp;';
+												$videonum++;
+											}
+											$tmpvalues[$j] = "<td class=\"{$coldir}\" rowspan=\"[+rowspan+]\">" . $tmpvalues[$j] . "</td>";
 										}elseif(strtolower($col->playlisttablecolumntype) === "download" && !empty($sectioncolumn->playlistsectiontablecolumntext)) {
 											$downloads = split("::", stripslashes($sectioncolumn->playlistsectiontablecolumntext));
 											$tmpvalues[$j] = "";
 											foreach ($downloads as $download) {
 												$tmpvalues[$j] .= get_downloadhtml(str_replace(" ", "%20", $download)) . "<br/>";
-												//$tmpvalues[$j] .= '<a href="http://download.php?id=' . base64_encode(trim($download)) . '&nonce={$nonce}"><img title="Click to download" src="' . plugins_url( 'images/' . $mediaformats["download"], dirname(__FILE__)) . '"></a>';
+												//$tmpvalues[$j] .= '<a href="http://download.php?id=' . base64_encode(trim($download)) . '&nonce={GIML_NONCE}"><img title="Click to download" src="' . plugins_url( 'images/' . $mediaformats["download"], dirname(__FILE__)) . '"></a>';
 											}
 											$tmpvalues[$j] = "<td class=\"{$coldir}\" rowspan=\"[+rowspan+]\">" . $tmpvalues[$j] . "</td>";
 										}elseif(strtolower($col->playlisttablecolumntype) === "link" && !empty($col->playlistsectiontablecolumntext)) {

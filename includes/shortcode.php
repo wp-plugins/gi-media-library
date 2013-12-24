@@ -44,7 +44,6 @@ function giml_mypage_title( $old_title, $sep, $sep_location ) {
 function giml_get_media( $settings ) {
 	global $giml_db;
 	global $mediaformats;
-	global $nonce;
 	global $post;
 	
 	if (intval($settings['default']) != 1)
@@ -156,7 +155,7 @@ function giml_get_media( $settings ) {
 							$('select#searchtype, select#filterby').attr('disabled','disabled');
 							$('div#giml_loader').html('<p align=\"center\"><img src=\"".plugins_url('js/ajax-loader.gif', dirname(__FILE__))."\">&nbsp;Loading . . .</p>');
 							var data = {action: 'giml_change_search',
-								_ajax_nonce: '{$nonce}',
+								_ajax_nonce: '".GIML_NONCE."',
 								searchid: $('select#searchtype').val(),
 								filterby: $('select#filterby').val(),
 								subgroupid: id};
@@ -279,12 +278,21 @@ function giml_get_media( $settings ) {
 												$audionum++;
 											}
 											$tmpvalues[$j] = "<td class=\"{$coldir}\">" . $tmpvalues[$j] . "</td>";
+                                                                                }elseif(strtolower($col->playlisttablecolumntype) === "video" && !empty($col->playlistcolumntext)) {
+                                                                                        $videos = split("::", stripslashes($col->playlistcolumntext));
+											$videonum = 1;
+											$tmpvalues[$j] = "";
+											foreach ($videos as $video) {
+												$tmpvalues[$j] .= giml_get_videolink($video, $col->id, $videonum);
+												$videonum++;
+											}
+											$tmpvalues[$j] = "<td class=\"{$coldir}\">" . $tmpvalues[$j] . "</td>";
 										}elseif(strtolower($col->playlisttablecolumntype) === "download" && !empty($col->playlistcolumntext)) {
 											$downloads = split("::", stripslashes($col->playlistcolumntext));
 											$tmpvalues[$j] = "";
 											foreach ($downloads as $download) {
 												$tmpvalues[$j] .= get_downloadhtml(str_replace(" ", "%20", $download)) . "<br/>";
-												//'<a href="http://download.php?id=' . base64_encode(trim($download)) . '&nonce={$nonce}"><img title="Click to download" src="' . plugins_url( 'images/' . $mediaformats["download"], dirname(__FILE__)) . '"></a>';
+												//'<a href="http://download.php?id=' . base64_encode(trim($download)) . '&nonce='.GIML_NONCE.'"><img title="Click to download" src="' . plugins_url( 'images/' . $mediaformats["download"], dirname(__FILE__)) . '"></a>';
 											}
 											$tmpvalues[$j] = "<td class=\"{$coldir}\">" . $tmpvalues[$j] . "</td>";
 										}elseif(strtolower($col->playlisttablecolumntype) === "link" && !empty($col->playlistcolumntext)) {
@@ -338,12 +346,22 @@ function giml_get_media( $settings ) {
 													$audionum++;
 												}
 												$tmpvalues[$j] = "<td class=\"{$coldir}\" rowspan=\"[+rowspan+]\">" . $tmpvalues[$j] . "</td>";
+                                                                                        }elseif(strtolower($col->playlisttablecolumntype) === "video" && !empty($sectioncolumn->playlistsectiontablecolumntext)) {
+												$videos = split("::", stripslashes($sectioncolumn->playlistsectiontablecolumntext));
+												$videonum = 1;
+												$tmpvalues[$j] = "";
+												foreach ($videos as $video) {
+													$tmpvalues[$j] .= giml_get_videolink($video, $col->id, $videonum);
+													//$tmpvalues[$j] .= '<a href="' . giml_get_audiolink(trim($audio)) . '"><img title="Click to listen Audio ' . $audionum . '" src="' . plugins_url( 'images/' . $mediaformats["audio"], dirname(__FILE__)) . '"></a>&nbsp;';
+													$videonum++;
+												}
+												$tmpvalues[$j] = "<td class=\"{$coldir}\" rowspan=\"[+rowspan+]\">" . $tmpvalues[$j] . "</td>";
 											}elseif(strtolower($col->playlisttablecolumntype) === "download" && !empty($sectioncolumn->playlistsectiontablecolumntext)) {
 												$downloads = split("::", stripslashes($sectioncolumn->playlistsectiontablecolumntext));
 												$tmpvalues[$j] = "";
 												foreach ($downloads as $download) {
 													$tmpvalues[$j] .= get_downloadhtml(str_replace(" ", "%20", $download)) . "<br/>";
-													//$tmpvalues[$j] .= '<a href="http://download.php?id=' . base64_encode(trim($download)) . '&nonce={$nonce}"><img title="Click to download" src="' . plugins_url( 'images/' . $mediaformats["download"], dirname(__FILE__)) . '"></a>';
+													//$tmpvalues[$j] .= '<a href="http://download.php?id=' . base64_encode(trim($download)) . '&nonce='.GIML_NONCE.'"><img title="Click to download" src="' . plugins_url( 'images/' . $mediaformats["download"], dirname(__FILE__)) . '"></a>';
 												}
 												$tmpvalues[$j] = "<td class=\"{$coldir}\" rowspan=\"[+rowspan+]\">" . $tmpvalues[$j] . "</td>";
 											}elseif(strtolower($col->playlisttablecolumntype) === "link" && !empty($col->playlistsectiontablecolumntext)) {
@@ -478,21 +496,43 @@ function giml_sortplaylist($playlist, $sectionid) {
 
 function giml_get_audiolink($link, $title, $audionum="") {
 	global $mediaformats;
-	global $nonce;
 	
 	if(!is_null($link) && !empty($link)){
 		list($url, $title1) = explode("||", $link);
 		$url = html_entity_decode(trim($url));
-		$query = plugins_url('audioplayer.php?fileid=' . base64_encode(str_replace(" ", "%20", $url)."||".$title1."||".str_replace(" ", "%20", GIML_URI)) . '&nonce=' . $nonce, dirname(__FILE__));
+		$query = plugins_url('audioplayer.php?fileid=' . base64_encode(str_replace(" ", "%20", $url)."||".$title1."||".str_replace(" ", "%20", GIML_URI)) . '&nonce=' . GIML_NONCE, dirname(__FILE__));
 		$link = '<span class=""><a href="'.$url.'" onclick="window.open(\''.$query.'\',\'GIPlayer\',\'width=440,height=160,location=0,menubar=0,resizable=0,scrollbars=0,status=0,titlebar=0,toolbar=0\');return false;"><img title="Click to listen Audio '.$audionum.'" src="' . plugins_url( 'images/' . $mediaformats["audio"], dirname(__FILE__)) . '"></a></span>&nbsp;';
 	}
 	return $link;
 }
 
-function giml_change_search() {
-	global $nonce_name;
+function giml_get_videolink($video, $col_id, $videonum="") {
+	global $mediaformats;
 	
-	if (isset($_POST) && wp_verify_nonce($_POST['_ajax_nonce'], $nonce_name)) {
+	if(!empty($video)){
+		list($type, $id) = explode("||", $video);
+                $src = '<iframe id="giml-video" src="//';
+                switch ($type) {
+                    case "vimeo":
+                        $src .= 'player.vimeo.com/video/'.$id;
+                        $title = '';
+                        break;
+                    case "youtube":
+                        $src .= 'www.youtube.com/embed/'.$id.'?enablejsapi=1&origin='.GIML_URL;
+                        $title = "";
+                    default:
+                        break;
+                }
+                $src .= '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+		$query = plugins_url('videoplayer.php?fileid=' . base64_encode($src."||".$title) . '&nonce=' . GIML_NONCE, dirname(__FILE__));
+		$link = '<span class=""><a href="#" onclick="window.open(\''.$query.'\',\'GIPlayer\',\'width=640,height=390,location=0,menubar=0,resizable=0,scrollbars=0,status=0,titlebar=0,toolbar=0\');return false;"><img title="Click to watch Video '.$videonum.'" src="' . plugins_url( 'images/' . $mediaformats["video"], dirname(__FILE__)) . '"></a></span>&nbsp;';
+	}
+	return $link;
+}
+
+function giml_change_search() {
+	
+	if (isset($_POST) && wp_verify_nonce($_POST['_ajax_nonce'], GIML_NONCE_NAME)) {
 		include 'shortcode-ajax.php';	
 	}
 

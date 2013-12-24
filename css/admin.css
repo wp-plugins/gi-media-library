@@ -13,6 +13,14 @@
     float: right;
     width: 28%;
 }
+.ui-dialog {
+    position: fixed;
+    z-index: 101;
+}
+.ui-widget-overlay {
+    position: fixed;
+    z-index: 100;
+}
 .form-row {
     margin: 10px;
 }

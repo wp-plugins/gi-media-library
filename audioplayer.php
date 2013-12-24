@@ -28,7 +28,7 @@ $ext = substr(strrchr($file,'.'),1)
 <title><?php echo $title; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="skin/blue.monday/jplayer.blue.monday.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
 <script type="text/javascript">
 //<![CDATA[

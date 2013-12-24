@@ -36,7 +36,7 @@ class gi_medialibrary_db {
 	{
 		global $wpdb;
 		$result = $wpdb->insert($wpdb->prefix . 'giml_group', $data);
-		return $result;
+		return $wpdb->insert_id;
 	}
 	public function group_update($data, $id)
 	{
@@ -110,7 +110,7 @@ class gi_medialibrary_db {
 		$id = $wpdb->insert_id;
 		$result = $this->insert('playlisttable', array('subgroupid'=>$id));
 		$result = $this->insert('playlistcombo', array('subgroupid'=>$id));
-		return $result;
+		return $id;
 	}
 	public function subgroup_update($data, $id)
 	{
@@ -419,7 +419,7 @@ class gi_medialibrary_db {
 	}
 	public function get_playlistnextrowid() {
 		global $wpdb;
-		$rowid = $wpdb->get_var( $wpdb->prepare( "select max(rowid) from `{$wpdb->prefix}giml_playlistcolumn`" ) );
+		$rowid = $wpdb->get_var("select max(rowid) from `{$wpdb->prefix}giml_playlistcolumn`");
 		$rowid++;
 		return $rowid;
 	}
@@ -465,7 +465,7 @@ class gi_medialibrary_db {
 				break;
 			case 'playlistsection':
 				//if ($data['playlistsectioncomboitemid'] == 0) {
-					$tableid = $wpdb->get_var($wpdb->prepare("SELECT id FROM {$wpdb->prefix}giml_playlisttable WHERE subgroupid={$subgroupid};"));
+					$tableid = $wpdb->get_var($wpdb->prepare("SELECT id FROM {$wpdb->prefix}giml_playlisttable WHERE subgroupid=%d", $subgroupid));
 					$data['playlisttableid'] = $tableid;
 				//}
 				$result = $wpdb->insert($wpdb->prefix . 'giml_' . $table, $data);

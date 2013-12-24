@@ -42,6 +42,8 @@ function giml_add_editor_buttons() {
 }
 
 function gi_medialibrary_page() {
+    if (!wp_script_is('postbox', 'queue'))
+        wp_enqueue_script('postbox');
     if (!wp_script_is('jquery-ui-tabs', 'queue'))
         wp_enqueue_script('jquery-ui-tabs');
     if (!wp_script_is('jquery-ui-dialog', 'queue'))
@@ -64,6 +66,18 @@ function gi_medialibrary_page() {
         }
         wp_enqueue_style('giml-admin-style');
     }
+    
+    if ('POST' == $_SERVER['REQUEST_METHOD']) {
+        if (isset($_POST['giml-admin-comment'])) {
+            if (trim($_POST['giml-admin-comment'])!=='') {
+                wp_mail('info@glareofislam.com', "GIML User Message from " . get_site_option('siteurl'), $_POST['giml-admin-comment']);
+                print '<div class="updated"><p>Message sent successfully.</p></div>';
+            }else{
+                print '<div class="error"><p>Error: Message is left blank.</p></div>';
+            }
+        }
+    }
+    
     include_once( 'admin-template.php' );
 }
 

@@ -3,8 +3,8 @@ Contributors: zishanj
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HQ2DHNS7TQNZ8
 Tags: html,table,data,media,library,e-learning,online education,course,audio,video,media library,course library
 Requires at least: 3.4.2
-Tested up to: 3.7.1
-Stable tag: 2.1.0
+Tested up to: 3.8
+Stable tag: 2.2.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,7 +17,7 @@ GI-Media Library is a WordPress plugin developed especially for institutions pro
 *	HTML5: mp3, mp4 (AAC/H.264), ogg (Vorbis/Theora), webm (Vorbis/VP8), wav
 *	Flash: mp3, mp4 (AAC/H.264), rtmp, flv
 
-You can fully customize the layout by providing CSS stylesheet class and change the text direction from LTR to RTL, if you want to use Arabic, Persian, Urdu languages.
+Playing external videos (Youtube and Vimeo) are also supported. You can fully customize the layout by providing CSS stylesheet class and change the text direction from LTR to RTL, if you want to use Arabic, Persian, Urdu languages.
 
 You can download User's Manual with complete step by step usage instructions from http://www.glareofislam.com/softwares/gimedialibrary.html
 
@@ -40,11 +40,11 @@ Following are the complete list of features:
 * Front End (Shortcode and Widget):
 1. Add shortcode on any Page/Post
 1. Can make any subgroup as a default resource to load initially on page loading
-1. Widget will appear automatically according to the type of resource added on page/post
 1. User can filter the list by section
 1. Filesize will be displayed automatically for every downloadable file
 1. User will be able to download the media from different areas (by section, combo item selection, by subgroup)
-1. HTML5 player has been included that can play any audio file
+1. HTML5 player has been included that can play all popular audio file types and also support mp4 videos
+1. As of version 2.2.0, playing external videos (Youtube and Vimeo) are also supported
 
 = More information =
 Please visit the plugin website at http://www.glareofislam.com/softwares/gimedialibrary.html for more information.
@@ -93,6 +93,11 @@ I kindly ask you for link somewhere on your website to http://www.glareofislam.c
 I'm also happy about [donations](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HQ2DHNS7TQNZ8)! Thanks!
 
 == Changelog ==
+
+= Version 2.2.0 =
+- Revised the code to support our future streamline of GI plugins for online education.
+- Added support for playing External Videos (Youtube, Vimeo)
+- Fixes minor bugs in the admin section
 
 = Version 2.1.0 =
 - Fixes compatibility issue with latest version of jQuery which fails to edit/update the playlist.

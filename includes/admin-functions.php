@@ -16,15 +16,9 @@ $mediaformats = array(
 			'wmp' => 'wmp-icon.gif',
 			'audio' => 'audio-icon.png',
 			'download' => 'download-icon.png',
-			'zip' => 'zip-icon.png'
+			'zip' => 'zip-icon.png',
+                        'video' => 'video-icon.gif'
 				);
-global $nonce;
-global $nonce_name;
-$nonce = "";
-$nonce_name = 'gi-medialibrary-action';
-if (function_exists('wp_create_nonce')) {
-	$nonce = wp_create_nonce($nonce_name);
-}
 $textareafields = array('grouplabel', 'subgrouplabel', 'subgroupdescription', 'playlistsectionlabel', 'playlistcomboitemdescription');
 
 function get_filesize($file) {
@@ -44,7 +38,7 @@ function get_fileicon($link) {
 }
 function get_downloadhtml($link, $label="", $css="", $pluginurl="") {
 	global $mediaformats;
-	global $nonce;
+	
 	$css = trim($css);
 	$downloadlabel = "";
 	if (!is_null($link)&& $link!=="") {
@@ -52,12 +46,12 @@ function get_downloadhtml($link, $label="", $css="", $pluginurl="") {
 		if (@array_key_exists(substr(strrchr($link,'.'),1), $mediaformats)) {
 			//$query = add_query_arg('download-fileid', base64_encode(trim($link)), get_permalink($post->ID));
 			if (function_exists('plugins_url')) {
-				$query = plugins_url('download.php?fileid=' . base64_encode(trim($link)) . '&nonce=' . $nonce, dirname(__FILE__));
+				$query = plugins_url('download.php?fileid=' . base64_encode(trim($link)) . '&nonce=' . GIML_NONCE, dirname(__FILE__));
 				$downloadlabel = "<span class=\"{$css}\"><a href=\"{$query}\">".trim($label)."&nbsp;<img title=\"Click to download\" src=\"" . 
 						plugins_url( 'images/' . $mediaformats[substr(strrchr($link,'.'),1)], dirname(__FILE__)) . "\">" .
 						"&nbsp;(" . get_filesize($link) . ")</a></span>";
 			}else{
-				$query = html_entity_decode($pluginurl) . 'download.php?fileid=' . base64_encode(trim($link)) . '&nonce=' . $nonce;
+				$query = html_entity_decode($pluginurl) . 'download.php?fileid=' . base64_encode(trim($link)) . '&nonce=' . GIML_NONCE;
 				$downloadlabel = "<span class=\"{$css}\"><a href=\"{$query}\">".trim($label)."&nbsp;<img title=\"Click to download\" src=\"" . 
 						html_entity_decode($pluginurl) . 'images/' . $mediaformats[substr(strrchr($link,'.'),1)] . "\">" .
 						"&nbsp;(" . get_filesize($link) . ")</a></span>";
@@ -87,9 +81,15 @@ function giml_get_groups() {
 }
 
 function giml_group_delete() {
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') ) {
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) ) {
 		global $giml_db;
-		$giml_db->group_delete($_POST['groupid']);
+                
+                if (has_filter('giml_admin_group_delete')) {
+                    $results = $giml_db->get_group($_POST['groupid']);
+                    apply_filters('giml_admin_group_delete', '', (string)$results[0]->grouplabel);
+                }
+                
+                $giml_db->group_delete($_POST['groupid']);
 		$group_option = giml_get_groups();
 			
 		die($group_option);
@@ -97,7 +97,7 @@ function giml_group_delete() {
 }
 
 function giml_group_edit() {
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') ) {
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) ) {
 		global $giml_db;
 		die(json_encode($giml_db->get_group($_POST['groupid'])));
 	}
@@ -109,7 +109,7 @@ function giml_group_update() {
 	
 	$group_option = "";
 	
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) )
 	{
 		for ($i=1; $i<=$_POST['rows']; $i++)
 		{
@@ -131,15 +131,25 @@ function giml_group_update() {
 				if (sanitize_text_field($_POST['grouplabel'.$i.'_'.$id]) === "")
 					continue 2;
 				
-				if (strpos($field, "sortorder") !== false)
+				if (strpos($field, "sortorder") !== false || strpos($field, "number") !== false)
 					$data[$field] = intval($_POST[$field.$i.'_'.$id]);
+                                elseif (strpos($field, "link") !== false)
+                                        $data[$field] = trim(esc_url_raw($_POST[$field.$i.'_'.$id]));
 				elseif (array_search($field, $textareafields)!==false && array_search($field, $textareafields)!==null)
 					$data[$field] = trim(wp_kses_post($_POST[$field.$i.'_'.$id]));
+                                elseif (strpos($field, "price") !== false)
+                                        $data[$field] = floatval($_POST[$field.$i.'_'.$id]);
 				else
 					$data[$field] = trim(sanitize_text_field($_POST[$field.$i.'_'.$id]));
 			}
-			if (count($data)>0)
-				$giml_db->group_update($data, $id);
+			if (count($data)>0) {
+                            if (has_filter('giml_admin_group_update')) {
+                                $g = $giml_db->get_group($id);
+                                apply_filters('giml_admin_group_update', '', (string)$g[0]->grouplabel, $_POST['grouplabel'.$i.'_'.$id]);
+                            }
+                            
+                            $giml_db->group_update($data, $id);
+                        }
 		}
 		$group_option = giml_get_groups();
 	}
@@ -151,7 +161,7 @@ function giml_group_add() {
 	global $textareafields;
 	
 	$group_option = "";
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) )
 	{
 		for ($i=1; $i<=$_POST['rows']; $i++)
 		{
@@ -161,16 +171,26 @@ function giml_group_add() {
 				if (sanitize_text_field($_POST['grouplabel'.$i]) === "")
 					continue 2;
 				
-				if (strpos($field, "sortorder") !== false)
+				if (strpos($field, "sortorder") !== false || strpos($field, "number") !== false)
 					$data[$field] = intval($_POST[$field.$i]);
+                                elseif (strpos($field, "link") !== false)
+                                        $data[$field] = trim(esc_url_raw($_POST[$field.$i]));
 				elseif (array_search($field, $textareafields)!==false && array_search($field, $textareafields)!==null)
 					$data[$field] = trim(wp_kses_post($_POST[$field.$i]));
+                                elseif (strpos($field, "price") !== false)
+                                        $data[$field] = floatval($_POST[$field.$i]);
 				else
 					$data[$field] = trim(sanitize_text_field($_POST[$field.$i]));
 			}
 			$data["createddate"] = date('Y-m-d H:i:s');
-			if (count($data)>0)
-				$giml_db->group_add($data);
+			if (count($data)>0){
+                            $gid = $giml_db->group_add($data);
+                            
+                            if (has_filter('giml_admin_group_add')) {
+                                $g = $giml_db->get_group($gid);
+                                apply_filters('giml_admin_group_add', '', (string)$g[0]->grouplabel);
+                            }
+                        }
 		}
 		$group_option = giml_get_groups();
 	}
@@ -180,16 +200,22 @@ function giml_group_add() {
 // SUBGROUPS
 
 function giml_subgroup_delete() {
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') ) {
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) ) {
 		global $giml_db;
-		$giml_db->subgroup_delete($_POST['subgroupid']);
 		
+                if (has_filter('giml_admin_subgroup_delete')) {
+                    $results = $giml_db->get_subgroup($_POST['subgroupid']);
+                    apply_filters('giml_admin_subgroup_delete', '', (string)$results[0]->subgrouplabel, $_POST['subgroupid']);
+                }
+                
+                $giml_db->subgroup_delete($_POST['subgroupid']);
+                
 		die(giml_get_subgroups());
 	}
 }
 
 function giml_subgroup_edit() {
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') ) {
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) ) {
 		global $giml_db;
 		die(json_encode($giml_db->get_subgroup($_POST['subgroupid'])));
 	}
@@ -201,7 +227,7 @@ function giml_subgroup_update() {
 	
 	$subgroup_option = "";
 	
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) )
 	{
 		for ($i=1; $i<=$_POST['rows']; $i++)
 		{
@@ -225,10 +251,14 @@ function giml_subgroup_update() {
 				}
 				if (isset($_POST['subgroupid']))
 				{
-					if ($field === "subgroupdownloadlink")
+                                        if (strpos($field, "sortorder") !== false || strpos($field, "number") !== false)
+						$data[$field] = intval($_POST[$field.$i]);
+					elseif (strpos($field, "link") !== false)
 						$data[$field] = trim(esc_url_raw($_POST[$field.$i]));
 					elseif (array_search($field, $textareafields)!==false && array_search($field, $textareafields)!==null)
 						$data[$field] = trim(wp_kses_post($_POST[$field.$i]));
+                                        elseif (strpos($field, "price") !== false)
+						$data[$field] = floatval($_POST[$field.$i]);
 					else
 						$data[$field] = trim(sanitize_text_field($_POST[$field.$i]));
 				}else{
@@ -236,18 +266,25 @@ function giml_subgroup_update() {
 						continue 2;
 					
 					$field1 = ($field === "subgroupgroup")?"groupid":$field;
-					if (strpos($field, "sortorder") !== false)
+					if (strpos($field, "sortorder") !== false || strpos($field, "number") !== false)
 						$data[$field1] = intval($_POST[$field.$i.'_'.$id]);
                                         elseif (strpos($field, "link") !== false)
                                             $data[$field1] = trim(esc_url_raw($_POST[$field.$i.'_'.$id]));
 					elseif (array_search($field, $textareafields)!==false && array_search($field, $textareafields)!==null)
 						$data[$field1] = trim(wp_kses_post($_POST[$field.$i.'_'.$id]));
+                                        elseif (strpos($field, "price") !== false)
+						$data[$field1] = floatval($_POST[$field.$i.'_'.$id]);
 					else
 						$data[$field1] = trim(sanitize_text_field($_POST[$field.$i.'_'.$id]));
 				}
 			}
-			if (count($data)>0)
-				$giml_db->subgroup_update($data, $id);
+			if (count($data)>0) {
+                            if (has_filter('giml_admin_subgroup_update')) {
+                                $sg = $giml_db->get_subgroup($id);
+                                apply_filters('giml_admin_subgroup_update', '', (string)$sg[0]->subgrouplabel, $_POST['subgrouplabel'.$i.'_'.$id], $id);
+                            }
+                            $giml_db->subgroup_update($data, $id);
+                        }
 		}
 		$subgroup_option = giml_get_subgroups();
 	}
@@ -259,7 +296,7 @@ function giml_subgroup_add() {
 	global $textareafields;
 	
 	$subgroup_option = "";
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) )
 	{
 		for ($i=1; $i<=$_POST['rows']; $i++)
 		{
@@ -271,18 +308,26 @@ function giml_subgroup_add() {
 					
 				$field1 = ($field === "subgroupgroup")?"groupid":$field;
 				
-				if (strpos($field, "sortorder") !== false)
+				if (strpos($field, "sortorder") !== false || strpos($field, "number") !== false)
 					$data[$field1] = intval($_POST[$field.$i]);
                                 elseif (strpos($field, "link") !== false)
                                         $data[$field1] = trim(esc_url_raw($_POST[$field.$i]));
 				elseif (array_search($field, $textareafields)!==false && array_search($field, $textareafields)!==null)
 					$data[$field1] = trim(wp_kses_post($_POST[$field.$i]));
+                                elseif (strpos($field, "price") !== false)
+					$data[$field1] = floatval($_POST[$field.$i]);
 				else
 					$data[$field1] = trim(sanitize_text_field($_POST[$field.$i]));
 			}
 			$data["createddate"] = date('Y-m-d H:i:s');
-			if (count($data)>0)
-				$giml_db->subgroup_add($data);
+			if (count($data)>0){
+                            $sgid = $giml_db->subgroup_add($data);
+                            
+                            if (has_filter('giml_admin_subgroup_add')) {
+                                $sg = $giml_db->get_subgroup($sgid);
+                                apply_filters('giml_admin_subgroup_add', '', (string)$sg[0]->subgrouplabel, $sgid);
+                            }
+                        }
 		}
 		$subgroup_option = giml_get_subgroups();
 	}
@@ -357,7 +402,7 @@ function giml_get_shortcodedata() {
 			$mydata['groups'] = $group_option;
 			break;
 		case 'admininit':
-			if (check_ajax_referer('gi-medialibrary-action') ) {
+			if (check_ajax_referer(GIML_NONCE_NAME) ) {
 				
 				$mydata['subgroups'] = get_independentsubgroups();
 				$mydata['subgroupsbysortorder'] = get_independentsubgroups(true);
@@ -392,7 +437,7 @@ function giml_get_shortcodedata() {
 			$mydata['subgroups'] = $subgroup_option;
 			break;
 		case 'admingroupsubgroups':
-			if (check_ajax_referer('gi-medialibrary-action') ) {
+			if (check_ajax_referer(GIML_NONCE_NAME) ) {
 				$mydata['subgroups'] = get_groupsubgroups($_POST['groupid']);
 				$mydata['subgroupsbysortorder'] = get_groupsubgroups($_POST['groupid'], true);
 			}
@@ -407,7 +452,7 @@ function giml_get_shortcodedata() {
 function giml_get_subgroups() {
 	global $giml_db;
 	$subgroup_option = "";
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') ) {
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) ) {
 		$subgroups = $giml_db->get_subgroups();
 		foreach ($subgroups as $subgroup)
 		{
@@ -423,9 +468,9 @@ function giml_get_playlistcolumns() {
 	global $giml_db;
 	
 	$mydata = "";
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) )
 	{
-		$mydata['playlistcolumns'] = mb_convert_encoding(get_playlistcolumnssubgroup($_POST['subgroupid'], $_POST['sectionid']), "UTF-8");
+		$mydata['playlistcolumns'] = get_playlistcolumnssubgroup($_POST['subgroupid'], $_POST['sectionid']);
 	}
 	
 	die(json_encode($mydata));
@@ -435,7 +480,7 @@ function giml_get_playlistcombosections() {
 	global $giml_db;
 	
 	$mydata = "";
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) )
 	{
 		$mydata['playlistsection'] = get_playlistcombosections($_POST['comboitemid'], null, ($_POST['sortbysortorder']==="true")?true:false, $_POST['subgroupid']);
 	}
@@ -446,7 +491,7 @@ function giml_get_playlistcombosectioncolumns() {
 	global $giml_db;
 	
 	$mydata = "";
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) )
 	{
 		$mydata['playlistsectioncolumn'] = get_playlistsectioncolumnssubgroup($_POST['subgroupid'], $_POST['comboitemid']);
 	}
@@ -457,7 +502,7 @@ function giml_get_playlistdata() {
 	global $giml_db;
 	
 	$mydata = "";
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) )
 	{
 		$subgroupid = $_POST['subgroupid'];
 		$tmp = "";
@@ -493,7 +538,7 @@ function giml_insert() {
 	global $textareafields;
 	
 	$result = "";
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) )
 	{
 		$table = $_POST['table'];
 		switch($table)
@@ -603,7 +648,7 @@ function giml_update() {
 	global $textareafields;
 	
 	$result = "";
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') ) {
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) ) {
 		$table = $_POST['table'];
 		switch($table) {
 			case 'playlisttable': case 'playlistcombo':
@@ -750,7 +795,7 @@ function giml_edit() {
 	global $giml_db;
 	
 	$result = "";
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') )
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) )
 	{
 		$table = $_POST['table'];
 		switch($table)
@@ -766,7 +811,7 @@ function giml_delete() {
 	global $giml_db;
 	
 	$result = "";
-	if ( !empty($_POST) && check_ajax_referer('gi-medialibrary-action') ) {
+	if ( !empty($_POST) && check_ajax_referer(GIML_NONCE_NAME) ) {
 		$table = $_POST['table'];
 		switch($table) {
 			default:
@@ -920,7 +965,7 @@ function get_playlistcolumnssubgroup($subgroupid, $sectionid=null) {
 			}
 			$colid[] = $data->playlisttablecolumnid;
 		}*/
-		$columntext = (strlen($data->playlistcolumntext)>30)?substr($data->playlistcolumntext,0,29).'...':$data->playlistcolumntext;
+		$columntext = htmlentities((strlen($data->playlistcolumntext)>30)?substr($data->playlistcolumntext,0,29).'...':$data->playlistcolumntext, ENT_COMPAT | ENT_HTML401, "UTF-8");
 		if ($rowid == $data->rowid) {
 			if($col > $totalcols) {
 				$col = 1;
@@ -972,28 +1017,29 @@ function get_playlistsectioncolumnssubgroup($subgroupid, $comboitemid) {
 	$section = "";
 	$comboitemlabel = "";
 	foreach ($results as $data) {
-		if ($section === $data->playlistsectionlabel) {
-			if($col > $totalcols) {
-				$col = 1;
-				$option = substr($option, 0, strlen($option)-4);
-				$option .= '</option>';
-				$option .= '<option value="' . $data->comboitemid . '_' . $data->playlistsectionid . '">' . $comboitemlabel . $section . ' > ';
-			}
-			$option .= $data->playlistsectiontablecolumntext . ' :: ';
-		}else{
-			if ($option !== "") {
-				$option = substr($option, 0, strlen($option)-4);
-				$option .= '</option>';
-				$col = 1;
-			}
-			$section = $data->playlistsectionlabel;
-			
-			//if ($comboitemid > 0)
-			//	$comboitemlabel = (!empty($data->playlistcomboitemlabel))?$data->playlistcomboitemlabel . " > ":"";
-				
-			$option .= '<option value="' . $data->comboitemid . '_' . $data->playlistsectionid . '">' . $comboitemlabel . $section . ' > ' . $data->playlistsectiontablecolumntext . ' :: ';
-		}
-		$col++;
+            $columntext = htmlentities((strlen($data->playlistsectiontablecolumntext)>30)?substr($data->playlistsectiontablecolumntext,0,29).'...':$data->playlistsectiontablecolumntext, ENT_COMPAT | ENT_HTML401, "UTF-8");
+            if ($section === $data->playlistsectionlabel) {
+                    if($col > $totalcols) {
+                            $col = 1;
+                            $option = substr($option, 0, strlen($option)-4);
+                            $option .= '</option>';
+                            $option .= '<option value="' . $data->comboitemid . '_' . $data->playlistsectionid . '">' . $comboitemlabel . $section . ' > ';
+                    }
+                    $option .= $columntext . ' :: ';
+            }else{
+                    if ($option !== "") {
+                            $option = substr($option, 0, strlen($option)-4);
+                            $option .= '</option>';
+                            $col = 1;
+                    }
+                    $section = $data->playlistsectionlabel;
+
+                    //if ($comboitemid > 0)
+                    //	$comboitemlabel = (!empty($data->playlistcomboitemlabel))?$data->playlistcomboitemlabel . " > ":"";
+
+                    $option .= '<option value="' . $data->comboitemid . '_' . $data->playlistsectionid . '">' . $comboitemlabel . $section . ' > ' . $columntext . ' :: ';
+            }
+            $col++;
 	}
 	if($option !== "") {
 		$option = substr($option, 0, strlen($option)-4);

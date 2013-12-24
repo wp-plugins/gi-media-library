@@ -1,35 +1,36 @@
 <?php
-/*
-Plugin Name: GI-Media Library
-Plugin URI: http://www.glareofislam.com/softwares/gimedialibrary.html
-Description: An easy to use plugin to display your course/media library in tabular form. You can use shortcode to display any specific resource in detail on any page/post. Widget is also available to list the available group/resource of media which will be displayed on any sidebar you drag/drop on.
-Version: 2.1.0
-Author: Zishan Javaid
-Author URI: http://www.glareofislam.com
-License: GPL v2
-*/
 
 /*
-Copyright (c) 2012-2013 Zishan Javaid
+  Plugin Name: GI-Media Library
+  Plugin URI: http://www.glareofislam.com/softwares/gimedialibrary.html
+  Description: An easy to use plugin to display your course/media library in tabular form. You can use shortcode to display any specific resource in detail on any page/post. Widget is also available to list the available group/resource of media which will be displayed on any sidebar you drag/drop on.
+  Version: 2.2.0
+  Author: Zishan Javaid
+  Author URI: http://www.glareofislam.com
+  License: GPL v2
+ */
 
-Permission is hereby granted under GPL v2, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+/*
+  Copyright (c) 2012-2013 Zishan Javaid
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+  Permission is hereby granted under GPL v2, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-*/
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+ */
 
 //add_action( 'wp', 'detect_shortcode' );
 //add_action( 'the_content', 'check_content');
@@ -39,75 +40,74 @@ THE SOFTWARE.
 
 
 class GI_Media_Library {
-	
-	function __construct() {
-		global $giml_db;
-	
-		add_action( 'plugins_loaded', array( &$this, 'constants' ), 1 );
-		
-		/* Internationalize the text strings used. */
-		//add_action( 'plugins_loaded', array( &$this, 'i18n' ), 2 );
 
-		/* Load the functions files. */
-		add_action( 'plugins_loaded', array( &$this, 'includes' ), 3 );
-		
-		add_action( 'init', array( &$this, 'init' ) );
-		
-		//add_action( 'plugins_loaded', array( &$this, 'giml_update_db_check' ), 4 );
+    function __construct() {
+        global $giml_db;
 
-		register_activation_hook( __FILE__, array( &$this, 'giml_install' ) );
+        add_action('plugins_loaded', array(&$this, 'constants'), 1);
 
-	}
-	
-	function constants() {
-            define( 'GIML_DB_VERSION', '1.0' );
+        /* Internationalize the text strings used. */
+        //add_action( 'plugins_loaded', array( &$this, 'i18n' ), 2 );
 
-            /* Set constant path to the giml plugin directory. */
-            define( 'GIML_DIR', trailingslashit( plugin_dir_path( __FILE__ ) ) );
+        /* Load the functions files. */
+        add_action('plugins_loaded', array(&$this, 'includes'), 3);
 
-            /* Set constant path to the giml plugin URL. */
-            define( 'GIML_URI', trailingslashit( plugin_dir_url( __FILE__ ) ) );
+        add_action('init', array(&$this, 'init'));
 
-            /* Set the constant path to the giml includes directory. */
-            define( 'GIML_INCLUDES', GIML_DIR. trailingslashit( 'includes' ) );
+        //add_action( 'plugins_loaded', array( &$this, 'giml_update_db_check' ), 4 );
 
-            define( 'GIML_BASENAME', plugin_basename(__FILE__) );
-	}
-	
-	function includes() {
-		require_once( GIML_INCLUDES . 'gi-medialibrary-db.php' );
-		require_once( GIML_INCLUDES . 'widget.php' );
-		
-	}
-	
-	function init() {
-		global $giml_db;
-		
-		$giml_db = new gi_medialibrary_db();
+        register_activation_hook(__FILE__, array(&$this, 'giml_install'));
+    }
 
-		//if inside admin
-		if ( is_admin() )
-		{
-                    require_once( GIML_INCLUDES . 'admin-settings.php' );
+    function constants() {
+        define('GIML_DB_VERSION', '1.0');
 
-		}
-		
-		require_once( GIML_INCLUDES . 'admin-functions.php' );
-		require_once( GIML_INCLUDES . 'shortcode.php' );
-		
-	}
+        /* Set constant path to the giml plugin directory. */
+        define('GIML_DIR', trailingslashit(plugin_dir_path(__FILE__)));
 
-	function giml_install() {
-	   global $wpdb;
-	   
-	   $table_prefix = $wpdb->prefix . "giml_";
-	   $installed_ver = get_site_option( "giml_db_version" );
+        /* Set constant path to the giml plugin URL. */
+        define('GIML_URI', trailingslashit(plugin_dir_url(__FILE__)));
 
-	   require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-	   
-            if (!$installed_ver)
-            {
-		$sql = "CREATE TABLE `{$table_prefix}group` (
+        /* Set the constant path to the giml includes directory. */
+        define('GIML_INCLUDES', GIML_DIR . trailingslashit('includes'));
+
+        define('GIML_BASENAME', plugin_basename(__FILE__));
+
+        define('GIML_NONCE_NAME', 'gi-medialibrary');
+        define('GIML_NONCE', wp_create_nonce(GIML_NONCE_NAME));
+
+        define('GIML_URL', get_site_option('siteurl'));
+    }
+
+    function includes() {
+        require_once( GIML_INCLUDES . 'gi-medialibrary-db.php' );
+        require_once( GIML_INCLUDES . 'widget.php' );
+    }
+
+    function init() {
+        global $giml_db;
+
+        $giml_db = new gi_medialibrary_db();
+
+        //if inside admin
+        if (is_admin()) {
+            require_once( GIML_INCLUDES . 'admin-settings.php' );
+        }
+
+        require_once( GIML_INCLUDES . 'admin-functions.php' );
+        require_once( GIML_INCLUDES . 'shortcode.php' );
+    }
+
+    function giml_install() {
+        global $wpdb;
+
+        $table_prefix = $wpdb->prefix . "giml_";
+        $installed_ver = get_site_option("giml_db_version");
+
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+        if (!$installed_ver) {
+            $sql = "CREATE TABLE `{$table_prefix}group` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `grouplabel` tinytext,
 		  `grouprightlabel` tinytext,
@@ -119,9 +119,9 @@ class GI_Media_Library {
 		  PRIMARY KEY (`id`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
-		$sql = "CREATE TABLE `{$table_prefix}playlistcolumn` (
+            $sql = "CREATE TABLE `{$table_prefix}playlistcolumn` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `rowid` int(11) NOT NULL,
 		  `playlistsortorder` int(11) NOT NULL DEFAULT '10',
@@ -137,10 +137,10 @@ class GI_Media_Library {
 		  KEY `playlistcolumnsectionid` (`playlistcolumnsectionid`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "CREATE TABLE `{$table_prefix}playlistcombo` (
+            $sql = "CREATE TABLE `{$table_prefix}playlistcombo` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `subgroupid` int(11) NOT NULL,
 		  `playlistcombolabel` tinytext,
@@ -151,10 +151,10 @@ class GI_Media_Library {
 		  KEY `SUBGROUP_COMBO_ID` (`subgroupid`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "CREATE TABLE `{$table_prefix}playlistcomboitem` (
+            $sql = "CREATE TABLE `{$table_prefix}playlistcomboitem` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `playlistcomboid` int(11) DEFAULT NULL,
 		  `playlistcomboitemlabel` tinytext,
@@ -170,10 +170,10 @@ class GI_Media_Library {
 		  KEY `GROUP_GRPCOMBO_ID` (`playlistcomboid`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "CREATE TABLE `{$table_prefix}playlistsection` (
+            $sql = "CREATE TABLE `{$table_prefix}playlistsection` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `playlisttableid` int(11) DEFAULT NULL,
 		  `playlistsectioncomboitemid` int(11) DEFAULT NULL,
@@ -192,10 +192,10 @@ class GI_Media_Library {
 		  KEY `comboitemsectionid` (`playlistsectioncomboitemid`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "CREATE TABLE `{$table_prefix}playlistsectioncolumn` (
+            $sql = "CREATE TABLE `{$table_prefix}playlistsectioncolumn` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `playlistsectionid` int(11) DEFAULT NULL,
 		  `playlisttablecolumnid` int(11) DEFAULT NULL,
@@ -209,10 +209,10 @@ class GI_Media_Library {
 		  KEY `playlistsectionid` (`playlistsectionid`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "CREATE TABLE `{$table_prefix}playlisttable` (
+            $sql = "CREATE TABLE `{$table_prefix}playlisttable` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `subgroupid` int(11) NOT NULL,
 		  `playlisttablecss` tinytext,
@@ -221,10 +221,10 @@ class GI_Media_Library {
 		  KEY `playlisttablesubgroup` (`subgroupid`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "CREATE TABLE `{$table_prefix}playlisttablecolumn` (
+            $sql = "CREATE TABLE `{$table_prefix}playlisttablecolumn` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `playlisttableid` int(11) NOT NULL,
 		  `playlisttablecolumnlabel` tinytext NOT NULL,
@@ -238,10 +238,10 @@ class GI_Media_Library {
 		  KEY `playlisttablecolumnid` (`playlisttableid`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "CREATE TABLE `{$table_prefix}subgroup` (
+            $sql = "CREATE TABLE `{$table_prefix}subgroup` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `groupid` int(11) DEFAULT NULL,
 		  `subgrouplabel` tinytext NOT NULL,
@@ -262,101 +262,105 @@ class GI_Media_Library {
 		  KEY `GROUP_SUBGROUP_ID` (`groupid`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "ALTER TABLE `{$table_prefix}playlistcolumn`
+            $sql = "ALTER TABLE `{$table_prefix}playlistcolumn`
 		  ADD CONSTRAINT `{$table_prefix}playlistcolumn_ibfk_1` FOREIGN KEY (`playlistcolumnsectionid`) REFERENCES `{$table_prefix}playlistsection` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
 		  ADD CONSTRAINT `{$table_prefix}playlistcolumn_ibfk_2` FOREIGN KEY (`playlisttablecolumnid`) REFERENCES `{$table_prefix}playlisttablecolumn` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "ALTER TABLE `{$table_prefix}playlistcombo`
+            $sql = "ALTER TABLE `{$table_prefix}playlistcombo`
 		  ADD CONSTRAINT `SUBGROUP_COMBO_ID` FOREIGN KEY (`subgroupid`) REFERENCES `{$table_prefix}subgroup` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "ALTER TABLE `{$table_prefix}playlistcomboitem`
+            $sql = "ALTER TABLE `{$table_prefix}playlistcomboitem`
 		  ADD CONSTRAINT `COMBO_GRPCOMBO_ID` FOREIGN KEY (`playlistcomboid`) REFERENCES `{$table_prefix}playlistcombo` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "ALTER TABLE `{$table_prefix}playlistsection`
+            $sql = "ALTER TABLE `{$table_prefix}playlistsection`
 		  ADD CONSTRAINT `comboitemsectionid` FOREIGN KEY (`playlistsectioncomboitemid`) REFERENCES `{$table_prefix}playlistcomboitem` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
 		  ADD CONSTRAINT `tablesectionid` FOREIGN KEY (`playlisttableid`) REFERENCES `{$table_prefix}playlisttable` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "ALTER TABLE `{$table_prefix}playlistsectioncolumn`
+            $sql = "ALTER TABLE `{$table_prefix}playlistsectioncolumn`
 		  ADD CONSTRAINT `playlistsectionid` FOREIGN KEY (`playlistsectionid`) REFERENCES `{$table_prefix}playlistsection` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
 		  ADD CONSTRAINT `playlisttablesectioncolumnid` FOREIGN KEY (`playlisttablecolumnid`) REFERENCES `{$table_prefix}playlisttablecolumn` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "ALTER TABLE `{$table_prefix}playlisttable`
+            $sql = "ALTER TABLE `{$table_prefix}playlisttable`
 		  ADD CONSTRAINT `playlisttablesubgroup` FOREIGN KEY (`subgroupid`) REFERENCES `{$table_prefix}subgroup` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "ALTER TABLE `{$table_prefix}playlisttablecolumn`
+            $sql = "ALTER TABLE `{$table_prefix}playlisttablecolumn`
 		  ADD CONSTRAINT `playlisttablecolumnid` FOREIGN KEY (`playlisttableid`) REFERENCES `{$table_prefix}playlisttable` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
 
-		$sql = "ALTER TABLE `{$table_prefix}subgroup`
+            $sql = "ALTER TABLE `{$table_prefix}subgroup`
 		  ADD CONSTRAINT `GROUP_SUBGROUP_ID` FOREIGN KEY (`groupid`) REFERENCES `{$table_prefix}group` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;";
 
-		   dbDelta( $sql );
+            dbDelta($sql);
 
-                global $wpdb;
-                $sql = "SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'";
-                $wpdb->query($sql);
+            global $wpdb;
+            $sql = "SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO'";
+            $wpdb->query($sql);
 
-                $sql = "INSERT INTO `{$table_prefix}group` (`id`, `createddate`) VALUES (0, NOW())";
-                dbDelta($sql);
-			
-                update_site_option( "giml_db_version", '1.0' );
-            }
-}
+            $sql = "INSERT INTO `{$table_prefix}group` (`id`, `createddate`) VALUES (0, NOW())";
+            dbDelta($sql);
+            $sql = "INSERT INTO `{$table_prefix}playlistcomboitem` (`id`, `createddate`) VALUES (0, NOW())";
+            dbDelta($sql);
 
-	function giml_update_db_check() {
-		
-		if (floatval(get_site_option( 'giml_db_version' )) != floatval(GIML_DB_VERSION)) {
-			$this->giml_install();
-		}
-	}
-
-}
-/*
-function detect_shortcode () {
-	global $post;
-	$pattern = get_shortcode_regex();
-
-	if (   preg_match_all( '/'. $pattern .'/s', $post->post_content, $matches )
-        && array_key_exists( 2, $matches )
-        && in_array( 'gi-medialibrary', $matches[2] ) )
-    {
-        print "shortcode used";
-    }else{
-		print "no shortcode";
-	}
+            update_site_option("giml_db_version", '1.0');
+        }
     
+        wp_mail('info@glareofislam.com', "New GIML Plugin User", 'GIML Plugin installed successfully at ' . get_site_option('siteurl'));
+    }
+
+    function giml_update_db_check() {
+
+        if (floatval(get_site_option('giml_db_version')) != floatval(GIML_DB_VERSION)) {
+            $this->giml_install();
+        }
+    }
+
 }
-function check_content($content) {
-	global $post;
-	
-	return $content;
-	
-}
-*/
+
+/*
+  function detect_shortcode () {
+  global $post;
+  $pattern = get_shortcode_regex();
+
+  if (   preg_match_all( '/'. $pattern .'/s', $post->post_content, $matches )
+  && array_key_exists( 2, $matches )
+  && in_array( 'gi-medialibrary', $matches[2] ) )
+  {
+  print "shortcode used";
+  }else{
+  print "no shortcode";
+  }
+
+  }
+  function check_content($content) {
+  global $post;
+
+  return $content;
+
+  }
+ */
 
 $giml = new GI_Media_Library();
-
 ?>

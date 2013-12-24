@@ -7,8 +7,8 @@ class GIMediaLibraryWidget extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
 	 		__CLASS__, // Base ID
-			'GI-Media Library Widget', // Name
-			array( 'description' => 'Display the widget with media resource selection on sidebar.', 
+			'GI-Media Library', // Name
+			array( 'description' => 'Display the widget with media library selection on sidebar.', 
 				'classname' => __CLASS__ )  
 			// Args
 		);
@@ -37,7 +37,6 @@ class GIMediaLibraryWidget extends WP_Widget {
 	function widget($args, $instance) {
 		global $post;
 		global $giml_db;
-		global $nonce;
 		
 		$js = "";
 		
@@ -74,7 +73,7 @@ class GIMediaLibraryWidget extends WP_Widget {
 								$('select#searchtype, select#filterby').attr('disabled','disabled');
 								$('div#giml_loader').html('<p align=\"center\"><img src=\"".plugins_url('js/ajax-loader.gif', dirname(__FILE__))."\">&nbsp;Loading . . .</p>');
 								var data = {action: 'giml_change_search',
-									_ajax_nonce: '{$nonce}',
+									_ajax_nonce: '".GIML_NONCE."',
 									subgroupid: id};
 									
 								$.post('" . admin_url('admin-ajax.php') . "', data, function(response){
@@ -134,8 +133,9 @@ class GIMediaLibraryWidget extends WP_Widget {
 					foreach ($subgroup as $data) {
 							
 						if (intval($data->groupid) > 0) {
-							$html .= "<h6><span class=\"{$data->groupcss}\" style=\"direction:{$data->groupdirection};\">{$data->grouplabel}</span></h6><div id=\"giml-menu\"><ul>";
-							$subgroups = $giml_db->get_group_subgroups($data->groupid);
+                                                    $subgroups = $giml_db->get_group_subgroups($data->groupid);
+                                                    if (count($subgroups)>1) {
+                                                        $html .= "<h6><span class=\"{$data->groupcss}\" style=\"direction:{$data->groupdirection};\">{$data->grouplabel}</span></h6><div id=\"giml-menu\"><ul>";
 							foreach ($subgroups as $data1) {
 								$style1 = ""; $style2 = "";
 								if($currentsubgroup == $data1->id) {
@@ -159,7 +159,7 @@ class GIMediaLibraryWidget extends WP_Widget {
 							$html .= "</ul></div>";
 							
 							$j++;
-							
+                                                    }
 							//print "$id group avail";
 						}else{
 							if(count($matches[0])==1) {
