@@ -12,12 +12,12 @@ GI-Media Library enables you to display your course/media library in tabular for
 
 == Description ==
 
-GI-Media Library is a WordPress plugin developed especially for institutions providing online education. With this plugin, it's easy to create your course/media library in a tabular form without any effort of custom building pages and layouts. You can organize it into a group and subgroup, create playlist section and then add your links to course materials or media's under that section. You can create your own table with desired number of columns like topic, duration, files etc. It supports all type of libraries like audio, video, pdf, doc etc. This plugin also comes with built-in HTML5 player from jPlayer and it supports following media formats:
+GI-Media Library is a WordPress plugin developed especially for institutions providing online education. With this plugin, it's easy to create your course/media library in a tabular form without any effort of custom building pages and layouts. You can organize it into a group (course) and subgroup (subjects), create playlist section (chapters) and then add your links to course materials or media's under that section. You can create your own table with desired number of columns like topic, duration, files etc. It supports all type of libraries like audio, video, pdf, doc etc. This plugin also comes with built-in HTML5 player from jPlayer and it supports following media formats:
 
 *	HTML5: mp3, mp4 (AAC/H.264), ogg (Vorbis/Theora), webm (Vorbis/VP8), wav
 *	Flash: mp3, mp4 (AAC/H.264), rtmp, flv
 
-Playing external videos (Youtube and Vimeo) are also supported. You can fully customize the layout by providing CSS stylesheet class and change the text direction from LTR to RTL, if you want to use Arabic, Persian, Urdu languages.
+Playing external videos (YouTube and Vimeo) are also supported. You can fully customize the layout by providing CSS stylesheet class and change the text direction from LTR to RTL, if you want to use Arabic, Persian, Urdu languages.
 
 You can download User's Manual with complete step by step usage instructions from http://www.glareofislam.com/softwares/gimedialibrary.html
 
@@ -44,7 +44,7 @@ Following are the complete list of features:
 1. Filesize will be displayed automatically for every downloadable file
 1. User will be able to download the media from different areas (by section, combo item selection, by subgroup)
 1. HTML5 player has been included that can play all popular audio file types and also support mp4 videos
-1. As of version 2.2.0, playing external videos (Youtube and Vimeo) are also supported
+1. As of version 2.2.0, playing external videos (YouTube and Vimeo) are also supported
 
 = More information =
 Please visit the plugin website at http://www.glareofislam.com/softwares/gimedialibrary.html for more information.
@@ -96,7 +96,7 @@ I'm also happy about [donations](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xc
 
 = Version 2.2.0 =
 - Revised the code to support our future streamline of GI plugins for online education.
-- Added support for playing External Videos (Youtube, Vimeo)
+- Added support for playing External Videos (YouTube, Vimeo)
 - Fixes minor bugs in the admin section
 
 = Version 2.1.0 =
