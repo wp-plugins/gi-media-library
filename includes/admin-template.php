@@ -419,12 +419,12 @@ if (has_filter('giml_admin_manage')) {
                                 <div class="handlediv" title="Click to toggle"><br></div>
                                 <h3 class="hndle">About GI-Media Library</h3>
                                 <div class="inside">
-                                    <p>GI-Media Library was developed especially for institutions providing online education. With this plugin, it's easy to create your course/media library in a tabular form without any effort of custom building pages and layouts. You can organize it into a group and subgroup, create playlist section and then add your links to course materials or media's under that section. You can create your own table with desired number of columns like topic, duration, files etc. It supports all type of libraries like audio, video, pdf, doc etc. This plugin also comes with built-in HTML5 player from jPlayer and it supports following media formats:</p>
+                                    <p>GI-Media Library was developed especially for institutions providing online education. With this plugin, it's easy to create your course/media library in a tabular form without any effort of custom building pages and layouts. You can organize it into a group (course) and subgroup (subjects), create playlist section (chapters) and then add your links to course materials or media's under that section. You can create your own table with desired number of columns like topic, duration, files etc. It supports all type of libraries like audio, video, pdf, doc etc. This plugin also comes with built-in HTML5 player from jPlayer and it supports following media formats:</p>
                                     <ul>
                                         <li>HTML5: mp3, mp4 (AAC/H.264), ogg (Vorbis/Theora), webm (Vorbis/VP8), wav</li>
                                         <li>Flash: mp3, mp4 (AAC/H.264), rtmp, flv</li>
                                     </ul>
-                                    <p>You can fully customize the layout by providing CSS stylesheet class and change the text direction from LTR to RTL, if you want to use Arabic, Persian, Urdu languages.</p>
+                                    <p>Playing external videos (YouTube and Vimeo) are also supported. You can fully customize the layout by providing CSS stylesheet class and change the text direction from LTR to RTL, if you want to use Arabic, Persian, Urdu languages.</p>
                                 </div>
                             </div>
                             <div class="postbox">
@@ -444,19 +444,15 @@ if (has_filter('giml_admin_manage')) {
                                 <div class="handlediv" title="Click to toggle"><br></div>
                                 <h3 class="hndle">Author and License</h3>
                                 <div class="inside">
-                                    <p>This plugin was written and developed by <a href="http://www.glareofislam.com/softwares/gimedialibrary.html">Zishan Javaid</a>. It is licensed as Free Software under <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License 2 (GPL 2)</a>. If you like the plugin, giving a <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HQ2DHNS7TQNZ8">donation</a> is recommended. Please rate and review the plugin in the <a href="http://wordpress.org/plugins/gi-media-library/">WordPress Plugin Directory</a>. Donations and good ratings encourage me to further develop the plugin and to provide countless hours of support. Any amount is appreciated! Thanks!</p>
+                                    <p>This plugin was written and developed by <a href="http://www.glareofislam.com/softwares/gimedialibrary.html" target="_blank">Zishan Javaid</a>. It is licensed as Free Software under <a href="http://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GNU General Public License 2 (GPL 2)</a>. If you like the plugin, giving a <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HQ2DHNS7TQNZ8" target="_blank">donation</a> is recommended. Please rate and review the plugin in the <a href="http://wordpress.org/plugins/gi-media-library/" target="_blank">WordPress Plugin Directory</a>. Donations and good ratings encourage me to further develop the plugin and to provide countless hours of support. Any amount is appreciated! Thanks!</p>
                                 </div>
                             </div>
                             <div class="postbox">
                                 <div class="handlediv" title="Click to toggle"><br></div>
                                 <h3 class="hndle">Donate by PayPal</h3>
                                 <div class="inside">
-                                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                                    <input type="hidden" name="cmd" value="_s-xclick">
-                                    <input type="hidden" name="hosted_button_id" value="HQ2DHNS7TQNZ8">
-                                    <p align="center"><input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-                                    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"></p>
-                                    </form>
+                                    <p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HQ2DHNS7TQNZ8" target="_blank">
+                                    <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" id="paypal-submit" alt="PayPal - The safer, easier way to pay online!" style="cursor:pointer"></a></p>
                                 </div>
                             </div>
                             <div class="postbox">
