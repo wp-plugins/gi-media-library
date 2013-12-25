@@ -17,7 +17,9 @@ $mediaformats = array(
 			'audio' => 'audio-icon.png',
 			'download' => 'download-icon.png',
 			'zip' => 'zip-icon.png',
-                        'video' => 'video-icon.gif'
+                        'video' => 'video-icon.gif',
+                        'youtube' => 'youtube-icon.png',
+                        'vimeo' => 'vimeo-icon.png'
 				);
 $textareafields = array('grouplabel', 'subgrouplabel', 'subgroupdescription', 'playlistsectionlabel', 'playlistcomboitemdescription');
 
