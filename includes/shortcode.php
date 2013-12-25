@@ -525,7 +525,7 @@ function giml_get_videolink($video, $col_id, $videonum="") {
                 }
                 $src .= '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 		$query = plugins_url('videoplayer.php?fileid=' . base64_encode($src."||".$title) . '&nonce=' . GIML_NONCE, dirname(__FILE__));
-		$link = '<span class=""><a href="#" onclick="window.open(\''.$query.'\',\'GIPlayer\',\'width=640,height=390,location=0,menubar=0,resizable=0,scrollbars=0,status=0,titlebar=0,toolbar=0\');return false;"><img title="Click to watch Video '.$videonum.'" src="' . plugins_url( 'images/' . $mediaformats["video"], dirname(__FILE__)) . '"></a></span>&nbsp;';
+		$link = '<span class=""><a href="#" onclick="window.open(\''.$query.'\',\'GIPlayer\',\'width=640,height=390,location=0,menubar=0,resizable=0,scrollbars=0,status=0,titlebar=0,toolbar=0\');return false;"><img title="Click to watch Video '.$videonum.'" src="' . plugins_url( 'images/' . $mediaformats[$type], dirname(__FILE__)) . '"></a></span>&nbsp;';
 	}
 	return $link;
 }
