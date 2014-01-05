@@ -419,12 +419,13 @@ if (has_filter('giml_admin_manage')) {
                                 <div class="handlediv" title="Click to toggle"><br></div>
                                 <h3 class="hndle">About GI-Media Library</h3>
                                 <div class="inside">
-                                    <p>GI-Media Library was developed especially for institutions providing online education. With this plugin, it's easy to create your course/media library in a tabular form without any effort of custom building pages and layouts. You can organize it into a group (course) and subgroup (subjects), create playlist section (chapters) and then add your links to course materials or media's under that section. You can create your own table with desired number of columns like topic, duration, files etc. It supports all type of libraries like audio, video, pdf, doc etc. This plugin also comes with built-in HTML5 player from jPlayer and it supports following media formats:</p>
+                                    <p>GI-Media Library was developed especially for institutions providing online education. With this plugin, it's easy to create your course/media library in a tabular form without any effort of custom building pages and layouts. You can organize it into a group (course) and subgroup (subjects), create combo items (chapters), create playlist section (sections) under that item and then add your links to course materials or media's under that section. You can create your own table with desired number of columns like topic, duration, files etc. It supports all type of libraries like audio, video, pdf, doc etc. This plugin also comes with built-in HTML5 player from jPlayer and it supports following media formats:</p>
                                     <ul>
                                         <li>HTML5: mp3, mp4 (AAC/H.264), ogg (Vorbis/Theora), webm (Vorbis/VP8), wav</li>
                                         <li>Flash: mp3, mp4 (AAC/H.264), rtmp, flv</li>
                                     </ul>
                                     <p>Playing external videos (YouTube and Vimeo) are also supported. You can fully customize the layout by providing CSS stylesheet class and change the text direction from LTR to RTL, if you want to use Arabic, Persian, Urdu languages.</p>
+                                    <p>If you are looking for advanced feature with Student Registration and LMS (Learning Management System), then check our <a href="http://www.glareofislam.com/#gi-lms">GI-Learning Management System</a> which will work with GI-Media Library to provide you with complete Learning Management System.</p>
                                 </div>
                             </div>
                             <div class="postbox">

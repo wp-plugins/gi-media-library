@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: html,table,data,media,library,e-learning,online education,course,audio,video,media library,course library
 Requires at least: 3.4.2
 Tested up to: 3.8
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ GI-Media Library enables you to display your course/media library in tabular for
 
 == Description ==
 
-GI-Media Library is a WordPress plugin developed especially for institutions providing online education. With this plugin, it's easy to create your course/media library in a tabular form without any effort of custom building pages and layouts. You can organize it into a group (course) and subgroup (subjects), create playlist section (chapters) and then add your links to course materials or media's under that section. You can create your own table with desired number of columns like topic, duration, files etc. It supports all type of libraries like audio, video, pdf, doc etc. This plugin also comes with built-in HTML5 player from jPlayer and it supports following media formats:
+GI-Media Library is a WordPress plugin developed especially for institutions providing online education. With this plugin, it's easy to create your course/media library in a tabular form without any effort of custom building pages and layouts. You can organize it into a group (course) and subgroup (subjects), create combo items (chapters), create playlist section (sections) under that item and then add your links to course materials or media's under that section. You can create your own table with desired number of columns like topic, duration, files etc. It supports all type of libraries like audio, video, pdf, doc etc. This plugin also comes with built-in HTML5 player from jPlayer and it supports following media formats:
 
 *	HTML5: mp3, mp4 (AAC/H.264), ogg (Vorbis/Theora), webm (Vorbis/VP8), wav
 *	Flash: mp3, mp4 (AAC/H.264), rtmp, flv
@@ -20,6 +20,8 @@ GI-Media Library is a WordPress plugin developed especially for institutions pro
 Playing external videos (YouTube and Vimeo) are also supported. You can fully customize the layout by providing CSS stylesheet class and change the text direction from LTR to RTL, if you want to use Arabic, Persian, Urdu languages.
 
 You can download User's Manual with complete step by step usage instructions from http://www.glareofislam.com/softwares/gimedialibrary.html
+
+If you are looking for advanced feature with Student Registration and LMS (Learning Management System), then check our <a href="http://www.glareofislam.com/#gi-lms">GI-Learning Management System</a> which will work with GI-Media Library to provide you with complete Learning Management System.
 
 Following are the complete list of features:
 
@@ -93,6 +95,9 @@ I kindly ask you for link somewhere on your website to http://www.glareofislam.c
 I'm also happy about [donations](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HQ2DHNS7TQNZ8)! Thanks!
 
 == Changelog ==
+
+= Version 2.2.1 =
+- Minor improvements to support our GI-Learning Management System plugin
 
 = Version 2.2.0 =
 - Revised the code to support our future streamline of GI plugins for online education.

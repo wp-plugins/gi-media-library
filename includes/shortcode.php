@@ -189,12 +189,15 @@ function giml_get_media( $settings ) {
 				
 				$result = $giml_db->get_playlisttablecolumnsbycolumn ($id);
 				$totalcols = $giml_db->get_numrows();
-				if ($totalcols > 0) {
+                                if ($totalcols > 0) {
 					$tmpcols = "";
 					foreach ($result as $row) {
 						$html .= "<th class=\"".stripslashes($row->playlisttablecolumncss)."\" style=\"direction:{$row->playlisttablecolumndirection}\">".stripslashes($row->playlisttablecolumnlabel)."</th>";
 						$tmpcols[] = $row->playlisttablecolumnlabel . "::" . $row->playlisttablecolumndirection;
 					}
+                                        if (has_filter('gilms_student_personal')) {
+                                            $html .= "<th></th>";
+                                        }
 					$row = $result[0];
 					$tpl = str_replace( '[+playlisttablecss+]', stripslashes($row->playlisttablecss), $tpl );
 					$tpl = str_replace( '[+tableheader+]', $html, $tpl );
@@ -202,9 +205,13 @@ function giml_get_media( $settings ) {
 					$html = "";
 					//print "<pre>" . print_r($sections, true) . "</pre>";return;
 					foreach ($sections as $section) {
-						if ($section->playlistsectionhide == 0)
-							$html .= "<tr><th class=\"center " . stripslashes($section->playlistsectioncss) . "\" style=\"direction:{$section->playlistsectiondirection}\" colspan=\"{$totalcols}\">" . stripslashes($section->playlistsectionlabel) . "&nbsp;" . get_downloadhtml($section->playlistsectiondownloadlink, stripslashes($section->playlistsectiondownloadlabel), stripslashes($section->playlistsectiondownloadcss)) . "</th></tr>";
-						
+						if ($section->playlistsectionhide == 0) {
+                                                    $colspan = $totalcols;
+                                                    if (has_filter('gilms_student_personal'))
+                                                        $colspan += 1;
+                                                    
+                                                    $html .= "<tr><th class=\"center " . stripslashes($section->playlistsectioncss) . "\" style=\"direction:{$section->playlistsectiondirection}\" colspan=\"{$colspan}\">" . stripslashes($section->playlistsectionlabel) . "&nbsp;" . get_downloadhtml($section->playlistsectiondownloadlink, stripslashes($section->playlistsectiondownloadlabel), stripslashes($section->playlistsectiondownloadcss)) . "</th></tr>";
+                                                }
 						$data = $giml_db->get_playlistcolumnsbysection($section->id);
 						
 						$data = giml_sortplaylist($data, $section->id);
@@ -222,6 +229,7 @@ function giml_get_media( $settings ) {
 						}*/
 						//print "<pre>" . print_r((array)$data[0], true) . "</pre>";return;
 						// loop through playlist columns data and its column name
+                                                $dataid = "";
 						foreach ($data as $col) {
 							
 							if($i > $totalcols) {// || $totalrows != $col->rowid) {
@@ -238,13 +246,20 @@ function giml_get_media( $settings ) {
 								
 								//print "<pre>" . print_r($tmpvalues, true) . "</pre>";//exit;
 								
-								$html .= "<tr>" . join("", $tmpvalues) . "</tr>";
+								$html .= "<tr>" . join("", $tmpvalues);
+                                                                if (has_filter('gilms_student_personal')) {
+                                                                    $html = apply_filters('gilms_student_personal', $html, $dataid);
+                                                                }
+                                                                $dataid = "";
+                                                                $html .= "</tr>";
 								$totalrows++;
 								$i = 1;
 								$tmpvalues="";
 							}
 							// represent current table column id 
 							$j = 0;
+                                                        $dataid .= $col->id . '::';
+                                                            
 							//loop through table column names
 							foreach($tmpcols  as $tmpcol) {
 								list($tmpcol, $coldir) = split("::", $tmpcol);
@@ -412,7 +427,12 @@ function giml_get_media( $settings ) {
 								}
 							}
 							ksort($tmpvalues);//print "<pre>" . print_r($tmpvalues, true) . "</pre>";
-							$html .= "<tr>" . join("", $tmpvalues) . "</tr>";
+							$html .= "<tr>" . join("", $tmpvalues);
+                                                        if (has_filter('gilms_student_personal')) {
+                                                            $html = apply_filters('gilms_student_personal', $html, $dataid);
+                                                        }
+                                                        $dataid = "";
+                                                        $html .= "</tr>";
 							$html = str_replace("[+rowspan+]", $totalrows, $html);
 						}
 					}

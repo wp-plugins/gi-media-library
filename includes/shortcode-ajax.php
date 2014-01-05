@@ -114,6 +114,9 @@ if (isset($_POST)) {
 					$html .= "<th class=\"".stripslashes($row->playlisttablecolumncss)."\" style=\"direction:{$row->playlisttablecolumndirection}\">".stripslashes($row->playlisttablecolumnlabel)."</th>";
 					$tmpcols[] = $row->playlisttablecolumnlabel . "::" . $row->playlisttablecolumndirection;
 				}
+                                if (has_filter('gilms_student_personal')) {
+                                    $html .= "<th></th>";
+                                }
 				$row = $result[0];
 				
 				$js['playlisttablecss'] = stripslashes($row->playlisttablecss);
@@ -122,9 +125,13 @@ if (isset($_POST)) {
 				$html = "";
 				//print "<pre>" . print_r($sections, true) . "</pre>";return;
 				foreach ($sections as $section) {
-					if ($section->playlistsectionhide == 0)
-						$html .= "<tr><th class=\"center " . stripslashes($section->playlistsectioncss) . "\" style=\"direction:{$section->playlistsectiondirection}\" colspan=\"{$totalcols}\">" . stripslashes($section->playlistsectionlabel) . "&nbsp;" . get_downloadhtml($section->playlistsectiondownloadlink, stripslashes($section->playlistsectiondownloadlabel), stripslashes($section->playlistsectiondownloadcss)) . "</th></tr>";
-					
+					if ($section->playlistsectionhide == 0) {
+                                            $colspan = $totalcols;
+                                            if (has_filter('gilms_student_personal'))
+                                                $colspan += 1;
+                                                    
+                                            $html .= "<tr><th class=\"center " . stripslashes($section->playlistsectioncss) . "\" style=\"direction:{$section->playlistsectiondirection}\" colspan=\"{$colspan}\">" . stripslashes($section->playlistsectionlabel) . "&nbsp;" . get_downloadhtml($section->playlistsectiondownloadlink, stripslashes($section->playlistsectiondownloadlabel), stripslashes($section->playlistsectiondownloadcss)) . "</th></tr>";
+                                        }
 					$data = $giml_db->get_playlistcolumnsbysection($section->id);
 					
 					$data = giml_sortplaylist($data, $section->id);
@@ -142,6 +149,7 @@ if (isset($_POST)) {
 					}*/
 					//print "<pre>" . print_r((array)$data[0], true) . "</pre>";return;
 					// loop through playlist columns data and its column name
+                                        $dataid = "";
 					foreach ($data as $col) {
 						if($i > $totalcols) {// || $totalrows != $col->rowid) {
 							/*if($totalrows != $col->rowid){
@@ -157,13 +165,20 @@ if (isset($_POST)) {
 							
 							//print "<pre>" . print_r($tmpvalues, true) . "</pre>";
 							
-							$html .= "<tr>" . join("", $tmpvalues) . "</tr>";
+							$html .= "<tr>" . join("", $tmpvalues);
+                                                        if (has_filter('gilms_student_personal')) {
+                                                            $html = apply_filters('gilms_student_personal', $html, $dataid);
+                                                        }
+                                                        $dataid = "";
+                                                        $html .= "</tr>";
 							$totalrows++;
 							$i = 1;
 							$tmpvalues="";
 						}
 						// represent current table column id 
 						$j = 0;
+                                                $dataid .= $col->id . '::';
+                                                            
 						//loop through table column names
 						foreach($tmpcols  as $tmpcol) {
 							list($tmpcol, $coldir) = split("::", $tmpcol);
@@ -332,7 +347,12 @@ if (isset($_POST)) {
 							}
 						}
 						ksort($tmpvalues);//print "<pre>" . print_r($tmpvalues, true) . "</pre>";
-						$html .= "<tr>" . join("", $tmpvalues) . "</tr>";
+						$html .= "<tr>" . join("", $tmpvalues);
+                                                if (has_filter('gilms_student_personal')) {
+                                                    $html = apply_filters('gilms_student_personal', $html, $dataid);
+                                                }
+                                                $dataid = "";
+                                                $html .= "</tr>";
 						$html = str_replace("[+rowspan+]", $totalrows, $html);
 					}
 				}

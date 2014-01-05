@@ -99,7 +99,7 @@ div#giml_content #subgroupdownload, div#giml_content  #giml_filter, div#giml_con
 }
 
 #giml_playlist table#playList thead{
-	background-color: rgb(215,216,224);
+	background-color: rgb(189, 192, 223);
 	font-weight: bold;
 	color:#03506d;
 	text-align: center;
@@ -114,7 +114,7 @@ div#giml_content #subgroupdownload, div#giml_content  #giml_filter, div#giml_con
 	font-size:95% !important;
 	font-weight:bold;
 	color:#03506d;
-	background-color:#F2F2F2;
+	background-color: rgb(220, 222, 240);
 	line-height: 1.5;
 }
 

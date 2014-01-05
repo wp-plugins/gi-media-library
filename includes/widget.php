@@ -134,7 +134,7 @@ class GIMediaLibraryWidget extends WP_Widget {
 							
 						if (intval($data->groupid) > 0) {
                                                     $subgroups = $giml_db->get_group_subgroups($data->groupid);
-                                                    if (count($subgroups)>1) {
+                                                    if (count($subgroups)>1 || $total > 1) {
                                                         $html .= "<h6><span class=\"{$data->groupcss}\" style=\"direction:{$data->groupdirection};\">{$data->grouplabel}</span></h6><div id=\"giml-menu\"><ul>";
 							foreach ($subgroups as $data1) {
 								$style1 = ""; $style2 = "";
