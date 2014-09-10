@@ -1,8 +1,6 @@
 <?php
 
 add_shortcode( 'gi_medialibrary', 'giml_shortcode' );
-add_action('wp_ajax_giml_change_search', 'giml_change_search');
-add_action('wp_ajax_nopriv_giml_change_search', 'giml_change_search');
 
 
 function giml_set_default_options() {
@@ -10,32 +8,32 @@ function giml_set_default_options() {
 		'default'			=> 0,
 		'type'				=> 'group',						// Values: group, resource
 		'id'				=> '',							// Values: Integer
+                'studentaccess' => 0
 	);
 }
 
 function giml_shortcode( $attr ) {
-	if (!is_admin())
-	{
-		if (!wp_style_is('gi-style','queue')) {
-			if (!wp_style_is('gi-style','registered')) {
-				wp_register_style( 'gi-style', plugins_url( 'css/gi.css', dirname(__FILE__) ) );
-			}
-			wp_enqueue_style( 'gi-style');
-		}
-		if (!wp_style_is('giml-style','queue')) {
-			if (!wp_style_is('giml-style','registered')) {
-				wp_register_style( 'giml-style', plugins_url( 'css/giml.css', dirname(__FILE__) ) );
-			}
-			wp_enqueue_style( 'giml-style');
-		}
-                
-		$settings = shortcode_atts( giml_set_default_options(), $attr );
-	
-		$display = giml_get_media( $settings );
-		print $display;
-                return;
-		//return $display;	//returns formatted output with autop and linebreak tags
-	}
+    wp_enqueue_script( 'jquery' );
+    wp_enqueue_script( 'jquery-ui-accordion' );
+			
+        if (!wp_style_is('gi-style','queue')) {
+                if (!wp_style_is('gi-style','registered')) {
+                        wp_register_style( 'gi-style', plugins_url( 'css/gi.css', dirname(__FILE__) ) );
+                }
+                wp_enqueue_style( 'gi-style');
+        }
+        if (!wp_style_is('giml-style','queue')) {
+                if (!wp_style_is('giml-style','registered')) {
+                        wp_register_style( 'giml-style', plugins_url( 'css/giml.css', dirname(__FILE__) ) );
+                }
+                wp_enqueue_style( 'giml-style');
+        }
+
+        $settings = shortcode_atts( giml_set_default_options(), $attr );
+
+        $display = giml_get_media( $settings );
+        return $display;	//returns formatted output with autop and linebreak tags
+
 }
 
 function giml_mypage_title( $old_title, $sep, $sep_location ) {
@@ -45,7 +43,8 @@ function giml_get_media( $settings ) {
 	global $giml_db;
 	global $mediaformats;
 	global $post;
-	
+	$allow_access = true;
+        
 	if (intval($settings['default']) != 1)
 		return;
 		
@@ -69,6 +68,14 @@ function giml_get_media( $settings ) {
 
 				$subgroup = $giml_db->get_subgroup($id);
 				$subgroup = $subgroup[0];
+                                if (has_filter('giml_shortcode_load') && isset($settings['studentaccess'])) {
+                                    if (intval($settings['studentaccess'])==1)
+                                        $allow_access = apply_filters('giml_shortcode_load', '', stripslashes($subgroup->subgrouplabel), $id);
+                                }
+                                if (!$allow_access) {
+                                    return __('<p>You are not registered for this course.</p>');
+                                }
+
 				$data = $giml_db->get_playlistdata($id);
 				
 				$tpl = file_get_contents( plugin_dir_path(__FILE__) . "../tpl/playlist.tpl");
@@ -133,6 +140,8 @@ function giml_get_media( $settings ) {
 						if ($listid > 0) {
 							$data = get_playlistcombosections($listid, $filterid, true);
 							$sections = $giml_db->get_playlistcombosections($listid, true, $filterid);
+                                                        if (empty($sections))
+                                                            $sections = $giml_db->get_playlistcombosections($listid, true, 0);
 						}else{
 							$data = get_playlistcombosectionssubgroup($id, $filterid, true);
 							$sections = $giml_db->get_playlistcombosectionssubgroup($id, true, $filterid);
@@ -489,73 +498,6 @@ function giml_get_media( $settings ) {
 		break;
 	}
 */
-}
-function giml_sortplaylist($playlist, $sectionid) {
-	global $giml_db;
-	$sorteddata = $giml_db->get_distinctplaylistcolumnsbysection($sectionid);
-	$tmpsortorder = "";
-	$tmprowid = "";
-	foreach($sorteddata as $key=>$row) {
-		$tmpsortorder[$key] = $row->playlistsortorder;
-	}
-	if (!empty($tmpsortorder))
-		array_multisort($tmpsortorder, SORT_ASC, SORT_NUMERIC, $sorteddata);
-	
-	//print "<pre>" . print_r($playlist, true) . "</pre>";
-	$tmp = array();
-	foreach($sorteddata as $data) {
-		foreach($playlist as $col) {
-			if ($data->rowid == $col->rowid) {
-				$tmp[] = $col;
-			}
-		}
-	}
-	//print "<pre>" . print_r($tmp, true) . "</pre>";
-	return $tmp;
-}
-
-function giml_get_audiolink($link, $title, $audionum="") {
-	global $mediaformats;
-	
-	if(!is_null($link) && !empty($link)){
-		list($url, $title1) = explode("||", $link);
-		$url = html_entity_decode(trim($url));
-		$query = plugins_url('audioplayer.php?fileid=' . base64_encode(str_replace(" ", "%20", $url)."||".$title1."||".str_replace(" ", "%20", GIML_URI)) . '&nonce=' . GIML_NONCE, dirname(__FILE__));
-		$link = '<span class=""><a href="'.$url.'" onclick="window.open(\''.$query.'\',\'GIPlayer\',\'width=440,height=160,location=0,menubar=0,resizable=0,scrollbars=0,status=0,titlebar=0,toolbar=0\');return false;"><img title="Click to listen Audio '.$audionum.'" src="' . plugins_url( 'images/' . $mediaformats["audio"], dirname(__FILE__)) . '"></a></span>&nbsp;';
-	}
-	return $link;
-}
-
-function giml_get_videolink($video, $col_id, $videonum="") {
-	global $mediaformats;
-	
-	if(!empty($video)){
-		list($type, $id) = explode("||", $video);
-                $src = '<iframe id="giml-video" src="//';
-                switch ($type) {
-                    case "vimeo":
-                        $src .= 'player.vimeo.com/video/'.$id;
-                        $title = '';
-                        break;
-                    case "youtube":
-                        $src .= 'www.youtube.com/embed/'.$id.'?enablejsapi=1&origin='.GIML_URL;
-                        $title = "";
-                    default:
-                        break;
-                }
-                $src .= '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-		$query = plugins_url('videoplayer.php?fileid=' . base64_encode($src."||".$title) . '&nonce=' . GIML_NONCE, dirname(__FILE__));
-		$link = '<span class=""><a href="#" onclick="window.open(\''.$query.'\',\'GIPlayer\',\'width=640,height=390,location=0,menubar=0,resizable=0,scrollbars=0,status=0,titlebar=0,toolbar=0\');return false;"><img title="Click to watch Video '.$videonum.'" src="' . plugins_url( 'images/' . $mediaformats[$type], dirname(__FILE__)) . '"></a></span>&nbsp;';
-	}
-	return $link;
-}
-
-function giml_change_search() {
-	
-	if (isset($_POST) && wp_verify_nonce($_POST['_ajax_nonce'], GIML_NONCE_NAME)) {
-		include 'shortcode-ajax.php';	
-	}
-
 }
 
 ?>

@@ -85,6 +85,8 @@ if (isset($_POST)) {
 			if ($listid > 0) {
 				$data = get_playlistcombosections($listid, $filterid, true);
 				$sections = $giml_db->get_playlistcombosections($listid, true, $filterid);
+                                if (empty($sections))
+                                    $sections = $giml_db->get_playlistcombosections($listid, true, 0);
 			}else{
 				$data = get_playlistcombosectionssubgroup($id, $filterid, true);
 				$sections = $giml_db->get_playlistcombosectionssubgroup($id, true, $filterid);

@@ -15,22 +15,6 @@ class GIMediaLibraryWidget extends WP_Widget {
 	}
 	
 	static function register_me() {
-		if (!is_admin()) {
-			if (!wp_script_is('jquery', 'queue')) wp_enqueue_script( 'jquery' );
-			if (!wp_script_is('jquery-ui-accordion', 'queue')) wp_enqueue_script( 'jquery-ui-accordion' );
-			if (!wp_style_is('jquery-ui-css','queue')) {
-				if (!wp_style_is('jquery-ui-css','registered')) {
-					wp_register_style( 'jquery-ui-css',  plugins_url( 'css/jquery-ui.css', dirname(__FILE__) ) );//'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
-				}
-				wp_enqueue_style( 'jquery-ui-css' );
-			}
-                        if (!wp_style_is('giml-widget','queue')) {
-                            if (!wp_style_is('giml-widget','registered')) {
-                                    wp_register_style( 'giml-widget', plugins_url( 'css/widget.css', dirname(__FILE__) ) );
-                            }
-                            wp_enqueue_style( 'giml-widget');
-                        }
-		}
 		register_widget(__CLASS__);
 	}
 	
@@ -192,6 +176,11 @@ class GIMediaLibraryWidget extends WP_Widget {
 			</script>";
 			//$tpl = str_replace('[+contents+]', $html, $tpl);
 			$html .= "</div>";
+                        
+                        wp_enqueue_style( 'jquery-ui-css',  plugins_url( 'css/jquery-ui.css', dirname(__FILE__) ) );//'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
+			wp_enqueue_style( 'giml-widget-css', plugins_url( 'css/widget.css', dirname(__FILE__) ) );
+                        
+                        
 			print $html . $js;
 			//print($post->ID);
 			//print($pattern);

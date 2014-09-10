@@ -3,8 +3,8 @@ Contributors: zishanj
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HQ2DHNS7TQNZ8
 Tags: html,table,data,media,library,e-learning,online education,course,audio,video,media library,course library
 Requires at least: 3.4.2
-Tested up to: 3.8
-Stable tag: 2.2.1
+Tested up to: 4.0
+Stable tag: 2.2.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +95,9 @@ I kindly ask you for link somewhere on your website to http://www.glareofislam.c
 I'm also happy about [donations](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HQ2DHNS7TQNZ8)! Thanks!
 
 == Changelog ==
+
+= Version 2.2.2 =
+- Minor fixes in GI-LMS integration and to support upto WP version 4.0
 
 = Version 2.2.1 =
 - Minor improvements to support our GI-Learning Management System plugin

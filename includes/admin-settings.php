@@ -96,7 +96,7 @@ function giml_mce_external_plugins($plugin_array) {
         }
         wp_enqueue_style('gi-style');
     }
-    $plugin_array['gi_medialibrary'] = plugins_url('js/editor_plugin.js', dirname(__FILE__));
+    $plugin_array['gi_medialibrary'] = apply_filters('giml_editor_plugin_load', plugins_url('js/editor_plugin.js', dirname(__FILE__)));
     return $plugin_array;
 }
 
@@ -109,7 +109,7 @@ function giml_load_admin_actions() {
     $ajax_actions = array('giml_get_groups', 'giml_group_add', 'giml_group_edit', 'giml_group_delete', 'giml_group_update', 'giml_get_shortcodedata',
         'giml_get_subgroups', 'giml_subgroup_add', 'giml_subgroup_edit', 'giml_subgroup_delete', 'giml_subgroup_update',
         'giml_get_playlistdata', 'giml_get_playlistcombosections', 'giml_get_playlistcombosectioncolumns', 'giml_get_playlistcolumns',
-        'giml_insert', 'giml_update', 'giml_edit', 'giml_delete');
+        'giml_insert', 'giml_update', 'giml_edit', 'giml_delete', 'giml_change_search', 'nopriv_giml_change_search');
     foreach ($ajax_actions as $action) {
         add_action("wp_ajax_{$action}", $action);
     }
@@ -138,8 +138,14 @@ function giml_add_plugin_action_links(array $links) {
     $links[] = '<a href="' . $url . '">' . __( 'Plugin page', 'giml' ) . '</a>';
     return $links;
 }
-/*
-function my_admin_notice($msg) {
-    echo '<div class="updated"><p>' . $msg . '</p></div>';
-}*/
+function giml_change_search() {
+	
+	if (!empty($_POST) && check_ajax_referer(GIML_NONCE_NAME)) {
+		include 'shortcode-ajax.php';	
+	}
+
+}
+function nopriv_giml_change_search() {
+    giml_change_search();
+}
 ?>

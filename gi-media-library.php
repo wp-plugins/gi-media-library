@@ -4,14 +4,14 @@
   Plugin Name: GI-Media Library
   Plugin URI: http://www.glareofislam.com/softwares/gimedialibrary.html
   Description: An easy to use plugin to display your course/media library in tabular form. You can use shortcode to display any specific resource in detail on any page/post. Widget is also available to list the available group/resource of media which will be displayed on any sidebar you drag/drop on.
-  Version: 2.2.1
+  Version: 2.2.2
   Author: Zishan Javaid
   Author URI: http://www.glareofislam.com
   License: GPL v2
  */
 
 /*
-  Copyright (c) 2012-2013 Zishan Javaid
+  Copyright (c) 2012-2014 Zishan Javaid
 
   Permission is hereby granted under GPL v2, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -31,13 +31,6 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
  */
-
-//add_action( 'wp', 'detect_shortcode' );
-//add_action( 'the_content', 'check_content');
-
-
-
-
 
 class GI_Media_Library {
 
@@ -89,13 +82,13 @@ class GI_Media_Library {
 
         $giml_db = new gi_medialibrary_db();
 
+        require_once( GIML_INCLUDES . 'admin-functions.php' );
         //if inside admin
         if (is_admin()) {
             require_once( GIML_INCLUDES . 'admin-settings.php' );
+        }else{
+            require_once( GIML_INCLUDES . 'shortcode.php' );
         }
-
-        require_once( GIML_INCLUDES . 'admin-functions.php' );
-        require_once( GIML_INCLUDES . 'shortcode.php' );
     }
 
     function giml_install() {
@@ -339,28 +332,6 @@ class GI_Media_Library {
 
 }
 
-/*
-  function detect_shortcode () {
-  global $post;
-  $pattern = get_shortcode_regex();
+new GI_Media_Library();
 
-  if (   preg_match_all( '/'. $pattern .'/s', $post->post_content, $matches )
-  && array_key_exists( 2, $matches )
-  && in_array( 'gi-medialibrary', $matches[2] ) )
-  {
-  print "shortcode used";
-  }else{
-  print "no shortcode";
-  }
-
-  }
-  function check_content($content) {
-  global $post;
-
-  return $content;
-
-  }
- */
-
-$giml = new GI_Media_Library();
 ?>
