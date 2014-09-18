@@ -70,7 +70,7 @@ function gi_medialibrary_page() {
     if ('POST' == $_SERVER['REQUEST_METHOD']) {
         if (isset($_POST['giml-admin-comment'])) {
             if (trim($_POST['giml-admin-comment'])!=='') {
-                wp_mail('info@glareofislam.com', "GIML User Message from " . get_site_option('siteurl'), $_POST['giml-admin-comment']);
+                wp_mail('giml-support@glareofislam.com', "GIML User Message from " . get_site_option('siteurl'), $_POST['giml-admin-comment']);
                 print '<div class="updated"><p>Message sent successfully.</p></div>';
             }else{
                 print '<div class="error"><p>Error: Message is left blank.</p></div>';

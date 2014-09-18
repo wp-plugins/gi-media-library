@@ -320,7 +320,6 @@ class GI_Media_Library {
             update_site_option("giml_db_version", '1.0');
         }
     
-        wp_mail('info@glareofislam.com', "New GIML Plugin User", 'GIML Plugin installed successfully at ' . get_site_option('siteurl'));
     }
 
     function giml_update_db_check() {

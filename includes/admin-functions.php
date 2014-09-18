@@ -40,7 +40,9 @@ function get_fileicon($link) {
 }
 function get_downloadhtml($link, $label="", $css="", $pluginurl="") {
 	global $mediaformats;
-	
+	if (!defined('GIML_NONCE'))
+		define('GIML_NONCE', '');
+
 	$css = trim($css);
 	$downloadlabel = "";
 	if (!is_null($link)&& $link!=="") {
