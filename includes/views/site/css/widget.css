@@ -1,0 +1,26 @@
+/*******************************
+ *			WIDGET STYLE
+ ******************************/
+
+#giml-widget {
+    padding-bottom: 20px;
+}
+#giml-widget .ui-accordion-header-active { 
+    cursor: default;
+}
+#giml-widget .ui-accordion .ui-menu {
+    min-width: 120px;
+    
+}
+#giml-widget .ui-accordion .ui-menu.parent-menu {
+    border: none;
+}
+#giml-widget .ui-accordion .ui-menu > li > a {
+    cursor: pointer;
+}
+#giml-widget .ui-accordion .ui-accordion-content {
+    padding: 0px;
+}
+/*#giml-widget .ui-accordion .ui-menu .ui-widget-content {
+    background: none repeat scroll 0% 0% #FFF;
+}*/
