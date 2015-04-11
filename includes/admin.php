@@ -139,7 +139,8 @@ class GIML_Admin extends GIML_Base {
             'giml_columns_get', 'giml_columns_add', 'giml_columns_update', 'giml_columns_delete',
             'giml_save_settings',
             'giml_table_playlist_get', 'nopriv_giml_table_playlist_get',
-            'giml_search_result_page_changed', 'nopriv_giml_search_result_page_changed'];
+            'giml_search_result_page_changed', 'nopriv_giml_search_result_page_changed',
+	    'giml_send_message'];
         
         foreach ($ajax_actions as $action) {
             add_action("wp_ajax_{$action}", array(__CLASS__, $action));
@@ -662,5 +663,18 @@ class GIML_Admin extends GIML_Base {
             $data = self::search(trim($search_string), $page_link, true, intval($items_per_page), intval($current_page) * intval($items_per_page) - intval($items_per_page));
             die(json_encode(['success' => true, 'data' => $data]));
         }
+    }
+    public static function giml_send_message() {
+        if (!empty($_POST) && check_ajax_referer(GIML_NONCE_NAME)) {
+            add_filter( 'wp_mail_content_type', array(__CLASS__, 'set_html_content_type') );
+            $headers = 'From: ' . $_POST['message']['name'] . ' <' . $_POST['message']['email'] . '>' . "\r\n";
+            wp_mail('giml-support@glareofislam.com', $_POST['message']['subject'], 'From Site: ' . get_site_option('siteurl') . "<br/><p>" . nl2br($_POST['message']['message']) . "</p>", $headers);
+            remove_filter( 'wp_mail_content_type', array(__CLASS__, 'set_html_content_type'));
+            die(json_encode(['success' => true, 'message' => self::print_success(__('Message sent successfully.', 'giml')), 'data' => []]));
+            
+        }
+    }
+    public static function set_html_content_type() {
+        return 'text/html';
     }
 }
