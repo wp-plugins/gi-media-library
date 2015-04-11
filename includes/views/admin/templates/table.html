@@ -1,0 +1,99 @@
+<div class="rowentries">
+    <div ng-repeat="row in rows track by row.id" class="form-row repeated-item">
+        <div class="col"><strong ng-bind="row.id + '.'"></strong></div>
+
+        <div class="col">Combo Item:<br/>
+            <ui-select ng-model="row.comboitem" theme="select2" ng-disabled="disabled" style="width: 18em" on-select="itemChange({id:row.comboitem.id, rowid:$index})">
+                <ui-select-match placeholder="Select or search for combo item...">{{$select.selected.playlistcomboitemlabel}}</ui-select-match>
+                <ui-select-choices repeat="item in comboItems | filter: {playlistcomboitemlabel:$select.search} track by item.id">
+                    <div ng-bind-html="item.playlistcomboitemlabel | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col"><font color="#FF0000">*</font>Section:<br/>
+            <ui-select ng-model="row.section" theme="select2" ng-disabled="disabled" style="width: 18em">
+                <ui-select-match placeholder="Select or search for combo item...">{{$select.selected.playlistsectionlabel | htmlToPlain}}</ui-select-match>
+                <ui-select-choices repeat="item in row.sections | filter: {playlistsectionlabel:$select.search} track by item.id">
+                    <div ng-bind-html="item.playlistsectionlabel | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col" ng-if="showSortOrder==='true'"><label for="playlistsortorder{{row.id}}">Order#:</label><br><input class="small-text" id="playlistsortorder{{row.id}}" type="number" ng-model="row.playlistsortorder"></div>
+        <div ng-repeat="col in tableColumns track by col.id" class="col repeated-item" ng-hide="row.section==null">
+            <span ng-bind-html="col.playlisttablecolumnlabel + ':'"></span><br/>
+            <input type="button" class="button" value="Edit" ng-click="openForm(row, col.id, col.playlisttablecolumntype, row.columns[col.id])" ng-if="col.playlisttablecolumntype!=='text'">
+            <textarea ui-tinymce="itemEd" ng-model="row.columns[col.id]" ng-if="col.playlisttablecolumntype==='text'"></textarea>
+        </div>
+        <div class="col">
+            <div class="remove-row">
+                <p>
+                    <img ng-src="{{myURI + 'images/delete-icon.png'}}" alt="remove row" title="remove row" ng-show="rows.length > 1" ng-click="remove(row.id)">
+                </p>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="form-row" ng-hide="isEditMode || tableColumns.length==0 || !tableColumns">
+    <div class="insert-row">
+        <p><span ng-click="insertRow()"><img ng-src="{{myURI + 'images/add-icon.png'}}" alt="insert row" title="insert row">&nbsp;insert row</span></p>
+    </div>
+</div>
+<div class="form-row" ng-hide="rows.length == 0 || tableColumns.length==0 || !tableColumns">
+    <input type="button" class="button button-primary" ng-value="(isEditMode)?'Update':'Add'" ng-click="save({'rows':rows})"/>
+    <input type="button" class="button" value="Cancel" ng-click="cancel()" ng-show="isEditMode"/>
+</div>
+<div id="giml-add-link-form{{::uniqueId}}" style="display:none">
+    <div class="rowentries">
+        <div ng-repeat="linkRow in link.rows track by linkRow.id" class="form-row repeated-item">
+            <div class="col"><strong ng-bind="linkRow.id + '.'"></strong></div>
+            <div class="col"><label for="link{{linkRow.id}}"><font color="#FF0000">*</font>Link:</label><br/><input id="link{{linkRow.id}}" name="link{{linkRow.id}}" type="text" class="regular-text" ng-model="linkRow.link"></div>
+            <div class="col" ng-hide="selectedColumnType === 'iconiclink'"><label for="linktext{{linkRow.id}}">Text to display:</label><br/><input id="linktext{{linkRow.id}}" name="linktext{{linkRow.id}}" type="text" ng-model="linkRow.text"></div>
+            <div class="col">
+            <div class="remove-row">
+                <p>
+                    <img ng-src="{{myURI + 'images/delete-icon.png'}}" alt="remove row" title="remove row" ng-click="link.remove(linkRow.id)">
+                </p>
+            </div>
+        </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="insert-row">
+            <p><span ng-click="link.insertRow()"><img ng-src="{{myURI + 'images/add-icon.png'}}" alt="insert row" title="insert row">&nbsp;insert row</span></p>
+        </div>
+    </div>
+    <div class="form-row">
+        <input type="button" class="button button-primary" value="Save" ng-click="link.save()">
+    </div>
+</div>
+<div id="giml-add-video-form{{::uniqueId}}" style="display:none">
+    <div class="rowentries">
+        <div ng-repeat="videoRow in video.rows track by videoRow.id" class="form-row repeated-item">
+            <div class="col"><strong ng-bind="videoRow.id + '.'"></strong></div>
+            <div class="col"><label for="type{{videoRow.id}}">Video type:</label><br/>
+            <select id="type{{videoRow.id}}" ng-model="videoRow.type">
+                <option value="youtube">YouTube</option>
+                <option value="vimeo">Vimeo</option>
+            </select></div>
+            <div class="col"><label for="id{{videoRow.id}}"><font color="#FF0000">*</font>Video ID:</label><br/><input id="id{{videoRow.id}}" name="id{{videoRow.id}}" type="text" ng-model="videoRow.videoid"></div>
+            <div class="col">
+            <div class="remove-row">
+                <p>
+                    <img ng-src="{{myURI + 'images/delete-icon.png'}}" alt="remove row" title="remove row" ng-click="video.remove(videoRow.id)">
+                </p>
+            </div>
+        </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="insert-row">
+            <p><span ng-click="video.insertRow()"><img ng-src="{{myURI + 'images/add-icon.png'}}" alt="insert row" title="insert row">&nbsp;insert row</span></p>
+        </div>
+    </div>
+    <div class="form-row">
+        <input type="button" class="button button-primary" value="Save" ng-click="video.save()">
+    </div>
+</div>

@@ -1,0 +1,43 @@
+<div id="giml-search-result" ng-controller="SearchResult as result">
+    <div class="text-center loader" ng-show="result.showLoader"><img ng-src="{{result.uri + 'images/ajax-loader.gif'}}" width="16px"/>&nbsp;<span ng-bind-html="result.loaderText"></span><div class="hr-separator"></div></div>
+    <div class="text-right" ng-if="result.pagination.show">
+        <pagination total-items="result.pagination.totalItems" ng-model="result.pagination.currentPage" ng-change="result.pagination.pageChanged()" max-size="result.pagination.maxSize" items-per-page="result.pagination.itemsPerPage" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" boundary-links="true"></pagination>
+    </div>
+    <div ng-repeat="group in result.data.groups" class="repeated-item">
+        <div class="row text-center" ng-if="group.id>0">
+            <h3 ng-bind-html="group.grouplabel"></h3>
+        </div>
+        <div ng-repeat="subgroup in group.subgroups" class="repeated-item">
+            <div class="row">
+                <h5><span class="col" ng-bind-html="subgroup.subgrouplabel"></span></h5>
+            </div>
+            <div class="hr-separator"></div>
+            <div class="row" id="giml-playlist">
+                <table summary="" cellpadding="0" cellspacing="0" ng-class="subgroup.table.playlisttablecss">
+                    <thead>
+                        <tr>
+                            <th ng-repeat="column in subgroup.tablecolumns track by column.id" class="{{((column.playlisttablecolumndirection === 'rtl')?'text-right':'text-left') + ' ' + column.playlisttablecolumncss + ' repeated-item'}}" ng-style="{'direction': column.playlisttablecolumndirection}" ng-bind-html="column.playlisttablecolumnlabel"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="playlistBody" class="repeated-item" ng-repeat="section in subgroup.sections">
+                        <tr ng-if="section.playlistsectionhide==0">
+                            <th ng-class="section.playlistsectioncss" class="text-center" ng-style="{'direction': section.playlistsectiondirection}" colspan="{{subgroup.tablecolumns.length}}">
+                                <span ng-bind-html="section.playlistsectionlabel"></span>
+                                <span ng-class="section.playlistsectiondownloadcss" ng-if="section.playlistsectiondownloadlink">
+                                    <a ng-href="{{section.playlistsectiondownloadlink}}"><span ng-bind-html="section.playlistsectiondownloadlabel || section.playlistsectiondownloadlink"></span></a>
+                                    <img ng-src="{{result.uri + 'images/' + section.downloadimage}}" style="vertical-align: middle;"/>
+                                    <span ng-bind-html="'(' + section.downloadsize + ')'"></span>
+                                </span>
+                            </th>
+                        </tr>
+                        <tr class="repeated-item" ng-repeat="playlistrow in section.playlistrows">
+                            <td class="repeated-item" ng-repeat="column in subgroup.tablecolumns" ng-if="($parent.$index==0 && section.sectionrow[column.id]) || !section.sectionrow[column.id]" giml-td col-data="section.sectionrow[column.id] || playlistrow.data[column.id]" col-type="column.playlisttablecolumntype" rowspan="{{(section.sectionrow[column.id])?section.playlistrows.length:'1'}}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br/>
+        </div>
+        <br/><br/>
+    </div>
+</div>

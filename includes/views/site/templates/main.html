@@ -1,0 +1,79 @@
+<div id="giml-shortcode" ng-controller="Shortcode as shortcode">
+    <div class="text-center loader" ng-show="shortcode.showLoader"><img ng-src="{{shortcode.uri + 'images/ajax-loader.gif'}}" width="16px"/>&nbsp;<span ng-bind-html="shortcode.loaderText"></span><div class="hr-separator"></div></div>
+    <div class="row" ng-if="shortcode.data.group.groupleftlabel || shortcode.data.group.grouprightlabel">
+        <h3>
+            <span class="col text-left" ng-bind-html="shortcode.data.group.groupleftlabel"></span>
+            <span class="col text-right" ng-bind-html="shortcode.data.group.grouprightlabel"></span>
+        </h3>
+    </div>
+    <div class="row" ng-if="shortcode.data.subgroup.subgroupleftlabel || shortcode.data.subgroup.subgrouprightlabel">
+        <h5>
+            <span class="col text-left" ng-bind-html="shortcode.data.subgroup.subgroupleftlabel"></span>
+            <span class="col text-right" ng-bind-html="shortcode.data.subgroup.subgrouprightlabel"></span>
+        </h5>
+    </div>
+    <div class="hr-separator" ng-if="shortcode.data.subgroup.subgroupleftlabel || shortcode.data.subgroup.subgrouprightlabel || shortcode.data.group.groupleftlabel || shortcode.data.group.grouprightlabel"></div>
+    
+    <div class="row text-center" ng-bind-html="shortcode.data.subgroup.subgroupdescription"></div>
+    <div class="hr-separator" ng-if="shortcode.data.subgroup.subgroupdescription"></div>
+    
+    <div class="row text-center" ng-if="shortcode.data.subgroup.subgroupdownloadlink">
+        <span ng-class="shortcode.data.subgroup.subgroupdownloadcss">
+            <a ng-href="{{shortcode.data.subgroup.subgroupdownloadlink}}"><span ng-bind-html="shortcode.data.subgroup.subgroupdownloadlabel || shortcode.data.subgroup.subgroupdownloadlink"></span></a>
+            <img ng-src="{{shortcode.uri + 'images/' + shortcode.data.subgroup.downloadimage}}" style="vertical-align: middle;"/>
+            <span ng-bind-html="'(' + shortcode.data.subgroup.downloadsize + ')'"></span>
+        </span>
+        <div class="hr-separator"></div>
+    </div>
+    
+    <div class="row" ng-if="shortcode.data.subgroup.subgroupshowcombo || shortcode.data.subgroup.subgroupshowfilter">
+        <div ng-if="shortcode.data.subgroup.subgroupshowcombo" class="col {{shortcode.data.combo.playlistcombocss}} text-left" ng-style="{'direction': shortcode.data.combo.playlistcombodirection}">
+            <label for="giml-combo" ng-bind-html="shortcode.data.combo.playlistcombolabel"></label>
+            <select id="giml-combo" name="giml-combo" ng-change="shortcode.combo.change()" ng-model="shortcode.combo.selected" ng-options="item.playlistcomboitemlabel for item in shortcode.data.combo.items track by item.id"></select>
+        </div>
+        <div ng-if="shortcode.data.subgroup.subgroupshowfilter" class="col-right">
+            <label for="giml-filter">Filter by:</label>
+            <select id="giml-filter" name="giml-filter" ng-model="shortcode.filter.selected" ng-options="item.playlistsectionlabel | htmlToPlain for item in shortcode.filter.data track by item.id"></select>
+        </div>
+        <div class="clear hr-separator"></div>
+    </div>
+    
+    <div class="row" ng-if="shortcode.data.subgroup.subgroupshowcombo">
+        <div class="text-center" ng-bind-html="shortcode.combo.selected.playlistcomboitemdescription"></div>
+        <div class="hr-separator"></div>
+    </div>
+    
+    <div class="row text-center" ng-if="shortcode.combo.selected.playlistcomboitemdownloadlink">
+        <span ng-class="shortcode.combo.selected.playlistcomboitemdownloadcss">
+            <a ng-href="{{shortcode.combo.selected.playlistcomboitemdownloadlink}}"><span ng-bind-html="shortcode.combo.selected.playlistcomboitemdownloadlabel || shortcode.combo.selected.playlistcomboitemdownloadlink"></span></a>
+            <img ng-src="{{shortcode.uri + 'images/' + shortcode.combo.selected.downloadimage}}" style="vertical-align: middle;"/>
+            <span ng-bind-html="'(' + shortcode.combo.selected.downloadsize + ')'"></span>
+        </span>
+        <div class="hr-separator"></div>
+    </div>
+    
+    <div class="row" id="giml-playlist">
+        <table summary="" cellpadding="0" cellspacing="0" ng-class="shortcode.data.table.playlisttablecss">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in shortcode.data.tablecolumns track by column.id" class="{{((column.playlisttablecolumndirection === 'rtl')?'text-right':'text-left') + ' ' + column.playlisttablecolumncss + ' repeated-item'}}" ng-style="{'direction': column.playlisttablecolumndirection}" ng-bind-html="column.playlisttablecolumnlabel"></th>
+                </tr>
+            </thead>
+            <tbody id="playlistBody" class="repeated-item" ng-repeat="section in shortcode.data.sections | filter:shortcode.filter.selected.id">
+                <tr ng-if="section.playlistsectionhide==0">
+                    <th ng-class="section.playlistsectioncss" class="text-center" ng-style="{'direction': section.playlistsectiondirection}" colspan="{{shortcode.data.tablecolumns.length}}">
+                        <span ng-bind-html="section.playlistsectionlabel"></span>
+                        <span ng-class="section.playlistsectiondownloadcss" ng-if="section.playlistsectiondownloadlink">
+                            <a ng-href="{{section.playlistsectiondownloadlink}}"><span ng-bind-html="section.playlistsectiondownloadlabel || section.playlistsectiondownloadlink"></span></a>
+                            <img ng-src="{{shortcode.uri + 'images/' + section.downloadimage}}" style="vertical-align: middle;"/>
+                            <span ng-bind-html="'(' + section.downloadsize + ')'"></span>
+                        </span>
+                    </th>
+                </tr>
+                <tr class="repeated-item" ng-repeat="playlistrow in section.playlistrows">
+                    <td class="repeated-item" ng-repeat="column in shortcode.data.tablecolumns" ng-if="($parent.$index==0 && section.sectionrow[column.id]) || !section.sectionrow[column.id]" giml-td col-data="section.sectionrow[column.id] || playlistrow.data[column.id]" col-type="column.playlisttablecolumntype" rowspan="{{(section.sectionrow[column.id])?section.playlistrows.length:'1'}}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="giml-searchbar" ng-controller="Search as search">
+    <form name="gimlSearchForm" action="/giml/search/result" method="post" novalidate>
+        <div class="input-group">
+            <input id="giml-search" name="giml-search" type="text" dir="{{search.dir}}" lang="{{search.lang}}" class="form-control keyboardInput" ng-model="search.text" required text placeholder="{{::search.caption}}">
+            <input type="hidden" name="show-pagination" value="{{::search.showPagination}}">
+            <input type="hidden" name="items-per-page" value="{{::search.itemsPerPage}}">
+            <input type="hidden" name="max-size" value="{{::search.maxSize}}">
+            <!--<span id="giml-search-keyboard" class="keyboard form-control-feedback" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown"></span>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="giml-search-keyboard">
+                <li><a ng-href="" ng-click="search.changeLanguage('en', 'ltr')">English</a></li>
+                <li><a ng-href="" ng-click="search.changeLanguage('ur', 'rtl')">اردو</a></li>
+                <li><a ng-href="" ng-click="search.changeLanguage('ar', 'rtl')">عربي</a></li>
+            </ul>-->
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-default" ng-disabled="gimlSearchForm.$invalid">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>                
+            </span>
+        </div>
+    </form>
+</div>
