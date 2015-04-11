@@ -55,7 +55,8 @@ Following are the complete list of features:
 
 > [giml_searchbar show_pagination="true" items_per_page="10" max_size="5"]
 
-Here:
+Where:
+
 > *show_pagination*: Whether to display the page with pagination or not. Default is *true*.
 
 > *items_per_page*: Number of rows to display per page. Default is *10*.
