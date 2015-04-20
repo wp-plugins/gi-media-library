@@ -23,6 +23,7 @@ class GIML_Shortcode extends GIML_BASE {
             if (isset($_GET[GIML_NONCE_NAME]) && wp_verify_nonce($_GET[GIML_NONCE_NAME], 'download_file_' . $file)) {
                 $fileinfo = pathinfo($file);
                 if($fileinfo['dirname']!==".") {
+		    $file = htmlspecialchars_decode($file);
                     header('Content-type: application/x-msdownload', true, 200);
                     header("Content-Disposition: attachment; filename=" . basename($file));
                     header("Pragma: no-cache, must-revalidate");
