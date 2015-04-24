@@ -89,7 +89,7 @@ giml.directive('giMenu', function($rootScope, $compile, $timeout, $http, AJAX_UR
             };
 
         },
-        template: "<li ng-class=\"{selected: (defaultSubgroup==category.id)}\"><a ng-href=\"{{menu_url + '=' + category.id}}\" ng-click=\"clicked($event, category.id)\" ng-bind-html='category.subgrouplabel|text' class=\"{{((category.subgroupdirection === 'rtl')?'text-right':'text-left') + ' ' + category.subgroupcss}} ng-style=\"{'direction': category.subgroupdirection}\"></a></li>",
+        template: "<li ng-class=\"{selected: (defaultSubgroup==category.id)}\"><a ng-href=\"{{menu_url + '=' + category.id}}\" ng-click=\"clicked($event, category.id)\" ng-bind-html='category.subgrouplabel|text' class=\"{{((category.subgroupdirection === 'rtl')?'text-right':'text-left') + ' ' + category.subgroupcss}}\" ng-style=\"{'direction': category.subgroupdirection}\"></a></li>",
         link: function(scope, element, attrs) {
             scope.menu_url = QUERY_SUBGROUPID_URL;
             if (angular.isDefined(scope.category.subcategory)) {

@@ -8,6 +8,19 @@ giml.controller('About', function(NONCE, $timeout, $http) {
     this.subject = "";
     this.message = "";
     
+    this.basicEd = {
+        menubar: false,
+      	plugins: [
+            "advlist lists charmap print preview anchor",
+            "searchreplace visualblocks code",
+            "insertdatetime media paste"
+        ],
+      	toolbar: "undo redo | styleselect | bold italic underline | code",
+        width: 270,
+        height: 150,
+        //forced_root_block: false
+    };
+    
     var self = this;
         
     this.send = function send() {

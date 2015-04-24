@@ -192,6 +192,7 @@ class GIML_Manage {
                 'nonce' => GIML_NONCE,
                 'ajax_url' => admin_url( 'admin-ajax.php' )]);
         
+        wp_enqueue_script('tinymce', '//tinymce.cachefly.net/4.1/tinymce.min.js');
         wp_enqueue_script('angularjs-tinymce', GIML_URI . 'includes/views/admin/js/vendors/ng-tinymce.js');
         
         wp_enqueue_script('angularjs-ui-select', GIML_URI . 'js/ui-select.min.js');

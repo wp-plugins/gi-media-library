@@ -138,7 +138,7 @@ class GIML_Widget extends WP_Widget {
                     wp_enqueue_style('giml-widget', GIML_URI . 'includes/views/site/css/widget.css');
                 }
                 echo $css . '<div id="giml-widget" ng-controller="Widget as widget">
-                        <gi-widget widget-id="giml-widget-accordion" on-menu-click="widget.menu_click(event, link_id)"></gi-widget>
+                        <gi-widget widget-id="giml-widget-accordion"></gi-widget>
                     </div>';
 
                 echo $args['after_widget'];

@@ -117,7 +117,7 @@
                             </div>
                             <div class="textarea-wrap">
                                 <label class="prompt" for="giml-about-comment"><font color="#FF0000">*</font> Message:</label><br />
-                                <textarea id="giml-about-comment" style="width:100%" name="giml-about-comment" cols="34" rows="10" ng-model="about.message"></textarea>
+                                <textarea ui-tinymce="about.basicEd" id="giml-about-comment" style="width:100%" name="giml-about-comment" cols="34" rows="10" ng-model="about.message"></textarea>
                             </div>
                             <input type="submit" name="submit" value="Send" class="button-primary" ng-disabled="about.name.length==0 || about.email.length==0 || about.subject.length==0 || about.message.length==0" ng-click="about.send()">
                         </div>

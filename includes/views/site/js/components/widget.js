@@ -30,7 +30,7 @@ giml.directive('giWidget', function($rootScope, $timeout, $http, TEMPLATE_URI) {
         return function(scope, element, attrs) {
             if (!ld.isEmpty(gimlWidgetData.current_group_id)) {
                 if (scope.group.id == gimlWidgetData.current_group_id) {
-                    scope.defaultId = scope.$index;
+                    scope.$parent.defaultId = scope.$index;
                 }
             }
             if (scope.$last) {
@@ -40,7 +40,7 @@ giml.directive('giWidget', function($rootScope, $timeout, $http, TEMPLATE_URI) {
                         heightStyle: "content",
                         icons: false,
                         collapsible: true,
-                        active: scope.defaultId
+                        active: scope.$parent.defaultId
                     });
                 });
             }

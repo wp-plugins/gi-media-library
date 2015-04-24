@@ -236,7 +236,7 @@ class GIML_Base {
         global $wpdb;
         
         $search = trim($search);
-        $arrSearch[] = addslashes(addslashes($search)); //data are added in DB with slashes
+        $arrSearch[] = $search;//addslashes(addslashes($search)); //data are added in DB with slashes
         $orSearch = false;
 search:
         //search in playlist column
@@ -285,7 +285,7 @@ search:
         $subgroupIds = $wpdb->get_col('SELECT id FROM ' . GIML_TABLE_PREFIX . 'subgroup '
                 . 'WHERE ' . $tmpquery);
         
-        if ((empty($subgroupIds) && empty($playlistColumnSectionIds) && empty($playlistColumns)) && !$orSearch) {
+        if ((empty($subgroupIds) && empty($playlistColumnSectionIds) && empty($rowIds)) && !$orSearch) {
             $arrSearch = explode(" ", $search);
             $orSearch = true;
             goto search;
