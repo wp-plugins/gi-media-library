@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: html,table,data,media,library,e-learning,online education,course,audio,video,media library,course library
 Requires at least: 3.6
 Tested up to: 4.1.1
-Stable tag: 3.0
+Stable tag: 3.0.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,7 +24,7 @@ You can download User's Manual with complete step by step usage instructions fro
 
 If you are looking for advanced feature with Student Registration and LMS (Learning Management System), then check our <a href="http://www.glareofislam.com/#gi-lms">GI-Learning Management System</a> which will work with GI-Media Library to provide you with complete Learning Management System.
 
-**Note: As of version 3.0, PHP version of at least 5.4 is highly recommended otherwise the plugin may not work.**
+**Note: As of version 3.0, PHP version of at least 5.4 is required otherwise the plugin will not work.**
 
 Following are the complete list of features:
 
@@ -110,6 +110,9 @@ I kindly ask you for link somewhere on your website to http://www.glareofislam.c
 I'm also happy about [donations](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HQ2DHNS7TQNZ8)! Thanks!
 
 == Changelog ==
+
+= Version 3.0.1 =
+- Minor fixes
 
 = Version 3.0 =
 - Added search and pagination feature.

@@ -20,7 +20,7 @@ var gimlSearchResult = angular.module('GIML-SearchResult', ['ngSanitize', 'ngAni
     .constant('NONCE', gimlSearchResult.nonce)
     .constant('AJAX_URL', gimlSearchResult.ajax_url)
     .constant('SEARCH', gimlSearchResult.search)
-    .constant('DATA', gimlSearchResult.data)
+    .constant('PLAYLIST_DATA', gimlSearchResult.data)
     .constant('SETTINGS', gimlSearchResult.settings)
     .animation('.repeated-item', function() {
         return {

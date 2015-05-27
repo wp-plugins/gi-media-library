@@ -110,7 +110,7 @@ class GIML_Section {
         return true;
     }
     
-    function add($rows) {
+    function add($rows, $returnID = false) {
         global $wpdb;
         
         $error = null;
@@ -140,7 +140,7 @@ class GIML_Section {
         if ($error)
             return new WP_Error('sectionadd-error', __('An error occurred while adding section(s): ' . join(", ", $error) . '<br/>', 'giml'));
         
-        return true;
+        return ($returnID)?$wpdb->insert_id:true;
     }
     
     function delete($ids) {
@@ -152,6 +152,19 @@ class GIML_Section {
     
         if (!$result && !empty($wpdb->last_error))
             return new WP_Error('sectiondelete-error', __('An error occurred while deleting section(s): ' . $wpdb->last_error . '<br/>', 'giml'));
+        
+        return true;
+    }
+    
+    function delete_combo_item($comboItemID) {
+        global $wpdb;
+        
+        $error = null;
+        
+        $result = $wpdb->query("DELETE FROM " . GIML_TABLE_PREFIX . "playlistsection WHERE playlistsectioncomboitemid = $comboItemID");
+    
+        if (!$result && !empty($wpdb->last_error))
+            return new WP_Error('sectiondelete-error', __('An error occurred while deleting section: ' . $wpdb->last_error . '<br/>', 'giml'));
         
         return true;
     }

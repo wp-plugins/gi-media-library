@@ -195,7 +195,7 @@
                             </div>
                     </li>
                     <li class="control-section accordion-section" ng-controller="Table as table">
-                        <h3 class="accordion-section-title hndle" tabindex="0" title="Table">Table</h3>
+                        <h3 class="accordion-section-title hndle" tabindex="0" title="Table">Table (ID: <span ng-bind-html="playlists.data.table[0].id"></span>)</h3>
                         <div class="accordion-section-content">
                             <div class="inside">
                                 <div class="form-row">
@@ -328,7 +328,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="col-left">
+                                    <div id="col-left" style="overflow-y: visible;">
                                         <div class="col-wrap" style="min-height: 320px;">
                                             <div class="rowentries">
                                                 <div ng-repeat="row in section.rows track by row.id" class="form-row repeated-item">
@@ -425,7 +425,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="col-left">
+                                    <div id="col-left" style="overflow-y: visible;">
                                         <div class="col-wrap" style="min-height: 320px;">
                                             <giml-table combo-items="seccolumn.comboItem.data" table-columns="seccolumn.tableColumns.data" 
                                                       row-table-sections="seccolumn.rowSections" edit="seccolumn.isEditMode" 
@@ -482,7 +482,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="col-left">
+                                    <div id="col-left" style="overflow-y: visible;">
                                         <div class="col-wrap" style="min-height: 320px;">
                                             <giml-table combo-items="column.comboItem.data" table-columns="column.tableColumns.data" 
                                                       row-table-sections="column.rowSections" edit="column.isEditMode" 

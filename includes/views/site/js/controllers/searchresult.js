@@ -1,12 +1,12 @@
 'use strict';
 
-gimlSearchResult.controller('SearchResult', function ($scope, $timeout, $http, AJAX_URL, URI, NONCE, DATA, SETTINGS, PAGE_LINK) {
-    this.data = DATA;
+gimlSearchResult.controller('SearchResult', function ($scope, $rootScope, $timeout, $http, AJAX_URL, URI, NONCE, PLAYLIST_DATA, SETTINGS, PAGE_LINK) {
+    this.data = PLAYLIST_DATA;
     this.uri = URI;
     this.pagination = {};
     this.pagination.show = SETTINGS.pagination.show;
     this.pagination.searchedString = SETTINGS.pagination.searched_string;
-    this.pagination.totalItems = parseInt(DATA.total_items);
+    this.pagination.totalItems = parseInt(PLAYLIST_DATA.total_items);
     this.pagination.currentPage = 1;
     this.pagination.maxSize = parseInt(SETTINGS.pagination.max_size);
     this.pagination.itemsPerPage = parseInt(SETTINGS.pagination.items_per_page);
@@ -95,7 +95,7 @@ gimlSearchResult.controller('SearchResult', function ($scope, $timeout, $http, A
     };
     
 })
-        .directive('gimlTd', function($compile, $sce) {
+        .directive('gimlTd', function($compile, $rootScope) {
     return {
         restrict: 'A',
         scope: {

@@ -231,6 +231,9 @@ class GIML_Search_Shortcode extends GIML_BASE {
             }
 
             wp_enqueue_style('giml-site', GIML_URI . 'includes/views/site/css/site.css');
+            if (get_site_option('giml_disable_jqueryui_css')==='false') {
+                wp_enqueue_style('giml-jquery-ui', GIML_URI . 'css/smoothness/jquery-ui-1.10.4.custom.min.css');
+            }
             if (get_site_option('giml_disable_bootstrap_css')==='false') {
                 wp_enqueue_style('giml-site-bootstrap', GIML_URI . 'includes/views/site/css/bootstrap/css/bootstrap.css');
                 wp_enqueue_style('giml-site-bootstrap-theme', GIML_URI . 'includes/views/site/css/bootstrap/css/bootstrap-theme.min.css');

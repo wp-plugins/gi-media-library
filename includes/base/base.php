@@ -129,7 +129,8 @@ class GIML_Base {
         $tmpVal = null;
         foreach ($downloads as $download) {
             list($url, $title) = explode("||", "$download||");
-            $tmp = '<a href="' . add_query_arg(['download-file' => rawurlencode($url), GIML_NONCE_NAME => wp_create_nonce('download_file_' . $url)], $post_link) . '" download>' . ((empty($title)) ? self::get_title($url) : $title) . '</a> ';
+            $title = ((empty($title)) ? self::get_title($url) : $title);
+            $tmp = '<a href="' . add_query_arg(['download-file' => rawurlencode($url), GIML_NONCE_NAME => wp_create_nonce('download_file_' . $url)], $post_link) . '" download>' . $title . '</a> ';
             if (isset(unserialize(GIML_MEDIA_FORMATS)[substr(strrchr($url, '.'), 1)]))
                 $tmp .= '<img title="Click to download" src="' . GIML_URI . 'images/' . unserialize(GIML_MEDIA_FORMATS)[substr(strrchr($url, '.'), 1)] . '"> (' . self::get_filesize($url) . ')';
             else
@@ -145,12 +146,13 @@ class GIML_Base {
         $tmpVal = null;
         foreach ($audios as $audio) {
             list($url, $title) = explode("||", "$audio||");
+            $title = ((empty($title)) ? self::get_title($url) : $title);
             $playlist[] = $url . '||' . $title . '||' . add_query_arg(['download-file' => rawurlencode($url), GIML_NONCE_NAME => wp_create_nonce('download_file_' . $url)], $post_link);
             $tmp = '<a href="' . $url . '" ng-click="play($event, \'' . addslashes(str_replace(" ", "%20", $url)) . '\')">';
             if (isset(unserialize(GIML_MEDIA_FORMATS)[substr(strrchr($url, '.'), 1)]))
-                $tmp .= '<img title="Click to play ' . ((empty($title)) ? self::get_title($url) : $title) . '" src="' . GIML_URI . 'images/' . unserialize(GIML_MEDIA_FORMATS)[substr(strrchr($url, '.'), 1)] . '">';
+                $tmp .= '<img title="Click to play ' . $title . '" src="' . GIML_URI . 'images/' . unserialize(GIML_MEDIA_FORMATS)[substr(strrchr($url, '.'), 1)] . '">';
             else
-                $tmp .= 'Click to play ' . ((empty($title)) ? self::get_title($url) : $title);
+                $tmp .= 'Click to play ' . $title;
             
             $tmpVal[] = $tmp . '</a>';
         }
@@ -192,7 +194,8 @@ class GIML_Base {
         $tmpVal = null;
         foreach ($links as $link) {
             list($url, $title) = explode("||", "$link||");
-            $tmpVal[] = "<a href=\"$url\" onclick=\"window.open('{$url}','_blank');return false;\">" . ((empty($title)) ? self::get_title($url) : $title) . "</a>";
+            $title = ((empty($title)) ? self::get_title($url) : $title);
+            $tmpVal[] = "<a href=\"$url\" onclick=\"window.open('{$url}','_blank');return false;\">" . $title . "</a>";
         }
         return $tmpVal;
     }
