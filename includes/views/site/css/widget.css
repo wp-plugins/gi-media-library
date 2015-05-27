@@ -1,0 +1,53 @@
+/*******************************
+ *			WIDGET STYLE
+ ******************************/
+
+#giml-widget {
+    padding-bottom: 20px;
+}
+#giml-widget .ui-accordion-header-active { 
+    cursor: default;
+}
+#giml-widget .ui-accordion .ui-menu {
+    min-width: 120px;
+    
+}
+#giml-widget .ui-accordion .ui-menu.parent-menu {
+    border: none;
+}
+#giml-widget .ui-accordion .ui-menu > li > a {
+    cursor: pointer;
+}
+#giml-widget .ui-accordion .ui-accordion-content {
+    padding: 0px;
+}
+/*#giml-widget .ui-accordion .ui-menu .ui-widget-content {
+    background: none repeat scroll 0% 0% #FFF;
+}*/
+#giml-widget h3 {
+    margin-bottom: 0px;
+}
+#giml-widget .text-left {
+    text-align: left;
+}
+#giml-widget .text-right {
+    text-align: right;
+}
+#giml-widget .text-center {
+    text-align: center;
+}
+#giml-widget .text-justify {
+    text-align: justify;
+}
+#giml-widget .text-nowrap {
+    white-space: nowrap;
+}
+#giml-widget .text-lowercase {
+    text-transform: lowercase;
+}
+#giml-widget .text-uppercase {
+    text-transform: uppercase;
+}
+#giml-widget .text-capitalize {
+    text-transform: capitalize;
+}

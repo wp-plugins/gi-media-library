@@ -1,0 +1,301 @@
+/* 
+    Document   : site
+    Created on : Aug 18, 2015, 3:52:29 PM
+    Author     : Zishan J.
+    
+*/
+
+#giml-shortcode,
+#giml-search-result {
+    padding-bottom: 15px;
+}
+#giml-shortcode .loader img,
+#giml-search-result .loader img {
+    vertical-align: middle;
+}
+#giml-shortcode .col-right,
+.giml-searchbar .col-right,
+#giml-search-result .col-right {
+    position: relative;
+    float: right;
+    padding: 0px 5px;
+}
+#giml-shortcode .row:before, #giml-shortcode .row:after,
+.giml-searchbar .row:before, .giml-searchbar .row:after,
+#giml-search-result .row:before, #giml-search-result .row:after {
+    display: table;
+    content: " ";
+}
+#giml-shortcode .clear, #giml-shortcode .row:after,
+.giml-searchbar .clear, .giml-searchbar .row:after,
+#giml-search-result .clear, #giml-search-result .row:after {
+    clear: both;
+}
+#giml-shortcode .col,
+#giml-search-result .col {
+    width: 50%;
+    float: left;
+}
+.giml-searchbar {
+    margin: 10px;
+}
+#giml-search {
+    margin: 0px;
+}
+.giml-searchbar .dropdown-menu > li > a {
+    cursor: pointer
+}
+
+
+#giml-shortcode .text-left,
+#giml-search-result .text-left {
+    text-align: left;
+}
+#giml-shortcode .text-right,
+#giml-search-result .text-right {
+    text-align: right;
+}
+#giml-shortcode .text-center,
+#giml-search-result .text-center {
+    text-align: center;
+}
+#giml-shortcode .text-justify,
+#giml-search-result .text-justify {
+    text-align: justify;
+}
+#giml-shortcode .text-nowrap,
+#giml-search-result .text-nowrap {
+    white-space: nowrap;
+}
+#giml-shortcode .text-lowercase,
+#giml-search-result .text-lowercase {
+    text-transform: lowercase;
+}
+#giml-shortcode .text-uppercase,
+#giml-search-result .text-uppercase {
+    text-transform: uppercase;
+}
+#giml-shortcode .text-capitalize,
+#giml-search-result .text-capitalize {
+    text-transform: capitalize;
+}
+
+#giml-shortcode .pagination > li > a,
+#giml-search-result .pagination > li > a {
+    cursor: pointer;
+}
+#giml-shortcode .ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
+    cursor: pointer;
+}
+#giml-shortcode .ui-accordion h3 .ui-icon-link{ 
+    position: absolute;
+    right: .5em;
+    top: 50%;
+    margin-top: -8px;
+    cursor: pointer;
+}
+#giml-shortcode .hr-separator,
+#giml-search-result .hr-separator {
+    padding-top: 10px;
+}
+#giml-shortcode .modal-content h4 {
+    text-transform: none;
+    clear: none;
+}
+#giml-shortcode .modal-dialog {
+    margin-top: 125px;
+}
+#giml-shortcode .text-success {
+    color: #3c763d;
+}
+#giml-shortcode a.text-success:hover {
+    color: #2b542c;
+}
+#giml-shortcode .text-info {
+    color: #31708f;
+}
+#giml-shortcode a.text-info:hover {
+    color: #245269;
+}
+#giml-shortcode .text-warning {
+    color: #8a6d3b;
+}
+#giml-shortcode a.text-warning:hover {
+    color: #66512c;
+}
+#giml-shortcode .text-danger {
+    color: #a94442;
+}
+#giml-shortcode a.text-danger:hover {
+    color: #843534;
+}
+#giml-shortcode .bg-success {
+    background-color: #dff0d8;
+}
+#giml-shortcode a.bg-success:hover {
+    background-color: #c1e2b3;
+}
+#giml-shortcode .bg-info {
+    background-color: #d9edf7;
+}
+#giml-shortcode a.bg-info:hover {
+    background-color: #afd9ee;
+}
+#giml-shortcode .bg-warning {
+    background-color: #fcf8e3;
+}
+#giml-shortcode a.bg-warning:hover {
+    background-color: #f7ecb5;
+}
+#giml-shortcode .bg-danger {
+    background-color: #f2dede;
+}
+#giml-shortcode a.bg-danger:hover {
+    background-color: #e4b9b9;
+}
+
+#giml-shortcode .header {
+    font-size: 1.4em;
+}
+#giml-shortcode .header1 {
+    font-size: 2.9em;
+}
+@media (min-width: 392px) {
+    #giml-shortcode .header {
+        font-size: 2em;
+    }
+    #giml-shortcode .header1 {
+        font-size: 3.5em;
+    }
+    #giml-shortcode #page-num {
+        font-size: 1.5em;
+    }
+}
+@media (min-width: 530px) {
+    #giml-shortcode .header {
+        font-size: 2.8em;
+    }
+    #giml-shortcode .header1 {
+        font-size: 4.3em;
+    }
+    /*    #giquran-shortcode #page-num {
+            font-size: 2em;
+        }*/
+}
+
+#giml-filter, #giml-combo {
+    max-width: 15em;
+}
+
+.giml-searchbar .btn {
+    line-height: 1.42857143;
+    font-size: 14px;
+}
+.giml-searchbar .glyphicon-search {
+    line-height: 1;
+}
+.giml-searchbar .keyboard {
+    background: url("../../../../images/keyboard.png") center no-repeat;
+    top: 0;
+    right: 39px;
+    padding-right: 10px;
+    cursor: pointer;
+}
+.giml-searchbar #giml-search {
+    padding-right: 45px;
+}
+.giml-searchbar ul[aria-labelledby='giml-search-keyboard'] {
+    right: 0; left: auto;
+    min-width: 0;
+}
+.giml-searchbar ul[aria-labelledby='giml-search-keyboard'] li{
+    cursor: pointer;
+}
+/*div#kbd_langCode {
+    display: none;
+}*/
+.giml-searchbar .keyboardInputInitiator {
+    content:url("../../../../images/keyboard.png");
+    position: absolute;
+    display: inline-block;
+    z-index: 2;
+    right: 39px;
+    padding-right: 10px;
+    cursor: pointer;
+    top: 11px;
+}
+
+
+/* Search Result Page */
+#giml-search-result img {
+    width: auto;
+    height: auto;
+}
+#giml-search-result .loader img {
+    width: 16px;
+    height: 16px;
+}
+
+/* Playlist Table */
+#giml-playlist table{
+    width:100%;
+    border-left:1px #E8EBF0 solid;
+    border-right:1px #E8EBF0 solid;
+    border-bottom:1px #E8EBF0 solid;
+}
+#giml-playlist table tr td{
+    font-size:90% !important;
+    line-height:14px;
+    border-top:1px #E8EBF0 solid;
+    padding:1px 5px;
+}
+#giml-playlist table tr td.icons{
+    padding-left:0;
+    text-align:center;
+    background-color:#fff !important;
+}
+#giml-playlist table tr td.icons div{
+    height:16px;
+    padding-left:14px;
+}
+#giml-playlist table thead tr td{
+    font-weight:bold;
+    color:#03506d;
+    background-color:#F2F2F2;
+}
+
+#giml-playlist table thead{
+    background-color: rgb(189, 192, 223);
+    font-weight: bold;
+    color:#03506d;
+    text-align: center;
+    line-height: 2;
+    font-size: 100% !important;
+}
+#giml-playlist table thead tr th{
+    padding: 0 5px 0 5px;
+}
+
+#giml-playlist table tbody tr th{
+    font-size:95% !important;
+    font-weight:bold;
+    color:#03506d;
+    background-color: rgb(220, 222, 240);
+    line-height: 1.5;
+}
+
+#giml-player {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 10;
+}
+
+#giml-player {
+    width: 100%;
+}
+@media (min-width: 400px) {
+    #giml-player {
+        width: 400px;
+    }
+}

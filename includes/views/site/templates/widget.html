@@ -1,0 +1,8 @@
+<div id="{{::widgetId}}">
+    <div ng-repeat="group in ::collection track by $index" class="group repeated-item" id="{{::widgetId + '-' + group.id}}" widget-item-loaded>
+        <h3><span class="{{((group.groupdirection === 'rtl')?'text-right':'text-left') + ' ' + group.groupcss}}" ng-style="{'direction': group.groupdirection}" ng-bind-html="group.grouplabel|text"></span></h3>
+        <div id="{{::widgetId + '-' + group.id + '-content'}}" contentid="{{group.id}}">
+            <gi-menu menu-id="{{::widgetId + '-category-menu-' + group.id}}" menu-collection="group.subgroups" default-subgroup="group.default" menu-group-id="{{group.id}}"></gi-menu>
+        </div>
+    </div>
+</div>

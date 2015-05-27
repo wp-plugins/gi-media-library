@@ -1,0 +1,51 @@
+<style>
+    .ui-dialog {
+        z-index: 1000;
+    }
+</style>
+<div id="giml-shortcode" ng-controller="Shortcode as shortcode">
+    <div ng-show="shortcode.showLoader" class="loader">
+        <p align="center"><img ng-src="{{shortcode.uri + 'images/ajax-loader.gif'}}" width="16">&nbsp;Loading&hellip;</p>
+    </div>
+    <div style="margin: 10px;">
+        Group:<br />
+        <ui-select ng-model="shortcode.group.selected" theme="select2" ng-disabled="disabled" style="width: 18em" on-select="shortcode.group.change()">
+            <ui-select-match placeholder="Select or search for group...">{{$select.selected.grouplabel | htmlToPlain}}</ui-select-match>
+            <ui-select-choices repeat="group in shortcode.group.data | filter: {grouplabel:$select.search} track by group.id">
+              <div ng-bind-html="group.grouplabel | highlight: $select.search"></div>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+    <div style="margin: 10px;">
+        Subgroup:<br />
+        <ui-select ng-model="shortcode.subgroup.selected" theme="select2" ng-disabled="disabled" style="width: 18em" on-select="shortcode.subgroup.change()">
+            <ui-select-match placeholder="Select or search for subgroup...">{{$select.selected.subgrouplabel | htmlToPlain}}</ui-select-match>
+            <ui-select-choices repeat="subgroup in shortcode.subgroup.data | filter: {subgrouplabel:$select.search} track by subgroup.id">
+              <div ng-bind-html="subgroup.subgrouplabel | highlight: $select.search"></div>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+    <div style="margin: 10px;" ng-show="shortcode.subgroup.selected">
+        <label><input type="checkbox" ng-model="shortcode.setAsDefault">Set as default</label><br/>
+<!--        <label><input type="checkbox" ng-model="shortcode.showPagination">Show pagination</label><br/>-->
+        <span ng-if="shortcode.showPagination">
+            <label for="giml-itemsperpage">Items per page:</label>&nbsp;<input id="giml-itemsperpage" name="giml-itemsperpage" type="text" ng-model="shortcode.itemsPerPage" size="3">
+        </span><br/>
+    </div>
+    <div style="margin: 10px;">
+        <input type="button" class="button button-primary" value="Insert" ng-disabled="!shortcode.subgroup.selected" ng-click="shortcode.insert()"/>
+    </div>
+</div>
+<script type="text/javascript">
+    jQuery('div#giml-shortcode').dialog({
+        title: 'Insert GI-Media Library Shortcode',
+        //draggable: false,
+        resizable: false,
+        //modal: true,
+        minWidth: false,
+        minHeight: false,
+        width: 300,
+        height: 400,
+        autoOpen: false
+    });
+</script>
