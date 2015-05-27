@@ -3,7 +3,7 @@ Contributors: zishanj
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HQ2DHNS7TQNZ8
 Tags: html,table,data,media,library,e-learning,online education,course,audio,video,media library,course library
 Requires at least: 3.6
-Tested up to: 4.1.1
+Tested up to: 4.2.2
 Stable tag: 3.0.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
